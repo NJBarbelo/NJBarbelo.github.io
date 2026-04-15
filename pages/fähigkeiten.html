@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & Meta-Tags -->
+  <title>Fähigkeiten – Barbelo – insleben.com</title>
+  <meta name="description" content="Nancy Jasmina Barbelo – Meine Fähigkeiten und Kompetenzen in Innovation, Planung, 3D-Design, Automatisierung, IoT und vielem mehr." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://insleben.com/fähigkeiten.html" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Fähigkeiten – Barbelo" />
+  <meta property="og:description" content="Nancy Jasmina Barbelo – Meine Fähigkeiten und Kompetenzen." />
+  <meta property="og:url" content="https://insleben.com/fähigkeiten.html" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    /* ===== FONTS (@font-face) ===== */
+    @font-face {
+      font-family: 'Cinzel';
+      font-weight: 400;
+      font-display: swap;
+      src: url(../fonts/cinzel-400-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Cinzel';
+      font-weight: 400;
+      font-display: swap;
+      src: url(../fonts/cinzel-400-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-weight: 200;
+      font-display: swap;
+      src: url(../fonts/nunito-sans-200-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-weight: 200;
+      font-display: swap;
+      src: url(../fonts/nunito-sans-200-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-weight: 300;
+      font-display: swap;
+      src: url(../fonts/nunito-sans-300-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+
+    @font-face {
+      font-family: 'Nunito Sans';
+      font-weight: 300;
+      font-display: swap;
+      src: url(../fonts/nunito-sans-300-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+
+    /* ===== CSS VARIABLEN ===== */
+    :root {
+      --gold: #c9a84c;
+      --gold-soft: #e8d5a3;
+      --gold-dim: #7a5f28;
+      --white-soft: #f0ece4;
+      --bg: #000000;
+      --turquoise: #3fd6c8;
+      --light-color: #ffe8b0;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    html, body { width: 100%; height: 100%; background: var(--bg); color: var(--white-soft); font-family: 'Nunito Sans', sans-serif; font-weight: 300; line-height: 1.6; overflow: hidden; cursor: none; }
+
+    /* ===== CUSTOM CURSOR ===== */
+    #cursor {
+      position: fixed;
+      width: 14px;
+      height: 14px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+    }
+
+    #cursor svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--gold);
+      filter: drop-shadow(0 0 4px var(--gold)) drop-shadow(0 0 8px var(--gold-soft));
+    }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes pulse-star {
+      0%, 100% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--gold)); }
+      50% { opacity: 1; filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 12px var(--gold-soft)); }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% {
+        filter:
+          drop-shadow(0 0 4px rgba(201, 168, 76, 0.3))
+          drop-shadow(0 0 12px rgba(201, 168, 76, 0.15));
+      }
+      50% {
+        filter:
+          drop-shadow(0 0 8px rgba(201, 168, 76, 0.8))
+          drop-shadow(0 0 20px rgba(201, 168, 76, 0.5))
+          drop-shadow(0 0 40px rgba(201, 168, 76, 0.25));
+      }
+    }
+
+    #page-header { position: fixed; top: 0; left: 0; right: 0; height: 120px; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.95); border-bottom: 1px solid rgba(201,168,76,0.15); z-index: 50; }
+    #header-logo img { width: 202px; height: 79px; animation: glow-pulse 3s ease-in-out infinite; overflow: visible; display: block; max-width: 100%; height: auto; }
+
+    /* ===== TEXT COMPONENTS ===== */
+    .text-block {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .line-headline {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 3.2vw, 2.2rem);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--turquoise);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 8px rgba(63,214,200,0.3);
+    }
+
+    .line-poem {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+      font-weight: 200;
+      color: var(--white-soft);
+      margin-bottom: 1.5rem;
+      line-height: 1.7;
+    }
+
+    .line-claim {
+      font-family: 'Nunito Sans', sans-serif;
+      font-size: clamp(0.8rem, 1.6vw, 0.9rem);
+      font-weight: 300;
+      color: var(--gold-soft);
+      margin-bottom: 1.5rem;
+    }
+
+    .highlight {
+      color: var(--turquoise);
+      text-shadow: 0 0 8px rgba(63,214,200,0.5);
+    }
+
+    /* ===== DIVIDER (STERN) ===== */
+    .divider-star {
+      display: flex;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    .divider-star svg {
+      width: 14px;
+      height: 14px;
+      animation: pulse-star 3s ease-in-out infinite;
+    }
+
+    /* ===== TABLE STYLES ===== */
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+      background: rgba(201, 168, 76, 0.05);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+    }
+
+    .skills-table th {
+      background: rgba(63, 214, 200, 0.1);
+      border: 1px solid rgba(201, 168, 76, 0.2);
+      padding: 1rem;
+      text-align: left;
+      color: var(--turquoise);
+      font-weight: 300;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+    }
+
+    .skills-table td {
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      padding: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--white-soft);
+    }
+
+    .skills-table tr:nth-child(even) {
+      background: rgba(201, 168, 76, 0.02);
+    }
+
+    .skills-table tr:hover {
+      background: rgba(63, 214, 200, 0.08);
+    }
+
+    /* ===== PDF EMBED ===== */
+    .pdf-container {
+      margin: 2rem 0;
+      text-align: center;
+    }
+
+    .pdf-link {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(201, 168, 76, 0.1);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    .pdf-link:hover {
+      background: rgba(63, 214, 200, 0.1);
+      border-color: var(--turquoise);
+      color: var(--turquoise);
+    }
+
+    /* ===== FOOTER ===== */
+    #page-footer { position: fixed; bottom: 0; left: 0; right: 0; height: auto; min-height: 80px; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.95); border-top: 1px solid rgba(201,168,76,0.15); z-index: 50; margin: 0; padding: 0.75rem 0; flex-direction: column; }
+    .footer-content { display: flex; flex-direction: column; gap: 0.75rem; text-align: center; }
+    .footer-text p { font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; color: #8a8a8a; margin: 0; }
+    .footer-nav { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
+    .footer-nav-row { display: flex; justify-content: center; align-items: center; gap: 0; flex-wrap: wrap; }
+    .footer-link { color: var(--gold); text-decoration: none; transition: color 0.3s ease; }
+    .footer-link:hover { color: var(--turquoise); }
+    .footer-divider { color: var(--gold-dim); margin: 0 0.5rem; }
+
+    /* ===== STAGE (MAIN CONTAINER) ===== */
+    #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 4rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    main { max-width: 900px; width: 100%; }
+
+    /* ===== SCROLLBAR ===== */
+    #stage::-webkit-scrollbar { width: 8px; }
+    #stage::-webkit-scrollbar-track { background: transparent; }
+    #stage::-webkit-scrollbar-thumb { background: rgba(201, 168, 76, 0.3); border-radius: 4px; }
+    #stage::-webkit-scrollbar-thumb:hover { background: rgba(201, 168, 76, 0.6); }
+  </style>
+</head>
+<body>
+  <!-- Header Logo -->
+  <header id="page-header">
+    <div id="header-logo">
+      <img src="../logos/Barbelo_Logo_main.png" alt="Barbelo Logo" />
+    </div>
+  </header>
+
+  <!-- Custom Cursor -->
+  <div id="cursor">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+      <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#c9a84c" />
+    </svg>
+  </div>
+
+
+  <!-- Main Content -->
+  <div id="stage">
+    <main>
+      <section class="text-block">
+        <h1 class="line-headline">Fähigkeiten</h1>
+        <p class="line-poem">Hier stelle ich dir meine Fähigkeiten, Kompetenzen und Leidenschaften vor – von technischen Skills über kreative Fähigkeiten bis hin zu persönlichen Interessen.</p>
+      </section>
+
+      <div class="divider-star">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#c9a84c" />
+        </svg>
+      </div>
+
+      <section class="text-block">
+        <h2 class="line-claim">Meine Lebensläufe</h2>
+        <div class="pdf-container">
+          <a href="../assets/Lebenslauf_auf_Zeitachse.pdf" class="pdf-link" download>📄 Lebenslauf (Zeitachse)</a>
+          <a href="../assets/Lebenslauf2026.pdf" class="pdf-link" download>📄 Lebenslauf 2026</a>
+        </div>
+      </section>
+
+      <div class="divider-star">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+          <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#c9a84c" />
+        </svg>
+      </div>
+
+      <section class="text-block">
+        <h2 class="line-claim">Übersicht der Fähigkeiten</h2>
+        <table class="skills-table">
+          <thead>
+            <tr>
+              <th>Fähigkeit</th>
+              <th>Erklärung</th>
+              <th>Konkretes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Innovation und Querdenken</strong></td>
+              <td>Ich bringe gerne meine Vielseitigkeit zu neuen Ideen zusammen</td>
+              <td>Wie man Gemüse besser verpackt, wie man effizienter kocht, wie man psychologische Methoden in ein Produkt umsetzen kann</td>
+            </tr>
+            <tr>
+              <td><strong>Planung und Umsetzung</strong></td>
+              <td>Ich überlege gerne konkret, wie man Projekte strukturiert und umsetzt</td>
+              <td>Projektmanagement, Prozessoptimierung, Schritt-für-Schritt Planung</td>
+            </tr>
+            <tr>
+              <td><strong>3-dimensionales Denken</strong></td>
+              <td>Ich liebe es, 3-dimensional einzelne Bauteile oder auch ganze Welten zu kreieren. Am liebsten plane ich Häuser innen und außen</td>
+              <td>Fusion360, Unity</td>
+            </tr>
+            <tr>
+              <td><strong>Effizienz Junkie</strong></td>
+              <td>Ich liebe es, von der Komplexität in die Einfachheit zu gehen und dabei immer mehr unnötige Schritte oder Material wegzulassen. Mein Chef meinte oft: ich presse Diamanten. Ich mache mir gerne Gedanken über die Nutzung von Tiny-Häusern</td>
+              <td>Beim Häuser planen nutze ich Räume effizienter und anders als wie bisher in der breiten Masse gedacht</td>
+            </tr>
+            <tr>
+              <td><strong>UI & UX</strong></td>
+              <td>Mir ist intuitive Bedienbarkeit bei meinen selbstentwickelten Applikationen sehr wichtig. Lieber nehme ich mehr Code-Arbeit auf mich, als dass der Kunde die App erlernen muss</td>
+              <td>PowerApps: Anwendungen für konkrete Bedürfnisse z.B.: InventarApp, TicketVerwaltungsApp, Onboarding-App für Kunden, …</td>
+            </tr>
+            <tr>
+              <td><strong>Automatisierung</strong></td>
+              <td>Prozess-Logik bilde ich gerne in digitalen Flows ab, die helfen unser Denken freizuhalten für Planung und Kreatives. Wichtig ist, dass die Information automatisch dort hin kommt, wo sie hin gehört und zwar im selben Moment, wo etwas angestoßen wird</td>
+              <td>PowerAutomate: Prozessautomatisierung und digitale Workflows</td>
+            </tr>
+            <tr>
+              <td><strong>IoT</strong></td>
+              <td>Einbindung von IoT im täglichen Gebrauch. IoT Buttons, IoT Messgeräte und Daten</td>
+              <td>Hühnerstall-Überwachung, Raumüberwachung mit Sensoren</td>
+            </tr>
+            <tr>
+              <td><strong>Statistik und Logarithmen</strong></td>
+              <td>Ich liebe es, Daten strukturiert und übersichtlich darzustellen. Berechnungen zu erstellen, wo bestimmte Grenzwerte unter- oder überschritten werden. Diese dann wieder in Benachrichtigungen an die richtigen Gruppen weiterzuleiten</td>
+              <td>PowerBI: Datenvisualisierung und Monitoring</td>
+            </tr>
+            <tr>
+              <td><strong>Lernen und Selbststudium</strong></td>
+              <td>Ich lerne sehr gerne immer wieder neu. Ich habe mir Programmieren von verschiedenen Sprachen selbst beigebracht. Mittlerweile programmiere ich mit KI, am liebsten mit Claude und Gemini</td>
+              <td>PowerFx, HTML, CSS, Javascript (JSON), KI-gestützte Entwicklung</td>
+            </tr>
+            <tr>
+              <td><strong>Klavier, Gitarre, Orgel, Cajon</strong></td>
+              <td>Ich spiele zwischendurch gerne Klavier und Gitarre. Ich spiele von Noten klassische Stücke und auch modernes, ich improvisiere auch gerne. Ich mag Rhythmus sehr und trommle deshalb gerne und spiele auf der Cajon</td>
+              <td>Jam-Sessions, Live-Musik, Improvisationen</td>
+            </tr>
+            <tr>
+              <td><strong>Gesang und Aufnahmen</strong></td>
+              <td>Ich singe gerne mehrstimmig, deshalb im Chor, oder ich liebe es Lieder mehrstimmig aufzunehmen. Da kann ich mich stundenlang mit dem Mischen der einzelnen Spuren beschäftigen</td>
+              <td>GarageBand, Mehrspurenaufnahmen, Mixing</td>
+            </tr>
+            <tr>
+              <td><strong>Musiktheorie</strong></td>
+              <td>Ich liebe Musiktheorie, das Wissen der Mathematik, die hinter der Musik steht, empfinde ich als absolut schön</td>
+              <td>Harmonielehre, Komposition, Improvisationen basierend auf Musiktheorie</td>
+            </tr>
+            <tr>
+              <td><strong>Zeichnen und Malen</strong></td>
+              <td>Manchmal zeichne und male ich von konkret bis abstrakt. Landschaften, Gesichter, Symbolik. Ich probiere gerne alle Malmittel aus und benutze auch gerne auf einem Bild mehrere davon</td>
+              <td>Acryl, Kohle und alle sonstigen Arten von Stiften, Kreide, verschiedenste Untergründe</td>
+            </tr>
+            <tr>
+              <td><strong>Fotografie</strong></td>
+              <td>Ich sehe besonders in der Natur sehr viel Schönheit, die ich gerne festhalte. Es sind oft die kleinen Dinge, die mich faszinieren. Oder auch das Zusammenspiel von Technik und Natur</td>
+              <td>Über 30.000 Fotos, Naturaufnahmen, Detailfotografie</td>
+            </tr>
+            <tr>
+              <td><strong>Spiritualität</strong></td>
+              <td>Ich bin aus der Kirche ausgetreten, obwohl ich eine starke Verbindung zum Christus-Bewusstsein habe. Erst vor einigen Jahren kam ich drauf, dass mich apokryphe Schriften sehr interessieren. Es gibt keine Institution oder einzelne Religion, die den vollständigen Anspruch auf „das Ganze" für mich halten kann, noch am ehesten der Buddhismus. Ich selbst suche die Einheit mit meinem Gegenüber und mit dem Ganzen durch die richtigen Einstellungen in mir selbst</td>
+              <td>Nag Hammadi Schriften, Kontemplation, spirituelle Praxis</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer -->
+  <footer id="page-footer">
+    <div class="footer-content">
+      <div class="footer-text">
+        <p>&copy; 2026 Nancy Jasmina Barbelo – insleben.com</p>
+      </div>
+      <nav class="footer-nav">
+        <div class="footer-nav-row">
+          <a href="angebot.html" class="footer-link">Angebot</a>
+          <span class="footer-divider">|</span>
+          <a href="methodik.html" class="footer-link">Methodik</a>
+          <span class="footer-divider">|</span>
+          <a href="blog.html" class="footer-link">Blog</a>
+          <span class="footer-divider">|</span>
+          <a href="theorien.html" class="footer-link">Theorien</a>
+          <span class="footer-divider">|</span>
+          <a href="gemeinsame-projekte.html" class="footer-link">Projekte</a>
+          <span class="footer-divider">|</span>
+          <a href="fähigkeiten.html" class="footer-link">Fähigkeiten</a>
+          <span class="footer-divider">|</span>
+          <a href="ueber-mich.html" class="footer-link">Über mich</a>
+        </div>
+        <div class="footer-nav-row">
+          <a href="impressum.html" class="footer-link">Impressum</a>
+          <span class="footer-divider">|</span>
+          <a href="datenschutz.html" class="footer-link">Datenschutz</a>
+        </div>
+      </nav>
+    </div>
+  </footer>
+
+  <!-- Barbelo Logo -->
+
+  <script>
+    // ===== CUSTOM CURSOR =====
+    let fx = window.innerWidth / 2;
+    let fy = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (e) => {
+      fx = e.clientX;
+      fy = e.clientY;
+      updateCursor();
+    });
+
+    document.addEventListener('touchmove', (e) => {
+      const touch = e.touches[0];
+      fx = touch.clientX;
+      fy = touch.clientY;
+      updateCursor();
+    });
+
+    function updateCursor() {
+      const cursor = document.getElementById('cursor');
+      cursor.style.left = fx + 'px';
+      cursor.style.top = fy + 'px';
+    }
+  </script>
+</body>
+</html>
