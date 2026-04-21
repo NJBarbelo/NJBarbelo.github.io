@@ -129,7 +129,9 @@
       #page-footer { height: 70px; }
       .footer-text p { font-size: 0.7rem; }
       .footer-nav { font-size: 0.75rem; }
-      table td:first-child { width: 120px; }
+      .theories-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .theories-table { min-width: 800px; }
+      .theories-table th, .theories-table td { padding: 0.75rem 0.35rem; font-size: 0.7rem; }
     }
 
     @media (max-width: 480px) {
@@ -137,9 +139,9 @@
       #header-logo img { width: 120px; height: 47px; }
       #stage { top: 90px; bottom: 65px; padding: 1.5rem 0.75rem; }
       #page-footer { height: 65px; }
-      table { margin-bottom: 2rem; }
-      table th, table td { padding: 0.75rem 0.3rem; font-size: 0.75rem; }
-      table td:first-child { width: 100px; }
+      .theories-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .theories-table { min-width: 600px; }
+      .theories-table th, .theories-table td { padding: 0.5rem 0.25rem; font-size: 0.65rem; }
     }
         .theories-table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
     .theories-table thead { background: rgba(63, 214, 200, 0.15); }
@@ -150,14 +152,11 @@
     .theories-table td:first-child { font-weight: 500; color: #3fd6c8; }
     .category-badge { font-weight: 500; font-size: 0.75rem; }
     
+    .theories-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 2rem 0; }
+
     @media (max-width: 1024px) {
-      .theories-table { font-size: 0.75rem; }
+      .theories-table { font-size: 0.75rem; min-width: 900px; }
       .theories-table th, .theories-table td { padding: 0.75rem 0.5rem; }
-    }
-    
-    @media (max-width: 768px) {
-      .theories-table { display: block; overflow-x: auto; }
-      .theories-table th, .theories-table td { padding: 0.5rem 0.3rem; font-size: 0.65rem; }
     }
 
     /* Category-specific background colors */
@@ -196,6 +195,7 @@
         </svg>
       </div>
 
+            <div class="theories-table-wrapper">
             <table class="theories-table">
         <thead>
           <tr>
@@ -568,6 +568,7 @@
           </tr>
         </tbody>
       </table>
+            </div>
 
       <div class="divider-star">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
