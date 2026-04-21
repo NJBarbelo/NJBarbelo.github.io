@@ -259,6 +259,29 @@
     #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 4rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
     main { max-width: 900px; width: 100%; }
 
+    .skills-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 2rem 0; }
+
+    @media (max-width: 768px) {
+      #page-header { height: 100px; }
+      #header-logo img { width: 150px; height: 58px; }
+      #stage { top: 100px; bottom: 70px; padding: 2rem 1rem; }
+      #page-footer { height: 70px; }
+      .footer-text p { font-size: 0.7rem; }
+      .footer-nav { font-size: 0.75rem; }
+      .skills-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .skills-table th, .skills-table td { padding: 0.75rem 0.35rem; font-size: 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+      #page-header { height: 90px; }
+      #header-logo img { width: 120px; height: 47px; }
+      #stage { top: 90px; bottom: 65px; padding: 1.5rem 0.75rem; }
+      #page-footer { height: 65px; }
+      .skills-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .skills-table th, .skills-table td { padding: 0.5rem 0.25rem; font-size: 0.65rem; }
+      .line-claim { font-size: clamp(1.2rem, 2.8vw, 2rem); }
+    }
+
     /* ===== SCROLLBAR ===== */
     #stage::-webkit-scrollbar { width: 8px; }
     #stage::-webkit-scrollbar-track { background: transparent; }
@@ -312,6 +335,7 @@
 
       <section class="text-block">
         <h2 class="line-claim">Übersicht der Fähigkeiten und Erkenntnisse</h2>
+        <div class="skills-table-wrapper">
         <table class="skills-table">
           <thead>
             <tr>
@@ -433,6 +457,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </section>
     </main>
   </div>
