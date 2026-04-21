@@ -132,6 +132,8 @@
       #page-footer { height: 70px; }
       .footer-text p { font-size: 0.7rem; }
       .footer-nav { font-size: 0.75rem; }
+      .word-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .word-table th, .word-table td { padding: 0.75rem 0.35rem; }
     }
 
     @media (max-width: 480px) {
@@ -139,6 +141,8 @@
       #header-logo img { width: 120px; height: 47px; }
       #stage { top: 90px; bottom: 65px; padding: 1.5rem 0.75rem; }
       #page-footer { height: 65px; }
+      .word-table-wrapper { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+      .word-table th, .word-table td { padding: 0.5rem 0.25rem; font-size: 0.65rem; }
     }
   </style>
 </head>
@@ -168,7 +172,8 @@
         </svg>
       </div>
 
-      <table class="word-table" style="width: 100%; border-collapse: collapse; margin: 2rem 0; font-size: clamp(0.7rem, 1.2vw, 0.8rem); line-height: 1.6;">
+      <div class="word-table-wrapper" style="overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 2rem 0;">
+      <table class="word-table" style="width: 100%; border-collapse: collapse; margin: 0; font-size: clamp(0.7rem, 1.2vw, 0.8rem); line-height: 1.6;">
         <thead>
           <tr style="border-bottom: 2px solid #c9a84c;">
             <th style="text-align: left; padding: 1rem 0.5rem; color: #3fd6c8; font-weight: 400;">Begriff</th>
@@ -222,6 +227,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <div class="divider-star" style="margin-top: 2rem;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
@@ -248,11 +254,15 @@
           <span class="footer-divider">|</span>
           <a href="methodik.html" class="footer-link">Methodik</a>
           <span class="footer-divider">|</span>
-          <a href="blog.html" class="footer-link">Blog</a>
-          <span class="footer-divider">|</span>
           <a href="theorien.html" class="footer-link">Theorien</a>
           <span class="footer-divider">|</span>
+          <a href="neu-gedacht.html" class="footer-link">Neu gedacht</a>
+          <span class="footer-divider">|</span>
+          <a href="blog.html" class="footer-link">Blog</a>
+          <span class="footer-divider">|</span>
           <a href="gemeinsame-projekte.html" class="footer-link">Projekte</a>
+          <span class="footer-divider">|</span>
+          <a href="fähigkeiten.html" class="footer-link">Fähigkeiten</a>
           <span class="footer-divider">|</span>
           <a href="ueber-mich.html" class="footer-link">Über mich</a>
         </div>
