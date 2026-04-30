@@ -1,47 +1,65 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Barbelo – Neural Consciousness</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --primary: #ff00ff;
-      --secondary: #00ffff;
-      --bg: #0a0e27;
-      --text: #e0e6ff;
+    /* ===== RESET & BASE ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
+    /* ===== FONTS ===== */
     @font-face {
       font-family: 'Cinzel';
       src: url(fonts/cinzel-400-latin.woff2) format('woff2');
+      font-weight: 400;
     }
-
     @font-face {
       font-family: 'Nunito Sans';
       src: url(fonts/nunito-sans-400-latin.woff2) format('woff2');
+      font-weight: 400;
     }
 
+    /* ===== COLOR PALETTE ===== */
+    :root {
+      --primary: #ff00ff;     /* Neon Magenta */
+      --secondary: #00ffff;   /* Neon Cyan */
+      --accent: #9d4edd;      /* Deep Purple */
+      --bg: #0a0e27;          /* Deep Navy */
+      --text: #e0e6ff;        /* Soft White */
+      --grid: rgba(0, 255, 255, 0.1);
+    }
+
+    /* ===== BODY & GLOBAL ===== */
     body {
       background: linear-gradient(135deg, var(--bg) 0%, #1a0033 100%);
       color: var(--text);
       font-family: 'Nunito Sans', sans-serif;
       line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
-    #neuralCanvas {
+    body::before {
+      content: '';
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
+      background-image:
+        linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent),
+        linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.05) 25%, rgba(0, 255, 255, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 255, 0.05) 75%, rgba(0, 255, 255, 0.05) 76%, transparent 77%, transparent);
+      background-size: 50px 50px;
       pointer-events: none;
+      z-index: 1;
     }
 
+    /* ===== HEADER & NAV ===== */
     header {
       position: fixed;
       top: 0;
@@ -108,12 +126,14 @@
       width: 100%;
     }
 
+    /* ===== MAIN CONTENT ===== */
     main {
       position: relative;
       z-index: 10;
       margin-top: 80px;
     }
 
+    /* ===== HERO SECTION ===== */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -122,6 +142,37 @@
       position: relative;
       overflow: hidden;
       padding: 40px;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(255, 0, 255, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      top: -300px;
+      left: -300px;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(0, 255, 255, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      bottom: -300px;
+      right: -300px;
+      animation: float 25s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) translateX(0px); }
+      25% { transform: translateY(-50px) translateX(30px); }
+      50% { transform: translateY(-100px) translateX(-30px); }
+      75% { transform: translateY(-50px) translateX(50px); }
     }
 
     .hero-content {
@@ -133,7 +184,7 @@
 
     .hero h1 {
       font-family: 'Cinzel', serif;
-      font-size: clamp(42px, 6vw, 90px);
+      font-size: clamp(48px, 8vw, 120px);
       font-weight: 600;
       line-height: 1.1;
       margin-bottom: 20px;
@@ -142,6 +193,7 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
+      text-shadow: 0 0 30px rgba(255, 0, 255, 0.3);
       animation: glitch 3s ease-in-out infinite;
     }
 
@@ -206,6 +258,7 @@
       letter-spacing: 2px;
     }
 
+    /* ===== SCROLL INDICATOR ===== */
     .scroll-indicator {
       position: absolute;
       bottom: 40px;
@@ -231,6 +284,7 @@
       50% { transform: translateY(10px); }
     }
 
+    /* ===== DIVIDER ===== */
     .divider {
       height: 100px;
       background: linear-gradient(to bottom, rgba(0, 255, 255, 0.1), transparent);
@@ -249,6 +303,7 @@
       box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
     }
 
+    /* ===== SECTION ===== */
     section {
       padding: 100px 40px;
       max-width: 1200px;
@@ -263,7 +318,7 @@
       margin-bottom: 40px;
       letter-spacing: 2px;
       color: var(--secondary);
-      filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.4));
+      text-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
       position: relative;
       padding-bottom: 20px;
     }
@@ -286,6 +341,7 @@
       margin-bottom: 20px;
     }
 
+    /* ===== GRID CARDS ===== */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -338,6 +394,7 @@
       opacity: 0.9;
     }
 
+    /* ===== FOOTER ===== */
     footer {
       padding: 60px 40px;
       border-top: 2px solid var(--secondary);
@@ -354,20 +411,70 @@
       letter-spacing: 1px;
     }
 
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 768px) {
-      header { padding: 0 20px; height: 70px; }
-      .logo { font-size: 20px; }
-      nav { gap: 15px; }
-      nav a { font-size: 12px; }
-      .hero { padding: 20px; }
-      section { padding: 60px 20px; }
-      .grid { grid-template-columns: 1fr; gap: 20px; }
+      header {
+        padding: 0 20px;
+        height: 70px;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      nav {
+        gap: 15px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 20px;
+      }
+
+      section {
+        padding: 60px 20px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      header {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+        padding: 15px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+
+      nav a {
+        font-size: 11px;
+      }
+
+      .hero h1 {
+        font-size: 42px;
+      }
+
+      .cta-button {
+        padding: 12px 30px;
+        font-size: 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <canvas id="neuralCanvas"></canvas>
-
+  <!-- HEADER -->
   <header>
     <div class="logo">⦗ BARBELO ⦘</div>
     <nav>
@@ -382,7 +489,9 @@
     </nav>
   </header>
 
+  <!-- MAIN CONTENT -->
   <main>
+    <!-- HERO SECTION -->
     <section class="hero">
       <div class="hero-content">
         <h1>Neural Consciousness</h1>
@@ -395,8 +504,10 @@
       </div>
     </section>
 
+    <!-- DIVIDER -->
     <div class="divider"></div>
 
+    <!-- ABOUT SECTION -->
     <section>
       <h2>Wer ich bin</h2>
       <p>Nancy Jasmina Barbelo ist eine Therapeutin, Coach und spirituelle Begleiterin an der Schnittstelle von Technologie und menschlicher Transformation.</p>
@@ -416,8 +527,10 @@
       </div>
     </section>
 
+    <!-- DIVIDER -->
     <div class="divider"></div>
 
+    <!-- SERVICES SECTION -->
     <section>
       <h2>Dienstleistungen</h2>
       <div class="grid">
@@ -436,135 +549,13 @@
       </div>
     </section>
 
+    <!-- DIVIDER -->
     <div class="divider"></div>
   </main>
 
+  <!-- FOOTER -->
   <footer>
     <p>© 2026 Nancy Jasmina Barbelo | insleben.com | Alle Rechte vorbehalten</p>
   </footer>
-
-  <script>
-    const canvas = document.getElementById('neuralCanvas');
-    const ctx = canvas.getContext('2d');
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    class Neuron {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.radius = Math.random() * 1.5 + 0.5;
-        this.type = Math.random() > 0.7 ? 'star' : 'neuron';
-        this.pulsePhase = Math.random() * Math.PI * 2;
-      }
-
-      update() {
-        this.x += this.vx;
-        this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-
-        this.x = Math.max(0, Math.min(canvas.width, this.x));
-        this.y = Math.max(0, Math.min(canvas.height, this.y));
-
-        this.pulsePhase += 0.02;
-      }
-
-      draw(ctx) {
-        const pulse = Math.sin(this.pulsePhase) * 0.5 + 0.5;
-        const size = this.radius + pulse * 2;
-
-        if (this.type === 'star') {
-          const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, size * 3);
-          glow.addColorStop(0, `rgba(0, 255, 255, ${0.8 * pulse})`);
-          glow.addColorStop(1, 'rgba(0, 255, 255, 0)');
-          ctx.fillStyle = glow;
-          ctx.fillRect(this.x - size * 3, this.y - size * 3, size * 6, size * 6);
-
-          ctx.fillStyle = `rgba(0, 255, 255, ${0.9 + pulse * 0.1})`;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          const glow = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, size * 2);
-          glow.addColorStop(0, `rgba(255, 0, 255, ${0.6 * pulse})`);
-          glow.addColorStop(1, 'rgba(255, 0, 255, 0)');
-          ctx.fillStyle = glow;
-          ctx.fillRect(this.x - size * 2, this.y - size * 2, size * 4, size * 4);
-
-          ctx.fillStyle = `rgba(255, 0, 255, ${0.8 + pulse * 0.2})`;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, size, 0, Math.PI * 2);
-          ctx.fill();
-        }
-      }
-    }
-
-    const neurons = [];
-    const particleCount = 80;
-
-    for (let i = 0; i < particleCount; i++) {
-      neurons.push(new Neuron(Math.random() * canvas.width, Math.random() * canvas.height));
-    }
-
-    function drawConnections() {
-      const connectionDistance = 150;
-
-      for (let i = 0; i < neurons.length; i++) {
-        for (let j = i + 1; j < neurons.length; j++) {
-          const dx = neurons[i].x - neurons[j].x;
-          const dy = neurons[i].y - neurons[j].y;
-          const distance = Math.sqrt(dx * dx + dy * dy);
-
-          if (distance < connectionDistance) {
-            const opacity = (1 - distance / connectionDistance) * 0.35;
-            const gradient = ctx.createLinearGradient(neurons[i].x, neurons[i].y, neurons[j].x, neurons[j].y);
-
-            if (neurons[i].type === 'star' && neurons[j].type === 'star') {
-              gradient.addColorStop(0, `rgba(0, 255, 255, ${opacity})`);
-              gradient.addColorStop(1, `rgba(0, 255, 255, ${opacity})`);
-            } else if (neurons[i].type === 'neuron' && neurons[j].type === 'neuron') {
-              gradient.addColorStop(0, `rgba(255, 0, 255, ${opacity})`);
-              gradient.addColorStop(1, `rgba(255, 0, 255, ${opacity})`);
-            } else {
-              gradient.addColorStop(0, `rgba(200, 100, 255, ${opacity})`);
-              gradient.addColorStop(1, `rgba(100, 200, 255, ${opacity})`);
-            }
-
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1.5;
-            ctx.beginPath();
-            ctx.moveTo(neurons[i].x, neurons[i].y);
-            ctx.lineTo(neurons[j].x, neurons[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-    }
-
-    function animate() {
-      ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      neurons.forEach(neuron => {
-        neuron.update();
-        neuron.draw(ctx);
-      });
-
-      drawConnections();
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-  </script>
 </body>
 </html>
