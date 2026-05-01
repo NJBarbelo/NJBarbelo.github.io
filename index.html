@@ -263,31 +263,6 @@
       letter-spacing: 2px;
     }
 
-    .scroll-indicator {
-      position: absolute;
-      bottom: 40px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      animation: bounce 2s ease-in-out infinite;
-      z-index: 2;
-    }
-
-    .scroll-indicator span {
-      width: 2px;
-      height: 20px;
-      background: var(--secondary);
-      display: block;
-      box-shadow: 0 0 10px var(--secondary);
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(10px); }
-    }
 
     /* ===== DIVIDER ===== */
     .divider {
@@ -328,16 +303,6 @@
       padding-bottom: 20px;
     }
 
-    section h2::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-    }
 
     section p {
       font-size: 16px;
@@ -504,16 +469,29 @@
         <h1>Neural Consciousness</h1>
         <p>Von Verletzungen zu Vernetzungen</p>
       </div>
-      <div class="scroll-indicator">
-        <span></span>
-        <span></span>
-      </div>
     </section>
 
 
     <section>
       <h2>Mein Angebot</h2>
-      <div class="grid" style="margin-top: 60px;">
+
+      <div style="margin-bottom: 40px;">
+        <h3 style="color: var(--secondary); margin-bottom: 15px; font-size: 20px;">Setting & Format</h3>
+        <p>Einzelbegleitung oder Paarbegleitung – in meiner Praxis oder auch Online</p>
+      </div>
+
+      <div style="margin-bottom: 40px;">
+        <h3 style="color: var(--secondary); margin-bottom: 15px; font-size: 20px;">Sitzungen</h3>
+        <p>In der Regel arbeiten wir in 60-minütigen Sitzungen. Für tiefergehende Prozesse sind Einheiten von 90 bis 120 Minuten meist auch spontan möglich.</p>
+      </div>
+
+      <div style="margin-bottom: 60px;">
+        <h3 style="color: var(--secondary); margin-bottom: 15px; font-size: 20px;">Investition</h3>
+        <p>Die Begleitung erfolgt minutengenau zum Satz von 2€ pro Minute.</p>
+      </div>
+
+      <h3 style="color: var(--primary); margin-bottom: 30px; font-size: 22px; text-align: center;">Fokus deiner Veränderung</h3>
+      <div class="grid">
         <div class="card">
           <h3 style="color: var(--primary);">Wahrnehmung schärfen</h3>
           <p>Den Blick für das eigene Denken und Handeln verstehen und neu ausrichten.</p>
@@ -527,6 +505,11 @@
           <p>Bewusste Entscheidungen treffen, statt nur zu reagieren – neu kreieren.</p>
         </div>
       </div>
+
+      <p style="margin-top: 60px; font-size: 16px; line-height: 1.8; opacity: 0.95;">
+        <strong style="color: var(--secondary);">Alltags-Transfer:</strong><br>
+        Echte Veränderung braucht Übung im echten Leben. Zwischen unseren Sitzungen begleite ich dich per WhatsApp-Impuls – um Erfolge zu fixieren, dein Wachstum zu bezeugen und das Neue nachhaltig zu verankern.
+      </p>
     </section>
   </main>
 
