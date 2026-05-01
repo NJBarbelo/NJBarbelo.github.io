@@ -687,13 +687,13 @@
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
 
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 8; i++) {
           this.particles.push({
-            x: Math.random() * 40 - 20,
-            y: Math.random() * 40 - 20,
-            type: Math.random() > 0.5 ? 'brain' : 'star',
+            x: Math.random() * 60 - 30,
+            y: Math.random() * 60 - 30,
+            type: Math.random() > 0.3 ? 'star' : 'brain',
             pulse: Math.random() * Math.PI * 2,
-            radius: Math.random() * 1.2 + 0.4
+            radius: Math.random() * 2.2 + 1.0
           });
         }
       }
