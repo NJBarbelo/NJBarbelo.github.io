@@ -104,6 +104,23 @@
       text-transform: uppercase;
     }
 
+    .sun-pulse {
+      color: #ffd700;
+      animation: sun-glow 2s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
+    }
+
+    @keyframes sun-glow {
+      0%, 100% {
+        filter: drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 20px rgba(255, 215, 0, 0.7));
+        transform: scale(1);
+      }
+      50% {
+        filter: drop-shadow(0 0 20px #ffd700) drop-shadow(0 0 40px rgba(255, 215, 0, 1));
+        transform: scale(1.1);
+      }
+    }
+
     nav {
       display: flex;
       gap: 30px;
@@ -466,7 +483,7 @@
   <canvas id="cursor-canvas"></canvas>
 
   <header>
-    <div class="logo">⦗ BARBELO ⦘</div>
+    <div class="logo">⦗ BARBEL<span class="sun-pulse">O</span> ⦘</div>
     <nav>
       <a href="pages/methodik.html">Methodik</a>
       <a href="pages/theorien.html">Theorien</a>
