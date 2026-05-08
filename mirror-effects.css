@@ -318,24 +318,75 @@ nav a:hover::after {
   width: 100%;
 }
 
-/* Add margin to body to account for fixed header */
+/* Add padding to body to account for fixed header */
 body {
   padding-top: 80px !important;
+  margin: 0 !important;
+}
+
+/* ===== HEADING GRADIENT STYLES ===== */
+h1, h2, h3, .line-headline, .line-claim {
+  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.4)) !important;
+  color: transparent !important;
+}
+
+section h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  margin-bottom: 40px;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 15px rgba(63, 214, 200, 0.5));
+  position: relative;
+  padding-bottom: 20px;
+}
+
+/* ===== TEXT BLOCK - NO BORDER ===== */
+.text-block {
+  padding: 20px;
+  background: transparent;
+  border-left: none !important;
+}
+
+main {
+  position: relative;
+  z-index: 10;
+}
+
+/* Remove margin to prevent overflow */
+main > section {
+  padding: 60px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 10;
 }
 
 /* ===== GLOBAL ENHANCEMENTS ===== */
-.text-block {
-  padding: 20px;
-  border-left: 3px solid var(--primary);
-  background: linear-gradient(90deg, rgba(63, 214, 200, 0.05) 0%, transparent 100%);
-}
-
-.line-headline, .line-claim, h1, h2 {
-  color: var(--primary) !important;
-  text-shadow: 0 0 10px rgba(63, 214, 200, 0.4) !important;
-}
-
 /* Smooth transitions */
 * {
   transition: all 0.3s ease;
+}
+
+footer {
+  padding: 60px 40px;
+  border-top: 2px solid var(--primary);
+  text-align: center;
+  background: rgba(10, 14, 39, 0.9);
+  color: var(--text);
+  position: relative;
+  z-index: 10;
+}
+
+footer p {
+  font-size: 14px;
+  opacity: 0.7;
+  letter-spacing: 1px;
 }
