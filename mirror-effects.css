@@ -418,10 +418,10 @@ footer {
   padding: 60px 40px;
   border-top: 2px solid var(--primary);
   text-align: center;
-  background: rgba(10, 14, 39, 0.9);
+  background: rgba(10, 14, 39, 0.95);
   color: var(--text);
   position: relative;
-  z-index: 10;
+  z-index: 150;
 }
 
 footer p {
