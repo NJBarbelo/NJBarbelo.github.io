@@ -416,10 +416,11 @@ p, h1, h2, h3, h4, h5, h6 {
 
 .line-headline {
   color: var(--primary) !important;
-  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
+  text-shadow: 0 0 10px rgba(63, 214, 200, 0.4) !important;
+  background: none !important;
+  -webkit-background-clip: unset !important;
+  -webkit-text-fill-color: unset !important;
+  background-clip: unset !important;
 }
 
 /* ===== GLOBAL ENHANCEMENTS ===== */
