@@ -794,6 +794,34 @@
     document.addEventListener('DOMContentLoaded', () => {
       new NeuralNetwork();
       new CursorNetwork();
+
+      // 🎉 EASTER EGG: Click the O for magic!
+      const sunPulse = document.querySelector('.sun-pulse');
+      let clickCount = 0;
+
+      sunPulse.addEventListener('click', () => {
+        clickCount++;
+        sunPulse.style.animation = 'none';
+        setTimeout(() => sunPulse.style.animation = '', 10);
+
+        // Extra glow on click
+        sunPulse.style.filter = `drop-shadow(0 0 ${20 + clickCount * 5}px rgba(255, 0, 255, ${Math.min(1, 0.5 + clickCount * 0.2)}))`;
+
+        // Rainbow effect every 3 clicks 🌈
+        if (clickCount % 3 === 0) {
+          document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+          setTimeout(() => document.body.style.filter = '', 500);
+        }
+
+        // Cursor explosion on 5 clicks ✨
+        if (clickCount === 5) {
+          alert('🎆 Du hast das geheime Ritual aktiviert! Die Website wird noch magischer... 🌙');
+          clickCount = 0;
+        }
+      });
+
+      sunPulse.style.cursor = 'pointer';
+      sunPulse.style.transition = 'all 0.3s ease';
     });
   </script>
 </body>
