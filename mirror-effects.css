@@ -476,6 +476,47 @@ footer nav a:hover::after {
   width: 100%;
 }
 
+footer nav.footer-secondary {
+  display: flex !important;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+
+footer nav.footer-secondary a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  transition: all 0.3s ease;
+  opacity: 0.8;
+}
+
+footer nav.footer-secondary a::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  transition: width 0.3s ease;
+}
+
+footer nav.footer-secondary a:hover {
+  color: var(--secondary);
+  text-shadow: 0 0 8px rgba(63, 214, 200, 0.4);
+  opacity: 1;
+}
+
+footer nav.footer-secondary a:hover::after {
+  width: 100%;
+}
+
 footer p {
   font-size: 12px;
   opacity: 0.6;
