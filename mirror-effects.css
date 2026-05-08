@@ -387,6 +387,7 @@ section h2 {
 main {
   position: relative;
   z-index: 100;
+  padding-bottom: 300px;
 }
 
 /* Remove margin to prevent overflow */
