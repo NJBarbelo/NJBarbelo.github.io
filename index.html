@@ -35,11 +35,12 @@
 
     /* ===== CSS VARIABLES ===== */
     :root {
-      --primary: #ff00ff;
+      --primary: #3fd6c8;
       --secondary: #00ffff;
-      --bg: #0a0e27;
-      --bg-dark: #1a0033;
-      --text: #e0e6ff;
+      --accent: #2a9d90;
+      --bg: #0a1515;
+      --bg-dark: #051010;
+      --text: #e0f0f0;
     }
 
     /* ===== BODY & GLOBAL ===== */
@@ -81,15 +82,15 @@
       left: 0;
       width: 100%;
       height: 80px;
-      background: rgba(10, 14, 39, 0.95);
-      border-bottom: 2px solid var(--secondary);
+      background: rgba(5, 16, 16, 0.98);
+      border-bottom: 2px solid var(--primary);
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 0 40px;
       z-index: 1000;
       backdrop-filter: blur(10px);
-      box-shadow: 0 0 30px rgba(0, 255, 255, 0.2);
+      box-shadow: 0 0 30px rgba(63, 214, 200, 0.3);
     }
 
     .logo {
@@ -109,10 +110,10 @@
 
     @keyframes subtle-glow {
       0%, 100% {
-        filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4));
+        filter: drop-shadow(0 0 5px rgba(63, 214, 200, 0.4));
       }
       50% {
-        filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+        filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.6));
       }
     }
 
@@ -264,24 +265,24 @@
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
-      box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+      box-shadow: 0 0 20px rgba(63, 214, 200, 0.6);
     }
 
     .cta-button::before {
       content: '';
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
-      animation: shine 3s ease-in-out infinite;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+      animation: mirror-shine 3s ease-in-out infinite;
     }
 
-    @keyframes shine {
-      0% { transform: translate(-50%, -50%) scale(0); }
-      50% { transform: translate(-50%, -50%) scale(2); }
-      100% { transform: translate(-50%, -50%) scale(2); }
+    @keyframes mirror-shine {
+      0% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+      100% { transform: translateX(100%); }
     }
 
     .cta-button span {
@@ -291,7 +292,7 @@
 
     .cta-button:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 60px rgba(255, 0, 255, 0.5);
+      box-shadow: 0 0 40px rgba(63, 214, 200, 0.9), 0 0 60px rgba(0, 255, 255, 0.6);
       letter-spacing: 2px;
     }
 
@@ -329,13 +330,13 @@
       font-size: clamp(36px, 5vw, 64px);
       margin-bottom: 40px;
       letter-spacing: 2px;
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.4));
+      color: var(--primary);
+      filter: drop-shadow(0 0 15px rgba(63, 214, 200, 0.5));
       position: relative;
+      padding: 20px 30px;
       padding-bottom: 20px;
+      border-left: 4px solid var(--secondary);
+      background: linear-gradient(90deg, rgba(63, 214, 200, 0.1) 0%, transparent 100%);
     }
 
 
@@ -354,35 +355,37 @@
       margin-top: 60px;
     }
 
+    /* ===== MIRROR RECTANGLE VARIANTS ===== */
     .card {
-      background: rgba(0, 255, 255, 0.05);
-      border: 2px solid rgba(0, 255, 255, 0.3);
+      background: rgba(63, 214, 200, 0.08);
+      border: 2px solid rgba(63, 214, 200, 0.4);
       padding: 30px;
       position: relative;
       overflow: hidden;
       transition: all 0.3s ease;
-      box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
+      box-shadow: inset 0 0 20px rgba(63, 214, 200, 0.15);
     }
 
     .card::before {
       content: '';
       position: absolute;
       top: 0;
-      left: -100%;
+      left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.2), transparent);
-      transition: left 0.5s ease;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%, rgba(0, 0, 0, 0.2) 100%);
+      transition: all 0.5s ease;
+      pointer-events: none;
     }
 
     .card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 0 30px rgba(255, 0, 255, 0.4), inset 0 0 20px rgba(255, 0, 255, 0.1);
+      border-color: var(--secondary);
+      box-shadow: 0 0 30px rgba(63, 214, 200, 0.6), inset 0 0 20px rgba(63, 214, 200, 0.2);
       transform: translateY(-10px);
     }
 
     .card:hover::before {
-      left: 100%;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
     }
 
     .card h3 {
