@@ -786,6 +786,13 @@
           }
         }
 
+        // Draw center point for precision clicking 🎯
+        this.ctx.globalAlpha = 1;
+        this.ctx.fillStyle = '#3fd6c8';
+        this.ctx.beginPath();
+        this.ctx.arc(this.mouseX, this.mouseY, 2.5, 0, Math.PI * 2);
+        this.ctx.fill();
+
         this.ctx.globalAlpha = 1;
         requestAnimationFrame(this.animate);
       }
