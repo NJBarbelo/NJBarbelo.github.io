@@ -407,6 +407,19 @@ section {
 p, h1, h2, h3, h4, h5, h6 {
   position: relative;
   z-index: 100;
+  color: var(--text) !important;
+}
+
+.line-poem {
+  color: var(--text) !important;
+}
+
+.line-headline {
+  color: var(--primary) !important;
+  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 /* ===== GLOBAL ENHANCEMENTS ===== */
