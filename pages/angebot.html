@@ -93,9 +93,6 @@
       }
     }
 
-    
-    
-
     .line-headline { font-family: 'Cinzel', serif; font-size: clamp(1.2rem, 3.2vw, 2.2rem); font-weight: 400; text-transform: uppercase; letter-spacing: 0.25em; color: var(--turquoise); margin-bottom: 1.5rem; text-shadow: 0 0 8px rgba(63,214,200,0.3); }
     .line-poem { font-family: 'Nunito Sans', sans-serif; font-size: clamp(0.8rem, 1.6vw, 0.9rem); font-weight: 200; color: var(--white-soft); margin-bottom: 1.5rem; line-height: 1.7; }
     .line-claim { font-family: 'Nunito Sans', sans-serif; font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 300; color: #e6c663; margin-bottom: 1.5rem; }
@@ -104,35 +101,21 @@
     .divider-star { display: flex; justify-content: center; margin: 2rem 0; }
     .divider-star svg { width: 14px; height: 14px; animation: pulse-star 3s ease-in-out infinite; }
 
-    #page-footer { position: fixed; bottom: 0; left: 0; right: 0; height: auto; min-height: 80px; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.95); border-top: 1px solid rgba(201,168,76,0.15); z-index: 50; margin: 0; padding: 0.75rem 0; flex-direction: column; }
-    .footer-content { display: flex; flex-direction: column; gap: 0.75rem; text-align: center; }
-    .footer-text p { font-family: 'Nunito Sans', sans-serif; font-size: 0.85rem; color: #8a8a8a; margin: 0; }
-    .footer-nav { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.85rem; }
-    .footer-nav-row { display: flex; justify-content: center; align-items: center; gap: 0; flex-wrap: wrap; }
-    .footer-link { color: var(--gold); text-decoration: none; transition: color 0.3s ease; }
-    .footer-link:hover { color: var(--turquoise); }
-    .footer-divider { color: var(--gold-dim); margin: 0 0.5rem; }
-
     #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 4rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
     main { max-width: 680px; width: 100%; }
 
-    
     }
   
     @media (max-width: 768px) {
-      
-      
+
       #stage { top: 100px; bottom: 70px; padding: 2rem 1rem; }
-      #page-footer { height: 70px; }
-      .footer-text p { font-size: 0.7rem; }
-      .footer-nav { font-size: 0.75rem; }
+
     }
 
     @media (max-width: 480px) {
-      
-      
+
       #stage { top: 90px; bottom: 65px; padding: 1.5rem 0.75rem; }
-      #page-footer { height: 65px; }
+      
     }
   </style>
   <link rel="stylesheet" href="../mirror-effects.css">
@@ -229,7 +212,7 @@
     </main>
   </div>
 
-  <footer id="page-footer">
+  <footer>
     <div class="footer-content">
       <div class="footer-text">
         <p>&copy; 2026 Nancy Jasmina Barbelo – insleben.com</p>

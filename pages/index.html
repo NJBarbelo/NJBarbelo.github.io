@@ -375,10 +375,6 @@
       }
     }
 
-    
-    
-    
-
     /* =============================================
        PARTIKEL – kleine Lichtstäubchen im Hintergrund
        ============================================= */
@@ -411,26 +407,16 @@
     
     }
 
-  
-        #page-footer { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; display: flex; justify-content: center; align-items: center; background: rgba(0,0,0,0.95); border-top: 1px solid rgba(201,168,76,0.15); z-index: 50; margin: 0; padding: 0; flex-direction: column; }
-    .footer-content { display: flex; flex-direction: column; gap: 0.5rem; text-align: center; }
-    .footer-text p { font-size: 0.75rem; color: #8a8a8a; }
-    .footer-nav { font-size: 0.8rem; }
-
     @media (max-width: 768px) {
-      
-      
+
       #stage { top: 100px; bottom: 70px; padding: 2rem 1rem; }
-      #page-footer { height: 70px; }
-      .footer-text p { font-size: 0.7rem; }
-      .footer-nav { font-size: 0.75rem; }
+
     }
 
     @media (max-width: 480px) {
-      
-      
+
       #stage { top: 90px; bottom: 65px; padding: 1.5rem 0.75rem; }
-      #page-footer { height: 65px; }
+      
     }
   </style>
   <link rel="stylesheet" href="../mirror-effects.css">
@@ -441,7 +427,6 @@
   </header>
   <canvas id="neural-canvas"></canvas>
   <canvas id="cursor-canvas"></canvas>
-
 
   <!-- =============================================
        EIGENER CURSOR (Lichtpunkt)
