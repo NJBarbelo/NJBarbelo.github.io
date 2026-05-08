@@ -348,9 +348,10 @@ nav a:hover::after {
   width: 100%;
 }
 
-/* Add padding to body to account for fixed header */
+/* Add padding to body for fixed header and footer */
 body {
   padding-top: 80px !important;
+  padding-bottom: 200px !important;
   margin: 0 !important;
 }
 
@@ -387,7 +388,6 @@ section h2 {
 main {
   position: relative;
   z-index: 100;
-  padding-bottom: 300px;
 }
 
 /* Remove margin to prevent overflow */
@@ -416,13 +416,20 @@ p, h1, h2, h3, h4, h5, h6 {
 }
 
 footer {
-  padding: 60px 40px;
+  padding: 40px 40px 60px 40px;
   border-top: 2px solid var(--primary);
   text-align: center;
-  background: rgba(10, 14, 39, 0.95);
+  background: rgba(10, 14, 39, 0.98);
   color: var(--text);
-  position: relative;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
   z-index: 150;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.5);
 }
 
 footer p {
