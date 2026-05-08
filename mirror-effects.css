@@ -271,7 +271,7 @@ header {
   background: rgba(5, 16, 16, 0.98);
   border-bottom: 2px solid var(--primary);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   padding: 0 40px;
   z-index: 1000;
@@ -305,9 +305,16 @@ header {
 }
 
 nav {
+  display: none;
+}
+
+footer nav {
   display: flex;
   gap: 30px;
   list-style: none;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 30px;
 }
 
 nav a {
@@ -349,12 +356,11 @@ body {
 
 /* ===== HEADING GRADIENT STYLES ===== */
 h1, h2, h3, .line-headline, .line-claim {
-  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%) !important;
-  -webkit-background-clip: text !important;
-  -webkit-text-fill-color: transparent !important;
-  background-clip: text !important;
-  filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.4)) !important;
-  color: transparent !important;
+  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.4));
 }
 
 section h2 {
