@@ -1,0 +1,256 @@
+/* ===== MIRROR RECTANGLE EFFECTS ===== */
+/* Global Turquoise Theme & Mirror Effects */
+
+:root {
+  --primary: #3fd6c8;
+  --secondary: #00ffff;
+  --accent: #6be6de;
+  --dark-accent: #1a7a6f;
+  --bg: #0a1515;
+  --text: #e0f0f0;
+}
+
+/* ===== VARIANT 1: Horizontal Mirror Shine (pages/angebot.html) ===== */
+.mirror-h {
+  position: relative;
+  overflow: hidden;
+  border-left: 4px solid var(--primary);
+  padding-left: 20px;
+  background: linear-gradient(90deg, rgba(63, 214, 200, 0.1) 0%, transparent 100%);
+}
+
+.mirror-h::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0%, transparent 60%);
+  animation: shine-h 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-h {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* ===== VARIANT 2: Vertical Mirror Shine (pages/methodik.html) ===== */
+.mirror-v {
+  position: relative;
+  overflow: hidden;
+  border-top: 3px solid var(--secondary);
+  padding-top: 20px;
+  background: linear-gradient(180deg, rgba(63, 214, 200, 0.08) 0%, transparent 100%);
+}
+
+.mirror-v::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, transparent 70%);
+  animation: shine-v 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-v {
+  0% { transform: translateY(-100%); }
+  50% { transform: translateY(150%); }
+  100% { transform: translateY(150%); }
+}
+
+/* ===== VARIANT 3: Diagonal Mirror Shine (pages/theorien.html) ===== */
+.mirror-d {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--primary);
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(63, 214, 200, 0.1) 0%, transparent 100%);
+}
+
+.mirror-d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3) -50%, transparent 50%, rgba(0, 0, 0, 0.1) 100%);
+  animation: shine-d 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-d {
+  0% { transform: translate(-150%, -150%); }
+  50% { transform: translate(50%, 50%); }
+  100% { transform: translate(50%, 50%); }
+}
+
+/* ===== VARIANT 4: Circular/Radial Mirror (pages/neu-gedacht.html) ===== */
+.mirror-c {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 2px solid var(--secondary);
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(63, 214, 200, 0.12) 0%, rgba(63, 214, 200, 0.05) 100%);
+}
+
+.mirror-c::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  animation: shine-c 7s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-c {
+  0% { transform: translate(100%, 100%); }
+  50% { transform: translate(-50%, -50%); }
+  100% { transform: translate(-100%, -100%); }
+}
+
+/* ===== VARIANT 5: Double Border Mirror (pages/blog.html) ===== */
+.mirror-db {
+  position: relative;
+  overflow: hidden;
+  border: 2px solid var(--primary);
+  border-top: 3px solid var(--secondary);
+  border-left: 3px solid var(--secondary);
+  padding: 20px;
+  background: linear-gradient(45deg, rgba(63, 214, 200, 0.08) 0%, transparent 100%);
+  box-shadow: inset 0 0 20px rgba(63, 214, 200, 0.1);
+}
+
+.mirror-db::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(255, 255, 255, 0.2) 0%, transparent 40%, rgba(0, 0, 0, 0.15) 100%);
+  animation: shine-db 5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-db {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+/* ===== VARIANT 6: Glowing Border (pages/gemeinsame-projekte.html) ===== */
+.mirror-gb {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: rgba(63, 214, 200, 0.05);
+  border: 2px solid rgba(63, 214, 200, 0.3);
+}
+
+.mirror-gb::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 0deg, transparent 0deg, rgba(63, 214, 200, 0.4) 90deg, transparent 180deg);
+  animation: shine-gb 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-gb {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.mirror-gb:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 0 20px rgba(63, 214, 200, 0.6), inset 0 0 15px rgba(63, 214, 200, 0.2);
+}
+
+/* ===== VARIANT 7: Wave Effect (pages/fähigkeiten.html) ===== */
+.mirror-w {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: linear-gradient(90deg, rgba(63, 214, 200, 0.08) 0%, rgba(63, 214, 200, 0.04) 50%, rgba(63, 214, 200, 0.08) 100%);
+  border-bottom: 3px solid var(--primary);
+}
+
+.mirror-w::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 25%, transparent 50%, rgba(255, 255, 255, 0.3) 75%, transparent 100%);
+  animation: shine-w 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-w {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+/* ===== VARIANT 8: Corner Gloss (pages/ueber-mich.html) ===== */
+.mirror-cg {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  background: linear-gradient(135deg, rgba(63, 214, 200, 0.06) 0%, transparent 100%);
+  border: 2px solid rgba(63, 214, 200, 0.35);
+  border-radius: 4px;
+}
+
+.mirror-cg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.4) 0%, transparent 70%);
+  animation: shine-cg 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes shine-cg {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.mirror-cg:hover {
+  border-color: var(--secondary);
+  box-shadow: 0 0 25px rgba(63, 214, 200, 0.5);
+}
+
+/* ===== GLOBAL ENHANCEMENTS ===== */
+.text-block {
+  padding: 20px;
+  border-left: 3px solid var(--primary);
+  background: linear-gradient(90deg, rgba(63, 214, 200, 0.05) 0%, transparent 100%);
+}
+
+.line-headline, .line-claim, h1, h2 {
+  color: var(--primary) !important;
+  text-shadow: 0 0 10px rgba(63, 214, 200, 0.4) !important;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.3s ease;
+}
