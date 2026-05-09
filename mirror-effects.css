@@ -129,7 +129,7 @@ body {
 
 /* ===== HEADING GRADIENT STYLES ===== */
 h1, h2, h3, .line-headline, .line-claim {
-  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%);
+  background: linear-gradient(135deg, #1a4d7a 0%, #3fd6c8 30%, #ff00ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -138,10 +138,10 @@ h1, h2, h3, .line-headline, .line-claim {
 
 section h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(36px, 5vw, 64px);
+  font-size: clamp(36px, 6vw, 90px);
   margin-bottom: 40px;
   letter-spacing: 2px;
-  background: linear-gradient(135deg, #3fd6c8 0%, #00ffff 50%, #ff00ff 100%);
+  background: linear-gradient(135deg, #1a4d7a 0%, #3fd6c8 30%, #ff00ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
