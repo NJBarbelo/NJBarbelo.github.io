@@ -101,7 +101,7 @@
     .divider-star { display: flex; justify-content: center; margin: 2rem 0; }
     .divider-star svg { width: 14px; height: 14px; animation: pulse-star 3s ease-in-out infinite; }
 
-    #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 10rem 450px; display: flex; justify-content: center; align-items: flex-start; }
+    #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 10rem 15%; display: flex; justify-content: center; align-items: flex-start; }
     main { max-width: 680px; width: 100%; }
 
     .blog-article { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
@@ -113,15 +113,21 @@
     .article-content { font-family: 'Nunito Sans', sans-serif; font-size: clamp(0.75rem, 1.4vw, 0.85rem); color: var(--white-soft); line-height: 1.8; margin-bottom: 1rem; }
     .article-content p { margin-bottom: 0.8rem; }
 
+    @media (max-width: 1200px) {
+
+      #stage { padding: 10rem 12%; }
+
+    }
+
     @media (max-width: 768px) {
 
-      #stage { top: 100px; bottom: 70px; padding: 6rem 280px; }
+      #stage { top: 100px; bottom: 70px; padding: 8rem 10%; }
 
     }
 
     @media (max-width: 480px) {
 
-      #stage { top: 90px; bottom: 65px; padding: 4rem 200px; }
+      #stage { top: 90px; bottom: 65px; padding: 6rem 8%; }
 
     }
   </style>
