@@ -129,6 +129,10 @@ body {
 
 /* ===== HEADING GRADIENT STYLES ===== */
 h1, .line-headline {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(36px, 5vw, 90px);
+  font-weight: 400;
+  letter-spacing: 0.25em;
   background: linear-gradient(135deg, #1a4d7a 0%, #3fd6c8 30%, #ff00ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -186,14 +190,6 @@ p, h1, h2, h3, h4, h5, h6 {
   color: var(--text) !important;
 }
 
-.line-headline {
-  color: var(--primary) !important;
-  text-shadow: 0 0 10px rgba(63, 214, 200, 0.4) !important;
-  background: none !important;
-  -webkit-background-clip: unset !important;
-  -webkit-text-fill-color: unset !important;
-  background-clip: unset !important;
-}
 
 /* ===== GLOBAL ENHANCEMENTS ===== */
 /* Smooth transitions */
