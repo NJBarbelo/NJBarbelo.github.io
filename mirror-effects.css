@@ -157,6 +157,11 @@ section h2 {
   border-left: none !important;
 }
 
+main {
+  position: relative;
+  z-index: 100;
+}
+
 /* Remove margin to prevent overflow */
 main > section {
   padding: 60px 150px;
