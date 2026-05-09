@@ -892,11 +892,9 @@
           flashEl.classList.remove('active');
         }, 600);
 
-        // Extra magic every 3 clicks 🌈
-        if (clickCount % 3 === 0) {
-          document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
-          setTimeout(() => document.body.style.filter = '', 500);
-        }
+        // Rainbow effect on every click! 🌈
+        document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+        setTimeout(() => document.body.style.filter = '', 500);
 
         // Celebration message every 5 clicks 🎆
         if (clickCount === 5) {
