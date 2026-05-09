@@ -122,8 +122,8 @@ nav a:hover::after {
 
 /* Add padding to body for fixed header and footer */
 body {
-  padding-top: 80px !important;
-  padding-bottom: 200px !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   margin: 0 !important;
 }
 
