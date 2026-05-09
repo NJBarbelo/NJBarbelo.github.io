@@ -146,7 +146,7 @@ h2, h3, .line-claim {
 
 section h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  font-size: clamp(0.9rem, 1.8vw, 1.2rem);
   margin-bottom: 20px;
   letter-spacing: 1px;
   color: var(--primary);
