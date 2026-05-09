@@ -128,7 +128,7 @@ body {
 }
 
 /* ===== HEADING GRADIENT STYLES ===== */
-h1, h2, h3, .line-headline, .line-claim {
+h1, .line-headline {
   background: linear-gradient(135deg, #1a4d7a 0%, #3fd6c8 30%, #ff00ff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -136,18 +136,18 @@ h1, h2, h3, .line-headline, .line-claim {
   filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.4));
 }
 
+h2, h3, .line-claim {
+  color: var(--primary);
+}
+
 section h2 {
   font-family: 'Cinzel', serif;
-  font-size: clamp(36px, 6vw, 90px);
-  margin-bottom: 40px;
-  letter-spacing: 2px;
-  background: linear-gradient(135deg, #1a4d7a 0%, #3fd6c8 30%, #ff00ff 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  filter: drop-shadow(0 0 15px rgba(63, 214, 200, 0.5));
+  font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  color: var(--primary);
+  text-shadow: 0 0 8px rgba(63,214,200,0.3);
   position: relative;
-  padding-bottom: 20px;
 }
 
 /* ===== TEXT BLOCK - NO BORDER ===== */
