@@ -103,6 +103,14 @@
       color: #3fd6c8;
       animation: subtle-glow 3s ease-in-out infinite;
       filter: drop-shadow(0 0 5px rgba(63, 214, 200, 0.4));
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .logo:hover {
+      color: #00ffff;
+      filter: drop-shadow(0 0 15px rgba(63, 214, 200, 0.8));
     }
 
     .sun-pulse {
@@ -240,6 +248,36 @@
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-2px); }
       40% { transform: translateX(2px); }
+    }
+
+    @keyframes lightning-strike {
+      0% { opacity: 0; }
+      5% { opacity: 1; }
+      10% { opacity: 0; }
+      15% { opacity: 1; }
+      20% { opacity: 0; }
+      25% { opacity: 0.8; }
+      35% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+
+    @keyframes lightning-glow {
+      0% { box-shadow: none; }
+      5% { box-shadow: 0 0 80px rgba(255, 255, 255, 0.8), inset 0 0 60px rgba(0, 255, 255, 0.6); }
+      10% { box-shadow: none; }
+      15% { box-shadow: 0 0 100px rgba(255, 255, 255, 0.9), inset 0 0 80px rgba(0, 255, 255, 0.8); }
+      20% { box-shadow: none; }
+      25% { box-shadow: 0 0 60px rgba(255, 255, 255, 0.6); }
+      35% { box-shadow: none; }
+      100% { box-shadow: none; }
+    }
+
+    .lightning-active {
+      animation: lightning-strike 0.6s ease-out 1 !important;
+    }
+
+    body.lightning-body {
+      animation: lightning-glow 0.6s ease-out 1 !important;
     }
 
     .hero p {
@@ -489,7 +527,7 @@
   <canvas id="cursor-canvas"></canvas>
 
   <header>
-    <div class="logo">⦗ BARBEL<span class="sun-pulse">O</span> ⦘</div>
+    <a href="#" class="logo" onclick="return false;">⦗ BARBEL<span class="sun-pulse">O</span> ⦘</a>
     <nav>
       <a href="pages/angebot.html">Angebot</a>
       <a href="pages/methodik.html">Methodik</a>
@@ -802,33 +840,79 @@
       new NeuralNetwork();
       new CursorNetwork();
 
-      // 🎉 EASTER EGG: Click the O for magic!
-      const sunPulse = document.querySelector('.sun-pulse');
+      // 🎆 EASTER EGG: Click the name for LIGHTNING! ⚡
+      const logo = document.querySelector('.logo');
       let clickCount = 0;
 
-      sunPulse.addEventListener('click', () => {
+      function createThunderSound() {
+        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const now = audioContext.currentTime;
+
+        // Thunder sound: Low frequency rumble
+        const osc = audioContext.createOscillator();
+        const gain = audioContext.createGain();
+
+        osc.connect(gain);
+        gain.connect(audioContext.destination);
+
+        // Deep rumbling bass
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(20, now + 0.2);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      logo.addEventListener('click', (e) => {
+        e.preventDefault();
         clickCount++;
-        sunPulse.style.animation = 'none';
-        setTimeout(() => sunPulse.style.animation = '', 10);
 
-        // Extra glow on click
-        sunPulse.style.filter = `drop-shadow(0 0 ${20 + clickCount * 5}px rgba(255, 0, 255, ${Math.min(1, 0.5 + clickCount * 0.2)}))`;
+        // Lightning strike with sound! ⚡
+        const logoEl = document.querySelector('.logo');
+        const bodyEl = document.body;
 
-        // Rainbow effect every 3 clicks 🌈
+        // Remove any existing animation
+        logoEl.classList.remove('lightning-active');
+        bodyEl.classList.remove('lightning-body');
+
+        // Trigger reflow to restart animation
+        void logoEl.offsetWidth;
+
+        // Add lightning animation
+        logoEl.classList.add('lightning-active');
+        bodyEl.classList.add('lightning-body');
+
+        // Play thunder sound
+        try {
+          createThunderSound();
+        } catch (err) {
+          console.log('Thunder sound skipped (audio context unavailable)');
+        }
+
+        // Remove animation classes after completion
+        setTimeout(() => {
+          logoEl.classList.remove('lightning-active');
+          bodyEl.classList.remove('lightning-body');
+        }, 600);
+
+        // Extra magic every 3 clicks 🌈
         if (clickCount % 3 === 0) {
           document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
           setTimeout(() => document.body.style.filter = '', 500);
         }
 
-        // Cursor explosion on 5 clicks ✨
+        // Celebration message every 5 clicks 🎆
         if (clickCount === 5) {
           alert('🎆 Du hast das geheime Ritual aktiviert! Die Website wird noch magischer... 🌙');
           clickCount = 0;
         }
       });
 
-      sunPulse.style.cursor = 'pointer';
-      sunPulse.style.transition = 'all 0.3s ease';
+      logo.style.cursor = 'pointer';
+      logo.style.transition = 'all 0.3s ease';
     });
   </script>
 </body>
