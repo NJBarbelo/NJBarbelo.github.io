@@ -140,8 +140,16 @@ h1, .line-headline {
   filter: drop-shadow(0 0 10px rgba(63, 214, 200, 0.4));
 }
 
-h2, h3, .line-claim {
+h2, h3 {
   color: var(--primary);
+}
+
+.line-claim {
+  font-family: 'Nunito Sans', sans-serif;
+  font-size: clamp(0.9rem, 1.8vw, 1.2rem);
+  font-weight: 300;
+  color: var(--primary);
+  margin-bottom: 1.5rem;
 }
 
 section h2 {
