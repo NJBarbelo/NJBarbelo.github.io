@@ -314,6 +314,40 @@ footer nav a.active { color: #ff00ff; }
   color: var(--text);
 }
 
+/* ----- EASTER EGGS ----- */
+.star-burst-particle {
+  position: fixed;
+  pointer-events: none;
+  font-size: 11px;
+  z-index: 9000;
+  animation: star-burst 0.7s ease-out forwards;
+}
+@keyframes star-burst {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1.4); }
+  100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.2); }
+}
+.consciousness-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(18px, 3vw, 28px);
+  color: #ff00ff;
+  letter-spacing: 4px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 9500;
+  text-shadow: 0 0 20px rgba(255, 0, 255, 0.8), 0 0 40px rgba(255, 0, 255, 0.4);
+  animation: consciousness-fade 3s ease-in-out forwards;
+}
+@keyframes consciousness-fade {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* ----- RESPONSIVE ----- */
 @media (max-width: 720px) {
   :root {

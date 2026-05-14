@@ -6,6 +6,8 @@ class Neuron {
     this.radius = Math.random() * 1.5 + 0.5;
     this.vx = (Math.random() - 0.5) * 0.5;
     this.vy = (Math.random() - 0.5) * 0.5;
+    this.baseVx = this.vx;
+    this.baseVy = this.vy;
     this.pulse = Math.random() * Math.PI * 2;
   }
 
@@ -36,6 +38,9 @@ class NeuralNetwork {
     if (!this.canvas) return;
     this.ctx = this.canvas.getContext('2d');
     this.neurons = [];
+    this.maxDist = 150;
+    this.speedMult = 1;
+    this.extraNeurons = [];
     this.init();
     this.animate();
     window.addEventListener('resize', () => this.onResize());
@@ -51,14 +56,14 @@ class NeuralNetwork {
   }
 
   drawConnections() {
-    const maxDist = 150;
+    const md = this.maxDist;
     for (let i = 0; i < this.neurons.length; i++) {
       for (let j = i + 1; j < this.neurons.length; j++) {
         const dx = this.neurons[i].x - this.neurons[j].x;
         const dy = this.neurons[i].y - this.neurons[j].y;
         const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < maxDist) {
-          const opacity = (1 - dist / maxDist) * 0.35;
+        if (dist < md) {
+          const opacity = (1 - dist / md) * 0.35;
           const gradient = this.ctx.createLinearGradient(this.neurons[i].x, this.neurons[i].y, this.neurons[j].x, this.neurons[j].y);
           if (this.neurons[i].type === this.neurons[j].type) {
             const color = this.neurons[i].type === 'brain' ? '#ff00ff' : '#00ffff';
@@ -79,6 +84,49 @@ class NeuralNetwork {
         }
       }
     }
+  }
+
+  activateConsciousness() {
+    // Speed up + expand range
+    this.maxDist = 250;
+    this.speedMult = 3;
+    this.neurons.forEach(n => {
+      n.vx = n.baseVx * 3;
+      n.vy = n.baseVy * 3;
+    });
+
+    // Spawn extra neurons
+    for (let i = 0; i < 40; i++) {
+      const n = new Neuron(
+        Math.random() * this.canvas.width,
+        Math.random() * this.canvas.height,
+        Math.random() > 0.5 ? 'brain' : 'star'
+      );
+      n.vx *= 3; n.vy *= 3;
+      this.neurons.push(n);
+      this.extraNeurons.push(n);
+    }
+
+    // Show toast
+    const toast = document.createElement('div');
+    toast.className = 'consciousness-toast';
+    toast.textContent = '✦ Bewusstsein erwacht ✦';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+
+    // Restore after 5s
+    setTimeout(() => {
+      this.maxDist = 150;
+      this.neurons.forEach(n => {
+        n.vx = n.baseVx;
+        n.vy = n.baseVy;
+      });
+      this.extraNeurons.forEach(n => {
+        const idx = this.neurons.indexOf(n);
+        if (idx > -1) this.neurons.splice(idx, 1);
+      });
+      this.extraNeurons = [];
+    }, 5000);
   }
 
   animate = () => {
@@ -169,13 +217,61 @@ class CursorNet {
   }
 }
 
+function burstStar(starEl) {
+  const rect = starEl.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const count = 10 + Math.floor(Math.random() * 4);
+  const symbols = ['★', '✦', '✧', '·'];
+  const colors = ['#ff00ff', '#3fd6c8', '#ff00ff', '#00ffff'];
+
+  for (let i = 0; i < count; i++) {
+    const span = document.createElement('span');
+    span.className = 'star-burst-particle';
+    span.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+    span.style.left = cx + 'px';
+    span.style.top = cy + 'px';
+    span.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+    const angle = (i / count) * Math.PI * 2 + Math.random() * 0.5;
+    const dist = 30 + Math.random() * 50;
+    span.style.setProperty('--tx', Math.cos(angle) * dist + 'px');
+    span.style.setProperty('--ty', Math.sin(angle) * dist + 'px');
+    span.style.animationDuration = (0.5 + Math.random() * 0.4) + 's';
+
+    document.body.appendChild(span);
+    setTimeout(() => span.remove(), 900);
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  new NeuralNetwork();
+  const net = new NeuralNetwork();
   new CursorNet();
 
   // Mark active link in all navs based on current page
   const current = window.location.pathname.split('/').pop();
   document.querySelectorAll('nav a').forEach(a => {
     if (a.getAttribute('href') === current) a.classList.add('active');
+  });
+
+  // Easter Egg 1: Stern-Divider Burst
+  document.querySelectorAll('.divider-star').forEach(star => {
+    star.style.cursor = 'pointer';
+    star.addEventListener('click', () => burstStar(star));
+  });
+
+  // Easter Egg 2: Konami-Code → Bewusstseins-Modus
+  const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+  let konamiIdx = 0;
+  document.addEventListener('keydown', e => {
+    if (e.key === KONAMI[konamiIdx]) {
+      konamiIdx++;
+      if (konamiIdx === KONAMI.length) {
+        konamiIdx = 0;
+        if (net) net.activateConsciousness();
+      }
+    } else {
+      konamiIdx = 0;
+    }
   });
 });
