@@ -157,16 +157,13 @@ h1 {
   font-size: clamp(28px, 4vw, 44px);
   letter-spacing: 2px;
   text-align: center;
-  background: linear-gradient(90deg, #ff00ff, #00ffff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: #ff00ff;
   padding-bottom: 12px;
 }
 
 h2 {
   font-size: clamp(22px, 2.6vw, 30px);
-  color: #ff00ff;
+  color: var(--primary);
   margin-top: 48px;
   letter-spacing: 1px;
 }
