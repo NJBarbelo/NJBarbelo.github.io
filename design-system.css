@@ -277,7 +277,8 @@ footer nav a {
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-footer nav a:hover { color: var(--gold); }
+footer nav a:hover,
+footer nav a.active { color: var(--gold); }
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 720px) {

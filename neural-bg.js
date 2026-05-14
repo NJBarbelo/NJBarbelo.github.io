@@ -172,4 +172,10 @@ class CursorNet {
 document.addEventListener('DOMContentLoaded', () => {
   new NeuralNetwork();
   new CursorNet();
+
+  // Mark active link in all navs based on current page
+  const current = window.location.pathname.split('/').pop();
+  document.querySelectorAll('nav a').forEach(a => {
+    if (a.getAttribute('href') === current) a.classList.add('active');
+  });
 });
