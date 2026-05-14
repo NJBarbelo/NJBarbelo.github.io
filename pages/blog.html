@@ -84,20 +84,6 @@
       pointer-events: none;
     }
 
-    #cursor-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      z-index: 1999;
-      pointer-events: none;
-    }
-
-    #cursor { position: fixed; width: 14px; height: 14px; pointer-events: none; transform: translate(-50%, -50%); z-index: 9999; }
-    #cursor svg { width: 100%; height: 100%; }
-
-    @keyframes pulse-star { 0%, 100% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--gold)); } 50% { opacity: 1; filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 12px var(--gold-soft)); } }
     @keyframes glow-pulse {
       0%, 100% {
         filter:
@@ -113,6 +99,7 @@
     }
 
     .highlight { color: var(--turquoise); text-shadow: 0 0 8px rgba(63,214,200,0.5); }
+    @keyframes pulse-star { 0%, 100% { opacity: 0.4; filter: drop-shadow(0 0 2px var(--gold)); } 50% { opacity: 1; filter: drop-shadow(0 0 6px var(--gold)) drop-shadow(0 0 12px var(--gold-soft)); } }
 
     .divider-star { display: flex; justify-content: center; margin: 2rem 0; }
     .divider-star svg { width: 14px; height: 14px; animation: pulse-star 3s ease-in-out infinite; }
@@ -149,13 +136,6 @@
     <div class="logo">⦗ BARBEL<span class="sun-pulse">O</span> ⦘</div>
   </header>
   <canvas id="neural-canvas"></canvas>
-  <canvas id="cursor-canvas"></canvas>
-  <div id="cursor">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-      <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#3fd6c8" />
-    </svg>
-  </div>
-
   <div id="stage">
     <main>
       <section class="text-block">
@@ -284,18 +264,6 @@
 
     <p>© 2026 Nancy Jasmina Barbelo | insleben.com | Alle Rechte vorbehalten</p>
   </footer>
-  <script>
-    let fx = window.innerWidth / 2;
-    let fy = window.innerHeight / 2;
-    document.addEventListener("mousemove", (e) => { fx = e.clientX; fy = e.clientY; updateCursor(); });
-    document.addEventListener("touchmove", (e) => { const touch = e.touches[0]; fx = touch.clientX; fy = touch.clientY; updateCursor(); });
-    function updateCursor() {
-      const cursor = document.getElementById("cursor");
-      cursor.style.left = fx + "px";
-      cursor.style.top = fy + "px";
-    }
-  </script>
-
   <script>
 
     class Neuron {
@@ -427,27 +395,6 @@
       }
     }
 
-    class CursorNetwork {
-      constructor() {
-        this.canvas = document.getElementById('cursor-canvas');
-        this.ctx = this.canvas.getContext('2d');
-        this.mouseX = 0;
-        this.mouseY = 0;
-        this.particles = [];
-        this.init();
-        this.animate();
-
-        document.addEventListener('mousemove', (e) => {
-          this.mouseX = e.clientX;
-          this.mouseY = e.clientY;
-        });
-
-        window.addEventListener('resize', () => {
-          this.canvas.width = window.innerWidth;
-          this.canvas.height = window.innerHeight;
-        });
-      }
-
       init() {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -520,7 +467,6 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       new NeuralNetwork();
-      new CursorNetwork();
     });
   
   </script>
