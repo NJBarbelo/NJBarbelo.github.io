@@ -199,12 +199,10 @@ p {
 a {
   color: var(--primary);
   text-decoration: none;
-  border-bottom: 1px dotted var(--primary);
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s;
 }
 a:hover {
   color: var(--gold);
-  border-color: var(--gold);
 }
 
 ul, ol {
