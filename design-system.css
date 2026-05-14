@@ -306,7 +306,7 @@ footer nav a.active { color: #ff00ff; }
   margin-bottom: 10px;
 }
 .article-excerpt {
-  color: var(--muted);
+  color: #ff00ff;
   font-style: italic;
   margin-bottom: 14px;
 }
