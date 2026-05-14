@@ -128,7 +128,7 @@ nav.primary a {
 }
 nav.primary a:hover,
 nav.primary a.active {
-  color: var(--gold);
+  color: #ff00ff;
 }
 
 /* ----- MAIN STAGE ----- */
@@ -194,7 +194,7 @@ a {
   transition: color 0.2s;
 }
 a:hover {
-  color: var(--gold);
+  color: #ff00ff;
 }
 
 ul, ol {
@@ -278,7 +278,7 @@ footer nav a {
   text-transform: uppercase;
 }
 footer nav a:hover,
-footer nav a.active { color: var(--gold); }
+footer nav a.active { color: #ff00ff; }
 
 /* ----- RESPONSIVE ----- */
 @media (max-width: 720px) {
