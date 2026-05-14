@@ -171,7 +171,7 @@ h1 {
   font-size: clamp(28px, 4vw, 44px);
   letter-spacing: 2px;
   text-align: center;
-  background: linear-gradient(90deg, #ff00ff, #4040ff 55%, #00ffff);
+  background: linear-gradient(90deg, #ff00ff, #4040ff 44%, #00ffff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
