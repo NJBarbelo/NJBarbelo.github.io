@@ -203,6 +203,7 @@ a {
 }
 a:hover {
   color: var(--gold);
+  text-decoration: none;
 }
 
 ul, ol {
