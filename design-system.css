@@ -196,14 +196,19 @@ p {
   color: var(--text);
 }
 
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+}
 a {
   color: var(--primary);
-  text-decoration: none;
   transition: color 0.2s;
 }
 a:hover {
   color: var(--gold);
-  text-decoration: none;
 }
 
 ul, ol {
