@@ -117,7 +117,7 @@ nav.primary {
 }
 nav.primary a {
   position: relative;
-  color: var(--text);
+  color: var(--primary);
   text-decoration: none;
   font-family: var(--font-body);
   font-size: 14px;
@@ -271,7 +271,7 @@ footer nav {
   margin-bottom: 16px;
 }
 footer nav a {
-  color: var(--muted);
+  color: var(--primary);
   border-bottom: none;
   font-size: 13px;
   letter-spacing: 1px;
