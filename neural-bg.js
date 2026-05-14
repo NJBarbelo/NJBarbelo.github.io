@@ -96,4 +96,80 @@ class NeuralNetwork {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => new NeuralNetwork());
+class CursorNet {
+  constructor() {
+    this.canvas = document.createElement('canvas');
+    this.canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100vh;z-index:2000;pointer-events:none;';
+    document.body.appendChild(this.canvas);
+    this.ctx = this.canvas.getContext('2d');
+    this.mx = -200;
+    this.my = -200;
+
+    // 8 nodes at fixed offsets around cursor — no lag, instant snap
+    this.nodes = Array.from({ length: 8 }, () => ({
+      ox: (Math.random() - 0.5) * 50,
+      oy: (Math.random() - 0.5) * 50,
+      pulse: Math.random() * Math.PI * 2,
+      r: Math.random() * 1.8 + 0.8,
+      color: Math.random() > 0.5 ? '#00ffff' : '#ff00ff'
+    }));
+
+    document.addEventListener('mousemove', e => { this.mx = e.clientX; this.my = e.clientY; });
+    window.addEventListener('resize', () => {
+      this.canvas.width = window.innerWidth;
+      this.canvas.height = window.innerHeight;
+    });
+    this.canvas.width = window.innerWidth;
+    this.canvas.height = window.innerHeight;
+    this.animate();
+  }
+
+  animate = () => {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    const nodes = this.nodes;
+    for (const n of nodes) n.pulse += 0.06;
+
+    // Draw connections between nearby nodes
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const x1 = this.mx + nodes[i].ox, y1 = this.my + nodes[i].oy;
+        const x2 = this.mx + nodes[j].ox, y2 = this.my + nodes[j].oy;
+        const dist = Math.hypot(x2 - x1, y2 - y1);
+        if (dist < 55) {
+          this.ctx.globalAlpha = (1 - dist / 55) * 0.4;
+          this.ctx.strokeStyle = '#3fd6c8';
+          this.ctx.lineWidth = 0.7;
+          this.ctx.beginPath();
+          this.ctx.moveTo(x1, y1);
+          this.ctx.lineTo(x2, y2);
+          this.ctx.stroke();
+        }
+      }
+    }
+
+    // Draw pulsing nodes
+    for (const n of nodes) {
+      const opacity = 0.5 + 0.5 * Math.sin(n.pulse);
+      this.ctx.globalAlpha = opacity;
+      this.ctx.fillStyle = n.color;
+      this.ctx.beginPath();
+      this.ctx.arc(this.mx + n.ox, this.my + n.oy, n.r, 0, Math.PI * 2);
+      this.ctx.fill();
+    }
+
+    // Precise center dot
+    this.ctx.globalAlpha = 1;
+    this.ctx.fillStyle = '#3fd6c8';
+    this.ctx.beginPath();
+    this.ctx.arc(this.mx, this.my, 2, 0, Math.PI * 2);
+    this.ctx.fill();
+
+    requestAnimationFrame(this.animate);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new NeuralNetwork();
+  new CursorNet();
+});
