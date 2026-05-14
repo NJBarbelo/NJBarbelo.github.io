@@ -212,7 +212,7 @@ li { margin-bottom: 8px; }
 .line-claim {
   text-align: center;
   letter-spacing: 2px;
-  color: var(--gold);
+  color: #ff00ff;
   text-transform: uppercase;
   font-size: 13px;
   margin: 12px 0 32px;
@@ -247,7 +247,7 @@ th, td {
   vertical-align: top;
 }
 th {
-  color: var(--gold);
+  color: var(--primary);
   font-family: var(--font-display);
   letter-spacing: 1px;
 }
