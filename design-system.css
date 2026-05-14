@@ -318,7 +318,7 @@ footer nav a.active { color: #ff00ff; }
 .star-burst-particle {
   position: fixed;
   pointer-events: none;
-  font-size: 11px;
+  font-size: 20px;
   z-index: 9000;
   animation: star-burst 0.7s ease-out forwards;
 }
