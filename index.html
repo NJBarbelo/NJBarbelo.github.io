@@ -27,10 +27,33 @@
       font-size: clamp(13px, 1.4vw, 16px);
       margin-bottom: 0;
     }
+
+    #lightning-flash {
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.9);
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+    }
+    @keyframes lightning-flash {
+      0%   { opacity: 0; }
+      5%   { opacity: 1; }
+      10%  { opacity: 0; }
+      15%  { opacity: 0.9; }
+      20%  { opacity: 0; }
+      25%  { opacity: 0.7; }
+      35%  { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    #lightning-flash.active {
+      animation: lightning-flash 0.6s ease-out 1;
+    }
   </style>
 </head>
 <body>
   <canvas id="neural-canvas"></canvas>
+  <div id="lightning-flash"></div>
 
   <header>
     <a href="index.html" class="logo">⦗ BARBEL<span class="sun-pulse">O</span> ⦘</a>
@@ -63,5 +86,49 @@
   </footer>
 
   <script src="neural-bg.js"></script>
+  <script>
+    // Easter Egg: 5× auf das Logo klicken für Blitz + Farben ⚡
+    document.addEventListener('DOMContentLoaded', () => {
+      const logo = document.querySelector('.logo');
+      const flashEl = document.getElementById('lightning-flash');
+      let clickCount = 0;
+
+      function thunder() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const now = ctx.currentTime;
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.frequency.setValueAtTime(80, now);
+          osc.frequency.exponentialRampToValueAtTime(20, now + 0.2);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+          osc.start(now);
+          osc.stop(now + 0.3);
+        } catch (e) {}
+      }
+
+      logo.addEventListener('click', e => {
+        e.preventDefault();
+        flashEl.classList.remove('active');
+        void flashEl.offsetWidth;
+        flashEl.classList.add('active');
+        setTimeout(() => flashEl.classList.remove('active'), 600);
+
+        thunder();
+
+        document.body.style.filter = `hue-rotate(${Math.random() * 360}deg)`;
+        setTimeout(() => document.body.style.filter = '', 500);
+
+        clickCount++;
+        if (clickCount === 5) {
+          alert('🎆 Du hast das geheime Ritual aktiviert! Die Website wird noch magischer... 🌙');
+          clickCount = 0;
+        }
+      });
+    });
+  </script>
 </body>
 </html>
