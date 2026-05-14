@@ -295,7 +295,7 @@ footer nav a.active { color: #ff00ff; }
   font-weight: 400;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--primary);
+  color: #ff00ff;
   margin: 0 0 6px;
 }
 .article-date {
