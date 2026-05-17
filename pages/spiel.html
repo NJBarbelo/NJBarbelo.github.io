@@ -274,10 +274,10 @@
       let level = MIN;
 
       const PHASES = [
-        { name: 'Einatmen', key: 'in',   from: 0.55, to: 1.0,  cls: 'inhale' },
-        { name: 'Halten',   key: 'hold', from: 1.0,  to: 1.0,  cls: 'inhale' },
-        { name: 'Ausatmen', key: 'out',  from: 1.0,  to: 0.55, cls: '' },
-        { name: 'Ruhen',    key: 'rest', from: 0.55, to: 0.55, cls: '' },
+        { name: 'Einatmen', key: 'in',   from: 0.55, to: 1.0,  cls: 'inhale', color: 'var(--turquoise)' },
+        { name: 'Halten',   key: 'hold', from: 1.0,  to: 1.0,  cls: 'inhale', color: 'var(--white-soft)' },
+        { name: 'Ausatmen', key: 'out',  from: 1.0,  to: 0.55, cls: '',       color: 'var(--gold)' },
+        { name: 'Ruhen',    key: 'rest', from: 0.55, to: 0.55, cls: '',       color: '#8a8a8a' },
       ];
 
       function phaseSecs(p) {
@@ -308,6 +308,8 @@
         const p = PHASES[idx];
         phaseStart = now;
         phaseEl.textContent = p.name;
+        phaseEl.style.color = p.color;
+        phaseEl.style.textShadow = '0 0 10px ' + p.color;
         countEl.textContent = '1 / ' + phaseSecs(p);
         orb.classList.toggle('inhale', p.cls === 'inhale');
       }
