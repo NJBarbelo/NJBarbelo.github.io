@@ -300,7 +300,7 @@
         const p = PHASES[idx];
         phaseStart = now;
         phaseEl.textContent = p.name;
-        countEl.textContent = p.secs + ' Sekunden';
+        countEl.textContent = '1 / ' + p.secs;
         orb.classList.toggle('inhale', p.cls === 'inhale');
       }
 
@@ -310,6 +310,9 @@
         const elapsed = (now - phaseStart) / 1000;
         const t = Math.min(elapsed / p.secs, 1);
         setOrbScale(p.from + (p.to - p.from) * t);
+
+        const sec = Math.min(Math.floor(elapsed) + 1, p.secs);
+        countEl.textContent = sec + ' / ' + p.secs;
 
         if (elapsed >= p.secs) {
           idx = (idx + 1) % PHASES.length;
