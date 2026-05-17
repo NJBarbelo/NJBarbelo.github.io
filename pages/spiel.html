@@ -205,7 +205,7 @@
         </div>
 
         <div class="breath-phase" id="phase">Bereit?</div>
-        <div class="breath-count" id="count">4 · 4 · 6 · 2 — ein sanfter Rhythmus</div>
+        <div class="breath-count" id="count">Beginnt sanft bei 2 Sek. – wird mit jedem Atemzug tiefer (bis 8)</div>
 
         <div class="game-stats">
           <div class="game-stat">
@@ -247,7 +247,7 @@
           <span class="footer-divider">|</span>
           <a href="ueber-mich.html" class="footer-link">Über mich</a>
           <span class="footer-divider">|</span>
-          <a href="spiel.html" class="footer-link">Spiel</a>
+          <a href="spiel.html" class="footer-link">Atem Spiel</a>
         </div>
         <div class="footer-nav-row">
           <a href="impressum.html" class="footer-link">Impressum</a>
@@ -271,12 +271,21 @@
 
     /* --- Atem-Meditation --- */
     (function () {
+      const MIN = 2, MAX = 8, HOLD = 2, REST = 1;
+      let level = MIN;
+
       const PHASES = [
-        { name: 'Einatmen', secs: 4, from: 0.55, to: 1.0, cls: 'inhale' },
-        { name: 'Halten',   secs: 4, from: 1.0,  to: 1.0, cls: 'inhale' },
-        { name: 'Ausatmen', secs: 6, from: 1.0,  to: 0.55, cls: '' },
-        { name: 'Ruhen',    secs: 2, from: 0.55, to: 0.55, cls: '' },
+        { name: 'Einatmen', key: 'in',   from: 0.55, to: 1.0,  cls: 'inhale' },
+        { name: 'Halten',   key: 'hold', from: 1.0,  to: 1.0,  cls: 'inhale' },
+        { name: 'Ausatmen', key: 'out',  from: 1.0,  to: 0.55, cls: '' },
+        { name: 'Ruhen',    key: 'rest', from: 0.55, to: 0.55, cls: '' },
       ];
+
+      function phaseSecs(p) {
+        if (p.key === 'in' || p.key === 'out') return level;
+        if (p.key === 'hold') return HOLD;
+        return REST;
+      }
       const orb = document.getElementById('orb');
       const phaseEl = document.getElementById('phase');
       const countEl = document.getElementById('count');
@@ -300,21 +309,22 @@
         const p = PHASES[idx];
         phaseStart = now;
         phaseEl.textContent = p.name;
-        countEl.textContent = '1 / ' + p.secs;
+        countEl.textContent = '1 / ' + phaseSecs(p);
         orb.classList.toggle('inhale', p.cls === 'inhale');
       }
 
       function loop(now) {
         if (!running) return;
         const p = PHASES[idx];
+        const secs = phaseSecs(p);
         const elapsed = (now - phaseStart) / 1000;
-        const t = Math.min(elapsed / p.secs, 1);
+        const t = Math.min(elapsed / secs, 1);
         setOrbScale(p.from + (p.to - p.from) * t);
 
-        const sec = Math.min(Math.floor(elapsed) + 1, p.secs);
-        countEl.textContent = sec + ' / ' + p.secs;
+        const sec = Math.min(Math.floor(elapsed) + 1, secs);
+        countEl.textContent = sec + ' / ' + secs;
 
-        if (elapsed >= p.secs) {
+        if (elapsed >= secs) {
           idx = (idx + 1) % PHASES.length;
           if (idx === 0) {
             breaths++;
@@ -323,6 +333,10 @@
             pointsEl.textContent = points;
             if (MILESTONES[breaths]) {
               msgEl.textContent = MILESTONES[breaths];
+            }
+            if (breaths % 2 === 0 && level < MAX) {
+              level++;
+              if (level === MAX) msgEl.textContent = 'Dein tiefster, ruhigster Atem – bleib hier.';
             }
           }
           startPhase(now);
@@ -333,6 +347,7 @@
       function start() {
         running = true;
         idx = 0;
+        level = MIN;
         toggleBtn.textContent = 'Pause';
         msgEl.textContent = 'Atme mit dem Stern …';
         const now = performance.now();
