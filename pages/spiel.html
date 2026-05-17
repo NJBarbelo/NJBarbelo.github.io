@@ -281,7 +281,8 @@
       ];
 
       function phaseSecs(p) {
-        if (p.key === 'in' || p.key === 'out') return level;
+        if (p.key === 'in') return level;
+        if (p.key === 'out') return level + 2;
         if (p.key === 'hold') return HOLD;
         return REST;
       }
