@@ -82,9 +82,9 @@
     const particles = [];
 
     const waveLayers = [
-      { freq: 0.005,  speed: 18, amp: 0.04,  alpha: 0.055, r: 10, g: 80,  b: 100 },
-      { freq: 0.007,  speed: 12, amp: 0.03,  alpha: 0.045, r: 20, g: 130, b: 150 },
-      { freq: 0.0035, speed: 8,  amp: 0.05,  alpha: 0.035, r: 35, g: 180, b: 190 },
+      { freq: 0.005,  speed: 7,  amp: 0.04,  alpha: 0.055, r: 10, g: 80,  b: 100 },
+      { freq: 0.007,  speed: 5,  amp: 0.03,  alpha: 0.045, r: 20, g: 130, b: 150 },
+      { freq: 0.0035, speed: 3,  amp: 0.05,  alpha: 0.035, r: 35, g: 180, b: 190 },
     ];
 
     function newParticle(randomY) {
@@ -92,7 +92,7 @@
         x: Math.random() * W,
         y: randomY ? Math.random() * H : H + 20,
         vx: (Math.random() - 0.5) * 0.3,
-        vy: -(Math.random() * 1.0 + 0.3),
+        vy: -(Math.random() * 0.5 + 0.15),
         size: Math.random() * 6 + 2,
         life: randomY ? Math.random() : 1,
         decay: Math.random() * 0.004 + 0.002,
