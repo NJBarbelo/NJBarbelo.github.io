@@ -113,7 +113,7 @@
     .footer-link:hover { color: var(--turquoise); }
     .footer-divider { color: var(--gold-dim); margin: 0 0.5rem; }
 
-    #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 4rem 1rem; display: flex; justify-content: center; align-items: flex-start; }
+    #stage { position: fixed; top: 120px; bottom: 80px; left: 0; right: 0; overflow-y: auto; overflow-x: hidden; padding: 4rem 1rem; display: flex; justify-content: center; align-items: flex-start; z-index: 2; }
     main { max-width: 680px; width: 100%; }
 
     .blog-article { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
@@ -144,6 +144,7 @@
 </head>
 
 <body>
+  <canvas id="bg-canvas" data-mode="water" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none;"></canvas>
   <div id="cursor">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
       <path d="M12 0 L13.5 10.5 L24 12 L13.5 13.5 L12 24 L10.5 13.5 L0 12 L10.5 10.5 Z" fill="#c9a84c" />
@@ -329,4 +330,5 @@
   </script>
 
   <script>(function(){var f=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".footer-link").forEach(function(a){if(a.getAttribute("href")===f){a.style.color="var(--turquoise)";a.style.textShadow="0 0 8px rgba(63,214,200,0.5)";a.setAttribute("aria-current","page");}});})();</script>
+  <script src="../assets/fire-water-bg.js"></script>
 </body>
