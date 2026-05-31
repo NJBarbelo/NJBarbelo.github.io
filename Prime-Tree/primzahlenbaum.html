@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Primzahlen Baum</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #f0ece4;
+      font-family: 'Courier New', monospace;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Header ── */
+    header {
+      padding: 14px 20px 10px;
+      text-align: center;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    h1 {
+      color: #c9a84c;
+      font-size: 1.6em;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-group { display: flex; align-items: center; gap: 8px; }
+    .controls label { color: #3fd6c8; font-size: 0.85em; white-space: nowrap; }
+
+    input[type=range] {
+      accent-color: #c9a84c;
+      width: 180px;
+      cursor: pointer;
+    }
+
+    .count-display {
+      color: #c9a84c;
+      font-weight: bold;
+      min-width: 38px;
+    }
+
+    .search-wrap { display: flex; align-items: center; gap: 6px; }
+
+    #searchInput {
+      background: #111;
+      border: 1px solid #3fd6c855;
+      color: #f0ece4;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      padding: 4px 8px;
+      width: 80px;
+      border-radius: 3px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    #searchInput:focus { border-color: #3fd6c8; }
+    #searchInput.not-found { border-color: #ff4444; }
+
+    #searchBtn {
+      background: #c9a84c22;
+      border: 1px solid #c9a84c55;
+      color: #c9a84c;
+      font-family: 'Courier New', monospace;
+      font-size: 0.85em;
+      padding: 4px 10px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    #searchBtn:hover { background: #c9a84c44; }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 8px;
+      font-size: 0.75em;
+      color: #f0ece4aa;
+    }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .dot-prime { background: #c9a84c; }
+    .dot-comp  { background: #3fd6c8; }
+
+    /* ── Zwei Spalten ── */
+    .columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 0;             /* wichtig damit Grid-Zeile nicht aufbläht */
+    }
+
+    /* Spalten-Label */
+    .col-label {
+      font-size: 0.68em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      background: #0a0a0a;
+      border-bottom: 1px solid #1a1a1a;
+      flex-shrink: 0;
+    }
+
+    /* ── Linke Spalte: statischer Überblick ── */
+    .col-left {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      border-right: 1px solid #1a1a1a;
+      /* KEIN overflow: hidden — würde Canvas stauchen */
+    }
+    .col-left .col-label { color: #c9a84c88; }
+
+    .scroll-area {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      scrollbar-width: none;        /* Firefox */
+    }
+    .scroll-area::-webkit-scrollbar { display: none; } /* Chrome/Safari */
+
+    /* Canvas bekommt KEINE CSS-Größe — JS setzt width/height-Attribut */
+    #overviewCanvas { display: block; }
+
+    /* ── Rechte Spalte: Zoom & Pan ── */
+    .col-right {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      overflow: hidden;
+    }
+    .col-right .col-label { color: #3fd6c888; }
+
+    .zoom-wrap {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+    }
+
+    #zoomCanvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: grab;
+    }
+    #zoomCanvas.dragging { cursor: grabbing; }
+
+    .zoom-btns {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .zoom-btns button {
+      background: #111;
+      border: 1px solid #333;
+      color: #c9a84c;
+      font-size: 1em;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .zoom-btns button:hover { background: #222; }
+    .zoom-btns .reset { color: #3fd6c8; font-size: 0.7em; }
+
+    .hint-zoom {
+      position: absolute;
+      bottom: 12px;
+      left: 10px;
+      font-size: 0.62em;
+      color: #ffffff22;
+      pointer-events: none;
+    }
+
+    /* ── Info-Box ── */
+    .info-box {
+      padding: 10px 28px 12px;
+      border-top: 1px solid #1a1a1a;
+    }
+
+    .info-grid {
+      display: flex;
+      gap: 30px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .info-section { flex: 1; min-width: 220px; }
+    .info-section h2 {
+      color: #c9a84c;
+      font-size: 0.7em;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .info-section p {
+      font-size: 0.7em;
+      color: #f0ece477;
+      line-height: 1.55;
+    }
+    .gold { color: #c9a84c; }
+    .teal { color: #3fd6c8; }
+
+    .info-meta { text-align: right; flex-shrink: 0; }
+    .meta-label {
+      font-size: 0.62em;
+      color: #3fd6c8;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+    .meta-value { font-size: 0.74em; color: #c9a84c; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Primzahlen Baum</h1>
+  <div class="controls">
+    <div class="ctrl-group">
+      <label for="maxNum">Bis zur Zahl:</label>
+      <input type="range" id="maxNum" min="10" max="1000" value="100" step="1">
+      <span class="count-display" id="maxLabel">100</span>
+    </div>
+    <div class="search-wrap">
+      <label for="searchInput">Springe zu:</label>
+      <input type="number" id="searchInput" min="2" placeholder="z.B. 97">
+      <button id="searchBtn">&#x2192;</button>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="dot dot-prime"></div> Primzahl (Stamm)</div>
+    <div class="legend-item"><div class="dot dot-comp"></div> Zusammengesetzte Zahl (Ast)</div>
+  </div>
+</header>
+
+<div class="columns">
+
+  <!-- Linke Spalte: statischer Überblick (exakt wie Version 1) -->
+  <div class="col-left">
+    <div class="col-label">Überblick</div>
+    <div class="scroll-area">
+      <canvas id="overviewCanvas"></canvas>
+    </div>
+  </div>
+
+  <!-- Rechte Spalte: Zoom & Pan -->
+  <div class="col-right">
+    <div class="col-label">Zoom &amp; Pan</div>
+    <div class="zoom-wrap">
+      <canvas id="zoomCanvas"></canvas>
+      <div class="zoom-btns">
+        <button id="zoomIn">+</button>
+        <button id="zoomOut">−</button>
+        <button class="reset" id="resetView">&#x2302;</button>
+      </div>
+      <div class="hint-zoom">Mausrad · Ziehen · Doppelklick = Reset</div>
+    </div>
+  </div>
+
+</div>
+
+<div class="info-box">
+  <div class="info-grid">
+    <div class="info-section">
+      <h2>Aufbau des Baumes</h2>
+      <p>Primzahlen bilden den <span class="gold">Stamm</span> (Mitte). Zusammengesetzte Zahlen zwischen zwei Primzahlen formen einen <span class="teal">Ast</span>, der schräg vom Stamm abzweigt — abwechselnd rechts und links, wie eine Fischgräte.</p>
+    </div>
+    <div class="info-meta">
+      <p class="meta-label">Erstellt am</p>
+      <p class="meta-value">30. Mai 2026</p>
+      <p class="meta-label">Entwickelt von</p>
+      <p class="meta-value">Nancy Jasmina Barbelo & Claude Anthropic</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Mathematik ──────────────────────────────────────────────────────────────
+  function sieb(max) {
+    const z = new Uint8Array(max + 1);
+    for (let i = 2; i * i <= max; i++)
+      if (!z[i]) for (let j = i * i; j <= max; j += i) z[j] = 1;
+    const p = new Set();
+    for (let i = 2; i <= max; i++) if (!z[i]) p.add(i);
+    return p;
+  }
+
+  function baueKnoten(max, primzahlen) {
+    const knoten = [];
+    let richtung = 1, tiefe = 0, aktiv = false;
+    for (let n = 2; n <= max; n++) {
+      if (primzahlen.has(n)) {
+        if (aktiv) { richtung *= -1; aktiv = false; }
+        tiefe = 0;
+        knoten.push({ zahl: n, isPrime: true, dir: 0, tiefe: 0 });
+      } else {
+        tiefe++; aktiv = true;
+        knoten.push({ zahl: n, isPrime: false, dir: richtung, tiefe });
+      }
+    }
+    return knoten;
+  }
+
+  // ── Gemeinsame Konstanten ───────────────────────────────────────────────────
+  const SCHRITT_Y = 30;
+  const SCHRITT_X = 24;
+  const MITTE_X   = 370;   // feste Stamm-Mitte (wie Version 1)
+  const RAND_OBEN = 45;
+
+  let knoten      = [];
+  let highlighted = null;
+
+  // ── Linke Spalte: statischer Überblick (identisch zu Version 1) ────────────
+  const ovCanvas = document.getElementById('overviewCanvas');
+  const ovCtx    = ovCanvas.getContext('2d');
+
+  function zeichneUeberblick() {
+    ovCanvas.width  = 800;
+    ovCanvas.height = knoten.length * SCHRITT_Y + RAND_OBEN + 40;
+
+    ovCtx.fillStyle = '#000';
+    ovCtx.fillRect(0, 0, ovCanvas.width, ovCanvas.height);
+
+    // Stamm-Leitlinie
+    ovCtx.strokeStyle = '#1c1c1c';
+    ovCtx.lineWidth = 1;
+    ovCtx.setLineDash([5, 6]);
+    ovCtx.beginPath();
+    ovCtx.moveTo(MITTE_X, 0);
+    ovCtx.lineTo(MITTE_X, ovCanvas.height);
+    ovCtx.stroke();
+    ovCtx.setLineDash([]);
+
+    // Positionen
+    const pos = knoten.map((k, i) => ({
+      x: MITTE_X + k.dir * k.tiefe * SCHRITT_X,
+      y: RAND_OBEN + i * SCHRITT_Y,
+      ...k
+    }));
+
+    // Linien
+    for (let i = 1; i < pos.length; i++) {
+      const a = pos[i - 1], b = pos[i];
+      if (a.isPrime && b.isPrime) {
+        ovCtx.strokeStyle = '#c9a84c55'; ovCtx.lineWidth = 2;
+      } else if (!b.isPrime && b.tiefe === 1) {
+        ovCtx.strokeStyle = '#3fd6c855'; ovCtx.lineWidth = 1;
+      } else {
+        ovCtx.strokeStyle = '#3fd6c833'; ovCtx.lineWidth = 1;
+      }
+      ovCtx.beginPath();
+      ovCtx.moveTo(a.x, a.y);
+      ovCtx.lineTo(b.x, b.y);
+      ovCtx.stroke();
+    }
+
+    // Knoten + Beschriftungen
+    for (const p of pos) {
+      const r = p.isPrime ? 8 : 4;
+      if (p.isPrime) {
+        ovCtx.beginPath(); ovCtx.arc(p.x, p.y, 13, 0, Math.PI * 2);
+        ovCtx.fillStyle = '#c9a84c18'; ovCtx.fill();
+      }
+      ovCtx.beginPath(); ovCtx.arc(p.x, p.y, r, 0, Math.PI * 2);
+      ovCtx.fillStyle = p.isPrime ? '#c9a84c' : '#3fd6c8'; ovCtx.fill();
+
+      ovCtx.font      = p.isPrime ? 'bold 11px monospace' : '10px monospace';
+      ovCtx.fillStyle = p.isPrime ? '#c9a84c' : '#3fd6c899';
+      if (p.dir >= 0) { ovCtx.textAlign = 'left';  ovCtx.fillText(p.zahl, p.x + 12, p.y + 4); }
+      else            { ovCtx.textAlign = 'right'; ovCtx.fillText(p.zahl, p.x - 12, p.y + 4); }
+    }
+  }
+
+  // ── Rechte Spalte: Zoom & Pan ───────────────────────────────────────────────
+  const zmCanvas = document.getElementById('zoomCanvas');
+  const zmCtx    = zmCanvas.getContext('2d');
+  const zmWrap   = document.querySelector('.zoom-wrap');
+
+  let zmScale = 1, zmOffX = 0, zmOffY = 0;
+  let isDragging = false, lastMX = 0, lastMY = 0;
+  let pulsePhase = 0, animId = null;
+
+  function zmResize() {
+    zmCanvas.width  = zmWrap.clientWidth;
+    zmCanvas.height = zmWrap.clientHeight;
+  }
+
+  function zmRender() {
+    const cw = zmCanvas.width, ch = zmCanvas.height;
+    zmCtx.fillStyle = '#000';
+    zmCtx.fillRect(0, 0, cw, ch);
+
+    if (knoten.length === 0) return;
+
+    function toS(wx, wy) { return { x: wx * zmScale + zmOffX, y: wy * zmScale + zmOffY }; }
+
+    const showLabels = zmScale > 0.35;
+
+    // Stammlinie
+    const top = toS(MITTE_X, 0), bot = toS(MITTE_X, RAND_OBEN + knoten.length * SCHRITT_Y);
+    zmCtx.strokeStyle = '#1a1a1a'; zmCtx.lineWidth = 1;
+    zmCtx.setLineDash([5, 6]);
+    zmCtx.beginPath(); zmCtx.moveTo(top.x, top.y); zmCtx.lineTo(bot.x, bot.y); zmCtx.stroke();
+    zmCtx.setLineDash([]);
+
+    // Positionen (Weltkoordinaten identisch zu Überblick)
+    const pos = knoten.map((k, i) => ({
+      wx: MITTE_X + k.dir * k.tiefe * SCHRITT_X,
+      wy: RAND_OBEN + i * SCHRITT_Y,
+      ...k
+    }));
+
+    // Linien
+    for (let i = 1; i < pos.length; i++) {
+      const a = pos[i - 1], b = pos[i];
+      const pa = toS(a.wx, a.wy), pb = toS(b.wx, b.wy);
+      if (pb.y < -50 || pa.y > ch + 50) continue;
+
+      if (a.isPrime && b.isPrime) {
+        zmCtx.strokeStyle = '#c9a84c55'; zmCtx.lineWidth = Math.max(1, 2 * zmScale);
+      } else {
+        zmCtx.strokeStyle = b.tiefe === 1 ? '#3fd6c855' : '#3fd6c833';
+        zmCtx.lineWidth = Math.max(0.5, zmScale);
+      }
+      zmCtx.beginPath(); zmCtx.moveTo(pa.x, pa.y); zmCtx.lineTo(pb.x, pb.y); zmCtx.stroke();
+    }
+
+    // Knoten
+    for (let i = 0; i < pos.length; i++) {
+      const p = pos[i], sp = toS(p.wx, p.wy);
+      if (sp.y < -40 || sp.y > ch + 40) continue;
+
+      const r = (p.isPrime ? 8 : 4) * Math.max(0.3, Math.min(zmScale, 2));
+
+      // Highlight
+      if (i === highlighted) {
+        const glow = (15 + 6 * Math.sin(pulsePhase)) * zmScale;
+        zmCtx.beginPath(); zmCtx.arc(sp.x, sp.y, glow, 0, Math.PI * 2);
+        zmCtx.fillStyle = '#ffffff22'; zmCtx.fill();
+        zmCtx.strokeStyle = '#ffffff88'; zmCtx.lineWidth = 2; zmCtx.stroke();
+      }
+
+      if (p.isPrime) {
+        zmCtx.beginPath(); zmCtx.arc(sp.x, sp.y, 13 * Math.max(0.3, Math.min(zmScale, 2)), 0, Math.PI * 2);
+        zmCtx.fillStyle = '#c9a84c18'; zmCtx.fill();
+      }
+
+      zmCtx.beginPath(); zmCtx.arc(sp.x, sp.y, r, 0, Math.PI * 2);
+      zmCtx.fillStyle = p.isPrime ? '#c9a84c' : '#3fd6c8'; zmCtx.fill();
+
+      if (showLabels) {
+        const fs = Math.max(8, Math.min(13, 11 * zmScale));
+        zmCtx.font = p.isPrime ? `bold ${fs}px monospace` : `${fs}px monospace`;
+        zmCtx.fillStyle = p.isPrime ? '#c9a84c' : '#3fd6c899';
+        const ab = r + 4;
+        if (p.dir >= 0) { zmCtx.textAlign = 'left';  zmCtx.fillText(p.zahl, sp.x + ab, sp.y + fs * 0.38); }
+        else            { zmCtx.textAlign = 'right'; zmCtx.fillText(p.zahl, sp.x - ab, sp.y + fs * 0.38); }
+      }
+    }
+  }
+
+  function zmReset() { zmScale = 1; zmOffX = 0; zmOffY = 0; zmRender(); }
+
+  function zmZoom(faktor, mx, my) {
+    mx = mx ?? zmCanvas.width / 2;
+    my = my ?? zmCanvas.height / 2;
+    zmOffX = mx - (mx - zmOffX) * faktor;
+    zmOffY = my - (my - zmOffY) * faktor;
+    zmScale = Math.max(0.05, Math.min(15, zmScale * faktor));
+    zmRender();
+  }
+
+  // Mausrad
+  zmCanvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    const r = zmCanvas.getBoundingClientRect();
+    zmZoom(e.deltaY < 0 ? 1.12 : 0.9, e.clientX - r.left, e.clientY - r.top);
+  }, { passive: false });
+
+  // Drag
+  zmCanvas.addEventListener('mousedown', e => {
+    isDragging = true; lastMX = e.clientX; lastMY = e.clientY;
+    zmCanvas.classList.add('dragging');
+  });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    zmOffX += e.clientX - lastMX; zmOffY += e.clientY - lastMY;
+    lastMX = e.clientX; lastMY = e.clientY; zmRender();
+  });
+  window.addEventListener('mouseup', () => { isDragging = false; zmCanvas.classList.remove('dragging'); });
+  zmCanvas.addEventListener('dblclick', zmReset);
+
+  // Touch
+  let lastTouchDist = null;
+  zmCanvas.addEventListener('touchstart', e => {
+    if (e.touches.length === 1) { isDragging = true; lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY; }
+    else if (e.touches.length === 2) lastTouchDist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+  }, { passive: true });
+  zmCanvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    if (e.touches.length === 1 && isDragging) {
+      zmOffX += e.touches[0].clientX - lastMX; zmOffY += e.touches[0].clientY - lastMY;
+      lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY; zmRender();
+    } else if (e.touches.length === 2 && lastTouchDist) {
+      const d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      const cx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const cy = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      const r = zmCanvas.getBoundingClientRect();
+      zmZoom(d / lastTouchDist, cx - r.left, cy - r.top);
+      lastTouchDist = d;
+    }
+  }, { passive: false });
+  zmCanvas.addEventListener('touchend', () => { isDragging = false; lastTouchDist = null; });
+
+  // Buttons
+  document.getElementById('zoomIn').addEventListener('click', () => zmZoom(1.3));
+  document.getElementById('zoomOut').addEventListener('click', () => zmZoom(0.77));
+  document.getElementById('resetView').addEventListener('click', zmReset);
+
+  // ── Suche ───────────────────────────────────────────────────────────────────
+  function startPulse() {
+    if (animId) return;
+    function loop() {
+      pulsePhase += 0.08; zmRender();
+      animId = highlighted !== null ? requestAnimationFrame(loop) : null;
+    }
+    animId = requestAnimationFrame(loop);
+  }
+
+  function springe(zahl) {
+    const idx = knoten.findIndex(k => k.zahl === zahl);
+    if (idx === -1) return false;
+    const wx = MITTE_X + knoten[idx].dir * knoten[idx].tiefe * SCHRITT_X;
+    const wy = RAND_OBEN + idx * SCHRITT_Y;
+    zmScale = 2;
+    zmOffX  = zmCanvas.width  / 2 - wx * zmScale;
+    zmOffY  = zmCanvas.height / 2 - wy * zmScale;
+    highlighted = idx;
+    startPulse();
+    zmRender();
+    return true;
+  }
+
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn   = document.getElementById('searchBtn');
+  const slider      = document.getElementById('maxNum');
+  const labelEl     = document.getElementById('maxLabel');
+
+  function doSearch() {
+    const val = parseInt(searchInput.value, 10);
+    searchInput.classList.remove('not-found');
+    if (isNaN(val) || val < 2) return;
+    if (val > +slider.value) {
+      slider.value = Math.min(val, 1000);
+      labelEl.textContent = slider.value;
+      aktualisiereAlles(+slider.value);
+    }
+    if (!springe(val)) searchInput.classList.add('not-found');
+  }
+
+  searchBtn.addEventListener('click', doSearch);
+  searchInput.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+  searchInput.addEventListener('input', () => { searchInput.classList.remove('not-found'); highlighted = null; zmRender(); });
+
+  // ── Slider ──────────────────────────────────────────────────────────────────
+  function aktualisiereAlles(max) {
+    const primzahlen = sieb(max);
+    knoten = baueKnoten(max, primzahlen);
+    highlighted = null;
+    zeichneUeberblick();
+    zmRender();
+  }
+
+  slider.addEventListener('input', () => {
+    labelEl.textContent = slider.value;
+    aktualisiereAlles(+slider.value);
+  });
+
+  // ── Init ────────────────────────────────────────────────────────────────────
+  window.addEventListener('resize', () => { zmResize(); zmRender(); });
+  zmResize();
+  aktualisiereAlles(100);
+</script>
+
+</body>
+</html>
