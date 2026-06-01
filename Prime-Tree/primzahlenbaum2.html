@@ -294,7 +294,7 @@
     </div>
     <div class="info-section">
       <h2>Lückenzahlen</h2>
-      <p>Die <span class="magenta">Lückenzahlen</span> sind die Abstände zwischen aufeinanderfolgenden Primzahlen (Primzahlenlücken). Wo diese Zahlen im Baum erscheinen — egal ob Primzahl oder zusammengesetzte Zahl — werden sie <span class="magenta">magenta</span> eingefärbt.</p>
+      <p>Die <span class="magenta">markierten Zahlen</span> sind die Folge <b>A333489</b> (OEIS): alle k, bei denen die k-te Komposition in Standardreihenfolge ein <i>Anti-Run</i> ist — keine zwei benachbarten gleichen Teile. Wo diese Zahlen im Baum erscheinen, werden sie <span class="magenta">magenta</span> eingefärbt.</p>
       <div id="lueckenAnzeige"></div>
     </div>
     <div class="info-meta">
@@ -317,14 +317,35 @@
     return p;
   }
 
-  // Berechnet die Menge aller Primzahlen-Lücken (Abstände zwischen aufeinanderfolgenden Primzahlen)
-  function berechneLuecken(primzahlen) {
-    const sorted = [...primzahlen].sort((a, b) => a - b);
-    const luecken = new Set();
-    for (let i = 1; i < sorted.length; i++) {
-      luecken.add(sorted[i] - sorted[i - 1]);
+  // Berechnet die k-te Komposition in Standardreihenfolge aus der Binärdarstellung von k
+  function kompositionStandard(k) {
+    if (k === 0) return [];
+    const bits = k.toString(2);
+    const teile = [];
+    let teil = 1;
+    for (let i = 1; i < bits.length; i++) {
+      if (bits[i] === '0') { teil++; }
+      else { teile.push(teil); teil = 1; }
     }
-    return luecken;
+    teile.push(teil);
+    return teile;
+  }
+
+  // Anti-Run: keine zwei benachbarten gleichen Teile
+  function istAntiRun(teile) {
+    for (let i = 1; i < teile.length; i++)
+      if (teile[i] === teile[i - 1]) return false;
+    return true;
+  }
+
+  // A333489: alle k <= max, bei denen die k-te Komposition ein Anti-Run ist
+  function berechneA333489(max) {
+    const menge = new Set();
+    menge.add(0); // leere Komposition ist trivial Anti-Run
+    for (let k = 1; k <= max; k++) {
+      if (istAntiRun(kompositionStandard(k))) menge.add(k);
+    }
+    return menge;
   }
 
   function baueKnoten(max, primzahlen) {
@@ -628,13 +649,13 @@
   function aktualisiereAlles(max) {
     const primzahlen = sieb(max);
     knoten  = baueKnoten(max, primzahlen);
-    luecken = berechneLuecken(primzahlen);
+    luecken = berechneA333489(max);
     highlighted = null;
 
-    // Lücken-Liste anzeigen (sortiert)
+    // A333489-Zahlen anzeigen (sortiert)
     const sorted = [...luecken].sort((a, b) => a - b);
     document.getElementById('lueckenAnzeige').textContent =
-      'Lücken: ' + sorted.join(', ');
+      'A333489 (≤' + max + '): ' + sorted.join(', ');
 
     zeichneUeberblick();
     zmRender();
