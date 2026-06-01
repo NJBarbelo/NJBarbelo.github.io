@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abstract – Primzahlen Baum II</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Code+Pro&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 12pt;
+      line-height: 1.7;
+      color: #1a1a1a;
+      background: #fff;
+      padding: 0;
+    }
+
+    .page {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 60px 50px 70px;
+    }
+
+    /* ── Header ── */
+    .doc-header {
+      border-top: 2.5px solid #1a1a1a;
+      border-bottom: 1px solid #ccc;
+      padding: 18px 0 16px;
+      margin-bottom: 32px;
+    }
+
+    .doc-type {
+      font-size: 8.5pt;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: #777;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 17pt;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 14px;
+    }
+
+    .meta-row {
+      font-size: 9.5pt;
+      color: #555;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 24px;
+      margin-top: 10px;
+    }
+    .meta-row span { white-space: nowrap; }
+    .meta-label { color: #999; font-style: italic; }
+
+    /* ── Body ── */
+    h2 {
+      font-size: 9pt;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #555;
+      margin: 28px 0 8px;
+      font-weight: 600;
+    }
+
+    p {
+      margin-bottom: 12px;
+      text-align: justify;
+      hyphens: auto;
+    }
+
+    code {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 9.5pt;
+      background: #f4f4f4;
+      padding: 1px 4px;
+      border-radius: 2px;
+    }
+
+    .sequence {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 9pt;
+      color: #333;
+      background: #f9f9f9;
+      border-left: 3px solid #aaa;
+      padding: 8px 14px;
+      margin: 12px 0 16px;
+    }
+
+    /* ── Keywords ── */
+    .keywords {
+      font-size: 9.5pt;
+      color: #444;
+      margin-top: 4px;
+    }
+    .kw-label { font-style: italic; color: #777; }
+
+    /* ── References ── */
+    .references {
+      margin-top: 8px;
+      font-size: 9.5pt;
+      color: #333;
+    }
+    .references li {
+      list-style: none;
+      padding-left: 1.6em;
+      text-indent: -1.6em;
+      margin-bottom: 6px;
+      line-height: 1.5;
+    }
+    a { color: #1a1a1a; text-decoration: underline; }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 40px;
+      padding-top: 14px;
+      border-top: 1px solid #ccc;
+      font-size: 8.5pt;
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 4px;
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; max-width: 100%; }
+      @page { margin: 2.2cm 2.5cm 2.5cm; size: A4; }
+      a { color: #1a1a1a; text-decoration: none; }
+      .no-print { display: none; }
+    }
+
+    /* Print-Button (nur am Bildschirm) */
+    .print-btn {
+      position: fixed;
+      top: 20px;
+      right: 24px;
+      background: #1a1a1a;
+      color: #fff;
+      border: none;
+      font-family: inherit;
+      font-size: 10pt;
+      padding: 8px 18px;
+      cursor: pointer;
+      border-radius: 3px;
+      letter-spacing: 0.05em;
+    }
+    .print-btn:hover { background: #333; }
+    @media print { .print-btn { display: none; } }
+  </style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">Als PDF speichern ↓</button>
+
+<div class="page">
+
+  <div class="doc-header">
+    <div class="doc-type">Zenodo Submission · Interactive Visualization · Juni 2026</div>
+    <h1>Primzahlen Baum II<br>
+    Visualisierung der OEIS-Folge A333489<br>
+    im interaktiven Primzahlenbaum</h1>
+    <div class="meta-row">
+      <span><span class="meta-label">Autorin:</span> Nancy Jasmina Barbelo</span>
+      <span><span class="meta-label">Affiliation:</span> insleben.com, Vienna</span>
+      <span><span class="meta-label">Entwicklung:</span> Claude (Anthropic)</span>
+      <span><span class="meta-label">Lizenz:</span> CC BY 4.0</span>
+    </div>
+  </div>
+
+  <h2>Abstract</h2>
+
+  <p>
+    Diese Arbeit präsentiert eine interaktive Browser-Visualisierung, die die ganzzahlige
+    Folge A333489 des OEIS auf einen Primzahlenbaum überlagert. Der zugrundeliegende
+    Primzahlenbaum wurde in der Vorarbeit <em>Primzahlen Baum I</em>
+    (Barbelo &amp; Claude, 2026, DOI:&nbsp;10.5281/zenodo.20475174) entwickelt:
+    Primzahlen bilden den vertikalen Stamm, zusammengesetzte Zahlen zwischen
+    aufeinanderfolgenden Primzahlen formen abwechselnd rechts und links abstehende
+    Äste — analog einer Fischgrätenstruktur. Diese Darstellung macht die Struktur
+    der Primzahllücken geometrisch unmittelbar sichtbar.
+  </p>
+
+  <p>
+    Die OEIS-Folge <strong>A333489</strong> bezeichnet jene natürlichen Zahlen&nbsp;k,
+    bei denen die k-te Komposition in Standardreihenfolge ein <em>Anti-Run</em> ist,
+    d.&nbsp;h. keine zwei benachbarten gleichen Teile enthält. Die Komposition wird
+    direkt aus der Binärdarstellung von&nbsp;k abgeleitet: Die führende 1 beginnt den
+    ersten Teil; jede weitere 1 startet einen neuen Teil, jede 0 verlängert den
+    laufenden Teil um 1.
+  </p>
+
+  <div class="sequence">
+    A333489: 0, 1, 2, 4, 5, 6, 8, 9, 12, 13, 16, 17, 18, 20, 22, 24, 25,
+    32, 33, 34, 37, 38, 40, 41, 44, 45, 48, 49, 50, 52, 54, 64, 65, 66, 68, ...
+  </div>
+
+  <p>
+    In der vorliegenden Visualisierung werden alle Zahlen der A333489-Folge im
+    Primzahlenbaum zusätzlich <strong>magenta</strong> hervorgehoben — unabhängig
+    davon, ob es sich um eine Primzahl (Stamm) oder eine zusammengesetzte Zahl (Ast)
+    handelt. Dies erlaubt es, das Verteilungsmuster der Anti-Run-Kompositionen direkt
+    in der geometrischen Baumstruktur abzulesen und mit der Primzahlverteilung
+    in Beziehung zu setzen.
+  </p>
+
+  <p>
+    Die interaktive Oberfläche ermöglicht Zoom, Pan, Suchfunktion und Bereichsauswahl
+    von 2 bis 1&thinsp;000. Die Implementierung erfolgt vollständig in HTML5 und Canvas
+    ohne externe Bibliotheken. Nach aktuellem Kenntnisstand existiert keine
+    vergleichbare Visualisierung dieser Folge in einem Primzahlenbaum-Kontext.
+  </p>
+
+  <h2>Keywords</h2>
+  <p class="keywords">
+    <span class="kw-label">Keywords:</span>
+    prime numbers · prime tree · OEIS A333489 · anti-run compositions ·
+    compositions in standard order · integer sequences · interactive visualization ·
+    HTML5 Canvas · number theory
+  </p>
+
+  <h2>Related Work</h2>
+  <p>
+    Dieses Werk baut direkt auf <em>Primzahlen Baum I</em> auf und ist als dessen
+    Ergänzung einzustufen (<code>is supplement to</code>):
+    <a href="https://doi.org/10.5281/zenodo.20475174">doi.org/10.5281/zenodo.20475174</a>
+  </p>
+
+  <h2>References</h2>
+  <ul class="references">
+    <li>
+      Barbelo, N.J. &amp; Claude (Anthropic). (2026).
+      <em>Primzahlen Baum I: A New Visual Representation of Prime Gap Structure.</em>
+      Zenodo. <a href="https://doi.org/10.5281/zenodo.20475174">https://doi.org/10.5281/zenodo.20475174</a>
+    </li>
+    <li>
+      Sloane, N.J.A. et al. <em>The On-Line Encyclopedia of Integer Sequences.</em>
+      Sequence A333489 — Numbers k such that the k-th composition in standard order
+      is an anti-run. <a href="https://oeis.org/A333489">https://oeis.org/A333489</a>
+    </li>
+  </ul>
+
+  <div class="doc-footer">
+    <span>Nancy Jasmina Barbelo · insleben.com · Vienna, Juni 2026</span>
+    <span>CC BY 4.0 · <a href="https://doi.org/10.5281/zenodo.20475174">Primzahlen Baum I</a></span>
+  </div>
+
+</div>
+</body>
+</html>
