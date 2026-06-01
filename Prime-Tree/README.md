@@ -4,11 +4,11 @@ A visual representation of prime numbers in which primes form a vertical trunk a
 
 ## Interactive Visualization
 
-👉 [Open the Barbelo Prime Tree](https://njbarbelo.github.io/Barbelo-Prime-Tree/barbelo-primzahlbaum.html)
+👉 [Open the Barbelo Prime Tree](https://www.insleben.com/Prime-Tree/primzahlenbaum.html)
 
 ## Contents
 
-- `barbelo-primzahlbaum.html` — interactive tree, explorable up to 10,000
+- `primzahlenbaum.html` — interactive tree, explorable up to 10,000
 - `barbelo-prime-tree-paper.pdf` — accompanying paper (EN)
 - `barbelo-prime-tree-paper-final.docx` — Word version
 - Original Excel/Numbers worksheet — the hand-drawn origin of the concept
@@ -21,4 +21,3 @@ A visual representation of prime numbers in which primes form a vertical trunk a
 ## Citation
 
 Barbelo, N.J. & Claude (Anthropic). (2026). *The Barbelo Prime Tree: A New Visual Representation of Prime Gap Structure.* Vienna.
-
