@@ -3,7 +3,8 @@
 **Autorin / Author:** Nancy Jasmina Barbelo (insleben.com)  
 **Entwicklung / Implementation:** Claude (Anthropic)  
 **Datum / Date:** Juni 2026  
-**Lizenz / License:** CC BY 4.0
+**Lizenz / License:** CC BY 4.0  
+**DOI:** https://doi.org/10.5281/zenodo.20497826
 
 ---
 
