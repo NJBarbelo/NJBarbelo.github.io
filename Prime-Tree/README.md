@@ -5,17 +5,17 @@ A visual representation of prime numbers in which primes form a vertical trunk a
 ## Interactive Visualizations
 
 👉 [Primzahlen Baum I](https://www.insleben.com/Prime-Tree/primzahlenbaum.html) — DOI: https://doi.org/10.5281/zenodo.20475174  
-👉 [Primzahlen Baum II – A333489](https://www.insleben.com/Prime-Tree/primzahlenbaum2.html) — A333489 overlay (magenta)
+👉 [Primzahlen Baum II – A333489](https://www.insleben.com/Prime-Tree/Baum-II/primzahlenbaum2.html) — A333489 overlay (magenta)
 
 ## Contents
 
 | File | Description |
 |---|---|
 | `primzahlenbaum.html` | Primzahlen Baum I — interactive tree, explorable up to 1,000 |
-| `primzahlenbaum2.html` | Primzahlen Baum II — same tree with OEIS A333489 highlighted in magenta |
 | `barbelo-prime-tree-paper-v2.pdf` | Accompanying paper (EN) |
-| `abstract.html` | Abstract for Zenodo submission II (print-ready PDF) |
 | `PrimTree-original.png` | Original hand-drawn representation |
+| `Baum-II/primzahlenbaum2.html` | Primzahlen Baum II — same tree with OEIS A333489 highlighted in magenta |
+| `Baum-II/abstract.html` | Abstract for Zenodo submission II (print-ready PDF) |
 
 ## Primzahlen Baum II — A333489
 
