@@ -5,7 +5,7 @@ A visual representation of prime numbers in which primes form a vertical trunk a
 ## Interactive Visualizations
 
 👉 [Primzahlen Baum I](https://www.insleben.com/Prime-Tree/primzahlenbaum.html) — DOI: https://doi.org/10.5281/zenodo.20475174  
-👉 [Primzahlen Baum II – A333489](https://www.insleben.com/Prime-Tree/Baum-II/primzahlenbaum2.html) — A333489 overlay (magenta)
+👉 [The Barbelo Prime Tree II – A333489](https://www.insleben.com/Prime-Tree/Baum-II/primzahlenbaum2.html) — A333489 overlay (magenta)
 
 ## Contents
 

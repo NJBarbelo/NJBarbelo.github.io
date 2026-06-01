@@ -1,4 +1,4 @@
-# Primzahlen Baum II – A333489
+# The Barbelo Prime Tree II – Visualization of OEIS Sequence A333489 (Anti-Run Compositions)
 
 **Autorin / Author:** Nancy Jasmina Barbelo (insleben.com)  
 **Entwicklung / Implementation:** Claude (Anthropic)  
