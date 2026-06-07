@@ -427,11 +427,19 @@ function render() {
 
       if (col.gap) {
         td.className = 'gap-col';
-        // Show the gap number dimly
         const gapNum = (k - 1) * 9 + col.gap;
-        td.textContent = gapNum <= maxBlock * 9 ? gapNum : '';
-        td.style.color = '#141414';
-        td.style.fontSize = '0.75em';
+        if (gapNum === 3) {
+          // 3 is the only prime with digit sum 3
+          td.classList.add('cell-prime');
+          td.style.fontSize = '';
+          td.textContent = '3';
+          td.dataset.num = 3;
+          td.dataset.type = 'prime';
+        } else {
+          td.textContent = gapNum <= maxBlock * 9 ? gapNum : '';
+          td.style.color = '#141414';
+          td.style.fontSize = '0.75em';
+        }
         tr.appendChild(td);
         continue;
       }
