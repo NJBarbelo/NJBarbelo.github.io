@@ -17,14 +17,14 @@
     }
 
     header {
-      padding: 18px 20px 12px;
+      padding: 16px 20px 12px;
       text-align: center;
       border-bottom: 1px solid #1a1a1a;
     }
 
     h1 {
       color: #c9a84c;
-      font-size: 1.45em;
+      font-size: 1.4em;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 4px;
@@ -32,8 +32,8 @@
 
     .subtitle {
       color: #3fd6c8;
-      font-size: 0.78em;
-      letter-spacing: 0.12em;
+      font-size: 0.76em;
+      letter-spacing: 0.1em;
       margin-bottom: 14px;
     }
 
@@ -82,21 +82,39 @@
       justify-content: center;
       gap: 18px;
       flex-wrap: wrap;
-      margin-bottom: 12px;
-      font-size: 0.76em;
+      margin-bottom: 10px;
+      font-size: 0.74em;
     }
     .legend-item { display: flex; align-items: center; gap: 5px; }
-    .legend-dot { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
-    .info-bar {
-      text-align: center;
-      font-size: 0.76em;
-      color: #555;
+    /* ── Pattern diagram ── */
+    .pattern-diagram {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0;
       margin-bottom: 14px;
-      line-height: 1.6;
+      font-size: 0.72em;
+      flex-wrap: wrap;
     }
-    .info-bar b { color: #c9a84c; }
-    .info-bar em { color: #3fd6c8; font-style: normal; }
+    .pd-block {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      border: 1px solid #1a1a1a;
+      padding: 4px 8px;
+      letter-spacing: 0.04em;
+    }
+    .pd-label {
+      color: #555;
+      font-size: 0.88em;
+      margin: 0 4px;
+    }
+    .pd-six  { background: #0a0800; color: #c9a84c; border-color: #c9a84c22; }
+    .pd-gap1 { background: #080010; color: #3f3f50; border-color: #1a1a2a; }
+    .pd-two  { background: #000a08; color: #3fd6c8; border-color: #003322; }
+    .pd-gap2 { background: #080010; color: #3f3f50; border-color: #1a1a2a; }
 
     /* ── Table ── */
     #grid-wrap { overflow-x: auto; }
@@ -107,91 +125,87 @@
       font-size: 0.8em;
     }
 
-    /* Column header row */
+    /* Column headers */
     thead th {
-      color: #3fd6c8;
-      padding: 5px 8px;
+      padding: 4px 6px;
       text-align: center;
-      font-size: 1em;
-      border-bottom: 1px solid #222;
       background: #000;
       position: sticky;
       top: 0;
       z-index: 2;
-      letter-spacing: 0.08em;
+      font-size: 0.88em;
+      border: 1px solid #111;
     }
-    thead th.th-row-label {
-      color: #444;
-      font-size: 0.85em;
-      min-width: 70px;
+    th.th-row-label {
+      color: #333;
+      min-width: 65px;
     }
-    thead th.th-ds {
-      min-width: 64px;
+    th.th-ds {
+      color: #3fd6c8;
+      min-width: 58px;
+      letter-spacing: 0.04em;
     }
-    thead th.th-gap {
-      color: #1f1f1f;
-      min-width: 28px;
-      font-size: 0.7em;
+    th.th-gap {
+      color: #1e1e1e;
+      min-width: 24px;
+      font-size: 0.75em;
+    }
+    /* The "2" group after the row-end gap — first 2 cols get a teal accent */
+    th.th-ds-lead {
+      color: #3fd6c8bb;
+      border-left: 2px solid #3fd6c822;
     }
 
     /* Data cells */
     td {
-      padding: 3px 6px;
+      padding: 3px 5px;
       text-align: center;
       height: 22px;
       border: 1px solid #0d0d0d;
-      min-width: 64px;
+      min-width: 58px;
     }
 
     td.row-label {
-      color: #444;
-      font-size: 0.82em;
-      padding-right: 10px;
-      padding-left: 6px;
+      color: #333;
+      font-size: 0.8em;
+      padding-right: 8px;
+      padding-left: 5px;
       white-space: nowrap;
       position: sticky;
       left: 0;
       background: #000;
       z-index: 1;
       border-right: 1px solid #1a1a1a;
-      min-width: 70px;
+      min-width: 65px;
     }
 
     td.gap-col {
-      background: #030303;
-      border-color: #080808;
-      min-width: 28px;
+      background: #050008;
+      border-color: #0a000f;
+      min-width: 24px;
     }
 
-    /* Prime cells */
     td.cell-prime {
       color: #c9a84c;
       font-weight: bold;
       cursor: pointer;
     }
-    td.cell-prime:hover { background: #c9a84c18; }
+    td.cell-prime:hover { background: #c9a84c20; }
 
-    /* Composite (sieved) cells */
     td.cell-comp {
-      color: #252525;
+      color: #1e1e1e;
       cursor: pointer;
     }
-    td.cell-comp:hover { background: #111; }
-    td.cell-comp.comp-visible { color: #2c2c2c; }
+    td.cell-comp:hover { background: #0e0e0e; }
+    td.cell-comp.shown { color: #2a2a2a; }
 
     td.cell-empty { background: transparent; }
 
-    /* Subtle column tints */
-    td.ds-1 { }
-    td.ds-2 { background: #00050a; }
-    td.ds-4 { }
-    td.ds-5 { background: #0a0500; }
-    td.ds-7 { }
-    td.ds-8 { background: #020008; }
+    /* Row-end gap: thick bottom border to signal DS9 gap between rows */
+    tr.data-row { border-bottom: 2px solid #0c000f; }
 
-    td.cell-prime.ds-2 { background: #001020; }
-    td.cell-prime.ds-5 { background: #100800; }
-    td.cell-prime.ds-8 { background: #08003a18; }
+    /* First 2 active cols (DS1, DS2) get a subtle left border to show "2 after gap" */
+    td.ds-lead { border-left: 2px solid #3fd6c818; }
 
     /* Tooltip */
     #tooltip {
@@ -200,15 +214,15 @@
       border: 1px solid #3fd6c8;
       color: #f0ece4;
       padding: 8px 12px;
-      font-size: 0.78em;
+      font-size: 0.76em;
       border-radius: 4px;
       pointer-events: none;
       display: none;
       z-index: 999;
-      line-height: 1.7;
+      line-height: 1.75;
       max-width: 200px;
     }
-    #tooltip .tt-num { color: #c9a84c; font-weight: bold; font-size: 1.15em; }
+    #tooltip .tt-num { color: #c9a84c; font-weight: bold; font-size: 1.1em; }
     #tooltip .tt-lbl { color: #3fd6c8; }
 
     footer {
@@ -247,18 +261,29 @@
       <span>Primzahl</span>
     </div>
     <div class="legend-item">
-      <div class="legend-dot" style="background:#252525; border:1px solid #333;"></div>
-      <span>Vielfaches (gesiebt)</span>
+      <div class="legend-dot" style="background:#2a2a2a; border:1px solid #333;"></div>
+      <span>Vielfaches einer Primzahl</span>
     </div>
     <div class="legend-item">
-      <div class="legend-dot" style="background:#030303; border:1px solid #111;"></div>
-      <span>Quersumme 3·6·9 — immer leer</span>
+      <div class="legend-dot" style="background:#050008; border:1px solid #111;"></div>
+      <span>Quersumme 3 · 6 → immer leer (÷ 3)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#000; border: 2px solid #0c000f; border-bottom-width:3px;"></div>
+      <span>Zeilenende = Quersumme 9 (÷ 9) → immer leer</span>
     </div>
   </div>
 
-  <div class="info-bar">
-    Spalten = die 6 erlaubten Quersummen <b>1 · 2 · 4 · 5 · 7 · 8</b><br>
-    Zeilen = je ein 9er-Block · Quersummen <em>3, 6, 9</em> sind strukturell ausgeschlossen
+  <!-- Pattern diagram -->
+  <div class="pattern-diagram">
+    <div class="pd-block pd-six">6 × Primzahl möglich</div>
+    <div class="pd-label">→</div>
+    <div class="pd-block pd-gap1">1 · sicher leer (QS 9)</div>
+    <div class="pd-label">→</div>
+    <div class="pd-block pd-two">2 × Primzahl möglich</div>
+    <div class="pd-label">→</div>
+    <div class="pd-block pd-gap2">1 · sicher leer (QS 3)</div>
+    <div class="pd-label">→ wiederholt</div>
   </div>
 
   <div id="grid-wrap">
@@ -313,20 +338,46 @@ function smallestFactor(n, isPrime) {
   return n;
 }
 
-// ── State ─────────────────────────────────────────────────────────────────────
+// ── Column definition ─────────────────────────────────────────────────────────
+//
+// 8 visible columns per row: DS1 DS2 [gap3] DS4 DS5 [gap6] DS7 DS8
+// The DS9 position is NOT shown as a column — instead it appears as the
+// thick bottom border between rows (the "row-end gap" = 1 certain empty).
+// This makes the 6+1+2+1 pattern cross-visible:
+//   row k     : DS1 DS2 [3] DS4 DS5 [6] DS7 DS8  ← 6 active cells
+//   row-border: ════════════════════════════════  ← DS9 gap (the "1 certain empty")
+//   row k+1   : DS1 DS2 [3] DS4 DS5 [6] DS7 DS8  ← first 2 active = the "2"
+//               ↑   ↑                             then [3] = the next "1 certain empty"
+//
+// So reading linearly: 6 active → [DS9 border] → 2 active (DS1,DS2) → [DS3 gap] → ...
 
-const DS_COLS = [1, 2, 4, 5, 7, 8]; // the 6 Tesla-valid digit sums
+const COL_DEF = [
+  { ds: 1, lead: true  },   // ← "lead" = marks the "2 after DS9-gap"
+  { ds: 2, lead: true  },
+  { gap: 3             },
+  { ds: 4, lead: false },
+  { ds: 5, lead: false },
+  { gap: 6             },
+  { ds: 7, lead: false },
+  { ds: 8, lead: false },
+  // DS9 is implicit — shown as thick row bottom border
+];
+
 let showComposites = true;
+let cachedPrime = null, cachedLimit = 0;
 
 // ── Render ────────────────────────────────────────────────────────────────────
 
 function render() {
   const limit = parseInt(document.getElementById('rangeSlider').value);
-  // Round limit down to nearest full 9-block
   const maxBlock = Math.floor(limit / 9);
-  const actualLimit = maxBlock * 9;
 
-  const isPrime = sievePrimes(actualLimit);
+  if (limit !== cachedLimit) {
+    cachedPrime = sievePrimes(maxBlock * 9 + 9);
+    cachedLimit = limit;
+  }
+  const isPrime = cachedPrime;
+
   const table = document.getElementById('sieve-table');
   table.innerHTML = '';
 
@@ -339,65 +390,55 @@ function render() {
   cornerTh.textContent = 'Block';
   hRow.appendChild(cornerTh);
 
-  // Columns: DS1, DS2, [gap:3], DS4, DS5, [gap:6], DS7, DS8, [gap:9]
-  const colDef = [
-    {ds:1}, {ds:2}, {gap:3}, {ds:4}, {ds:5}, {gap:6}, {ds:7}, {ds:8}, {gap:9}
-  ];
-
-  for (const col of colDef) {
+  for (const col of COL_DEF) {
     const th = document.createElement('th');
     if (col.gap) {
       th.className = 'th-gap';
       th.textContent = col.gap;
-      th.title = 'Quersumme ' + col.gap + ' — immer leer (÷ 3)';
+      th.title = 'QS ' + col.gap + ' – immer leer (÷ 3)';
     } else {
-      th.className = 'th-ds';
+      th.className = col.lead ? 'th-ds th-ds-lead' : 'th-ds';
       th.textContent = 'QS ' + col.ds;
     }
     hRow.appendChild(th);
   }
-
   thead.appendChild(hRow);
   table.appendChild(thead);
 
-  // ── Body: one row per 9-block ──
-  // Block k covers numbers: (k-1)*9+1 .. k*9
-  // In each block, the number with digital root d is: the unique n in [block] with digitalRoot(n)===d
-  // Since digitalRoot(n) = ((n-1) mod 9) + 1 for n>0:
-  //   n with DR=d in block k: n = (k-1)*9 + d
-
+  // ── Body ──
+  // Block k covers numbers (k-1)×9+1 … k×9
+  // Number with digital root d in block k: n = (k-1)×9 + d
   const tbody = document.createElement('tbody');
 
   for (let k = 1; k <= maxBlock; k++) {
     const tr = document.createElement('tr');
+    tr.className = 'data-row';
 
+    // Row label
     const firstN = (k - 1) * 9 + 1;
     const lastN  = k * 9;
+    const lbl = document.createElement('td');
+    lbl.className = 'row-label';
+    lbl.textContent = firstN + '–' + lastN;
+    tr.appendChild(lbl);
 
-    const labelTd = document.createElement('td');
-    labelTd.className = 'row-label';
-    labelTd.textContent = firstN + ' – ' + lastN;
-    tr.appendChild(labelTd);
-
-    for (const col of colDef) {
+    for (const col of COL_DEF) {
       const td = document.createElement('td');
 
       if (col.gap) {
         td.className = 'gap-col';
+        // Show the gap number dimly
+        const gapNum = (k - 1) * 9 + col.gap;
+        td.textContent = gapNum <= maxBlock * 9 ? gapNum : '';
+        td.style.color = '#141414';
+        td.style.fontSize = '0.75em';
         tr.appendChild(td);
         continue;
       }
 
       const num = (k - 1) * 9 + col.ds;
-
-      if (num > actualLimit) {
-        td.className = 'cell-empty';
-        tr.appendChild(td);
-        continue;
-      }
-
-      td.classList.add('ds-' + col.ds);
       td.dataset.num = num;
+      if (col.lead) td.classList.add('ds-lead');
 
       if (isPrime[num]) {
         td.classList.add('cell-prime');
@@ -406,7 +447,7 @@ function render() {
       } else {
         td.dataset.type = 'comp';
         if (showComposites) {
-          td.classList.add('cell-comp', 'comp-visible');
+          td.classList.add('cell-comp', 'shown');
           td.textContent = num;
         } else {
           td.classList.add('cell-empty');
@@ -425,8 +466,6 @@ function render() {
 // ── Tooltip ───────────────────────────────────────────────────────────────────
 
 const tooltip = document.getElementById('tooltip');
-let isPrimeCached = null;
-let limitCached = 0;
 
 document.getElementById('sieve-table').addEventListener('mousemove', e => {
   const td = e.target.closest('td[data-num]');
@@ -434,14 +473,8 @@ document.getElementById('sieve-table').addEventListener('mousemove', e => {
 
   const num = parseInt(td.dataset.num);
   const type = td.dataset.type;
-  const limit = parseInt(document.getElementById('rangeSlider').value);
-
-  if (limit !== limitCached) {
-    isPrimeCached = sievePrimes(limit);
-    limitCached = limit;
-  }
-
   const chain = digitSumChain(num);
+
   let html = `<div class="tt-num">${num}</div>`;
   html += `<div><span class="tt-lbl">Quersumme:</span> ${chain[chain.length - 1]}</div>`;
   if (chain.length > 1)
@@ -449,8 +482,8 @@ document.getElementById('sieve-table').addEventListener('mousemove', e => {
 
   if (type === 'prime') {
     html += `<div style="color:#c9a84c;margin-top:4px;">✓ Primzahl</div>`;
-  } else {
-    const sf = smallestFactor(num, isPrimeCached);
+  } else if (cachedPrime) {
+    const sf = smallestFactor(num, cachedPrime);
     if (sf) html += `<div style="color:#555;margin-top:4px;">÷ ${sf}</div>`;
   }
 
@@ -468,7 +501,6 @@ document.getElementById('sieve-table').addEventListener('mouseleave', () => {
 
 document.getElementById('rangeSlider').addEventListener('input', e => {
   document.getElementById('rangeDisplay').textContent = e.target.value;
-  isPrimeCached = null;
   render();
 });
 
