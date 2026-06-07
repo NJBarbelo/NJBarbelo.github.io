@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tesla-Sieb – Barbelo Prime Sieve</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #f0ece4;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 18px 20px 12px;
+      text-align: center;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    h1 {
+      color: #c9a84c;
+      font-size: 1.45em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #3fd6c8;
+      font-size: 0.78em;
+      letter-spacing: 0.12em;
+      margin-bottom: 14px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-group { display: flex; align-items: center; gap: 8px; }
+    .controls label { color: #3fd6c8; font-size: 0.82em; white-space: nowrap; }
+
+    input[type=range] {
+      accent-color: #c9a84c;
+      width: 160px;
+      cursor: pointer;
+    }
+
+    .count-display { color: #c9a84c; font-weight: bold; min-width: 48px; }
+
+    .toggle-btn {
+      background: #111;
+      border: 1px solid #3fd6c855;
+      color: #555;
+      font-family: 'Courier New', monospace;
+      font-size: 0.78em;
+      padding: 4px 12px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .toggle-btn:hover { border-color: #3fd6c8; color: #3fd6c8; }
+    .toggle-btn.active { border-color: #c9a84c55; color: #c9a84c; }
+
+    #main-area {
+      flex: 1;
+      overflow: auto;
+      padding: 14px 12px 24px;
+    }
+
+    /* ── Legend ── */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      font-size: 0.76em;
+    }
+    .legend-item { display: flex; align-items: center; gap: 5px; }
+    .legend-dot { width: 11px; height: 11px; border-radius: 2px; flex-shrink: 0; }
+
+    .info-bar {
+      text-align: center;
+      font-size: 0.76em;
+      color: #555;
+      margin-bottom: 14px;
+      line-height: 1.6;
+    }
+    .info-bar b { color: #c9a84c; }
+    .info-bar em { color: #3fd6c8; font-style: normal; }
+
+    /* ── Table ── */
+    #grid-wrap { overflow-x: auto; }
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      font-size: 0.8em;
+    }
+
+    /* Column header row */
+    thead th {
+      color: #3fd6c8;
+      padding: 5px 8px;
+      text-align: center;
+      font-size: 1em;
+      border-bottom: 1px solid #222;
+      background: #000;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      letter-spacing: 0.08em;
+    }
+    thead th.th-row-label {
+      color: #444;
+      font-size: 0.85em;
+      min-width: 70px;
+    }
+    thead th.th-ds {
+      min-width: 64px;
+    }
+    thead th.th-gap {
+      color: #1f1f1f;
+      min-width: 28px;
+      font-size: 0.7em;
+    }
+
+    /* Data cells */
+    td {
+      padding: 3px 6px;
+      text-align: center;
+      height: 22px;
+      border: 1px solid #0d0d0d;
+      min-width: 64px;
+    }
+
+    td.row-label {
+      color: #444;
+      font-size: 0.82em;
+      padding-right: 10px;
+      padding-left: 6px;
+      white-space: nowrap;
+      position: sticky;
+      left: 0;
+      background: #000;
+      z-index: 1;
+      border-right: 1px solid #1a1a1a;
+      min-width: 70px;
+    }
+
+    td.gap-col {
+      background: #030303;
+      border-color: #080808;
+      min-width: 28px;
+    }
+
+    /* Prime cells */
+    td.cell-prime {
+      color: #c9a84c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    td.cell-prime:hover { background: #c9a84c18; }
+
+    /* Composite (sieved) cells */
+    td.cell-comp {
+      color: #252525;
+      cursor: pointer;
+    }
+    td.cell-comp:hover { background: #111; }
+    td.cell-comp.comp-visible { color: #2c2c2c; }
+
+    td.cell-empty { background: transparent; }
+
+    /* Subtle column tints */
+    td.ds-1 { }
+    td.ds-2 { background: #00050a; }
+    td.ds-4 { }
+    td.ds-5 { background: #0a0500; }
+    td.ds-7 { }
+    td.ds-8 { background: #020008; }
+
+    td.cell-prime.ds-2 { background: #001020; }
+    td.cell-prime.ds-5 { background: #100800; }
+    td.cell-prime.ds-8 { background: #08003a18; }
+
+    /* Tooltip */
+    #tooltip {
+      position: fixed;
+      background: #0d0d0d;
+      border: 1px solid #3fd6c8;
+      color: #f0ece4;
+      padding: 8px 12px;
+      font-size: 0.78em;
+      border-radius: 4px;
+      pointer-events: none;
+      display: none;
+      z-index: 999;
+      line-height: 1.7;
+      max-width: 200px;
+    }
+    #tooltip .tt-num { color: #c9a84c; font-weight: bold; font-size: 1.15em; }
+    #tooltip .tt-lbl { color: #3fd6c8; }
+
+    footer {
+      padding: 10px 20px;
+      text-align: center;
+      border-top: 1px solid #1a1a1a;
+      font-size: 0.72em;
+      color: #444;
+    }
+    footer a { color: #c9a84c55; text-decoration: none; }
+    footer a:hover { color: #c9a84c; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Tesla-Sieb · Barbelo Prime Sieve</h1>
+  <div class="subtitle">Iterative Quersummen · Primzahlen in der Tesla-Sequenz ohne 3 · 6 · 9</div>
+  <div class="controls">
+    <div class="ctrl-group">
+      <label for="rangeSlider">Bis:</label>
+      <input type="range" id="rangeSlider" min="90" max="1000" step="9" value="270">
+      <span class="count-display" id="rangeDisplay">270</span>
+    </div>
+    <div class="ctrl-group">
+      <button class="toggle-btn active" id="toggleComposites">Vielfache anzeigen</button>
+    </div>
+  </div>
+</header>
+
+<div id="main-area">
+
+  <div class="legend">
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#c9a84c;"></div>
+      <span>Primzahl</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#252525; border:1px solid #333;"></div>
+      <span>Vielfaches (gesiebt)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-dot" style="background:#030303; border:1px solid #111;"></div>
+      <span>Quersumme 3·6·9 — immer leer</span>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    Spalten = die 6 erlaubten Quersummen <b>1 · 2 · 4 · 5 · 7 · 8</b><br>
+    Zeilen = je ein 9er-Block · Quersummen <em>3, 6, 9</em> sind strukturell ausgeschlossen
+  </div>
+
+  <div id="grid-wrap">
+    <table id="sieve-table"></table>
+  </div>
+</div>
+
+<div id="tooltip"></div>
+
+<footer>
+  © 2026 Nancy Jasmina Barbelo – insleben.com &nbsp;·&nbsp;
+  <a href="../Prime-Tree/primzahlenbaum.html">Prime Tree I</a> &nbsp;·&nbsp;
+  <a href="../Prime-Tree/Baum-II/primzahlenbaum2.html">Prime Tree II</a>
+</footer>
+
+<script>
+// ── Math helpers ──────────────────────────────────────────────────────────────
+
+function digitalRoot(n) {
+  if (n === 0) return 0;
+  while (n >= 10) {
+    let s = 0, t = n;
+    while (t > 0) { s += t % 10; t = Math.floor(t / 10); }
+    n = s;
+  }
+  return n;
+}
+
+function digitSumChain(n) {
+  const chain = [n];
+  let cur = n;
+  while (cur >= 10) {
+    let s = 0, t = cur;
+    while (t > 0) { s += t % 10; t = Math.floor(t / 10); }
+    chain.push(s); cur = s;
+  }
+  return chain;
+}
+
+function sievePrimes(limit) {
+  const s = new Uint8Array(limit + 1).fill(1);
+  s[0] = s[1] = 0;
+  for (let i = 2; i * i <= limit; i++)
+    if (s[i]) for (let j = i * i; j <= limit; j += i) s[j] = 0;
+  return s;
+}
+
+function smallestFactor(n, isPrime) {
+  if (isPrime[n]) return null;
+  if (n % 2 === 0) return 2;
+  for (let f = 3; f * f <= n; f += 2) if (n % f === 0) return f;
+  return n;
+}
+
+// ── State ─────────────────────────────────────────────────────────────────────
+
+const DS_COLS = [1, 2, 4, 5, 7, 8]; // the 6 Tesla-valid digit sums
+let showComposites = true;
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+function render() {
+  const limit = parseInt(document.getElementById('rangeSlider').value);
+  // Round limit down to nearest full 9-block
+  const maxBlock = Math.floor(limit / 9);
+  const actualLimit = maxBlock * 9;
+
+  const isPrime = sievePrimes(actualLimit);
+  const table = document.getElementById('sieve-table');
+  table.innerHTML = '';
+
+  // ── Header ──
+  const thead = document.createElement('thead');
+  const hRow = document.createElement('tr');
+
+  const cornerTh = document.createElement('th');
+  cornerTh.className = 'th-row-label';
+  cornerTh.textContent = 'Block';
+  hRow.appendChild(cornerTh);
+
+  // Columns: DS1, DS2, [gap:3], DS4, DS5, [gap:6], DS7, DS8, [gap:9]
+  const colDef = [
+    {ds:1}, {ds:2}, {gap:3}, {ds:4}, {ds:5}, {gap:6}, {ds:7}, {ds:8}, {gap:9}
+  ];
+
+  for (const col of colDef) {
+    const th = document.createElement('th');
+    if (col.gap) {
+      th.className = 'th-gap';
+      th.textContent = col.gap;
+      th.title = 'Quersumme ' + col.gap + ' — immer leer (÷ 3)';
+    } else {
+      th.className = 'th-ds';
+      th.textContent = 'QS ' + col.ds;
+    }
+    hRow.appendChild(th);
+  }
+
+  thead.appendChild(hRow);
+  table.appendChild(thead);
+
+  // ── Body: one row per 9-block ──
+  // Block k covers numbers: (k-1)*9+1 .. k*9
+  // In each block, the number with digital root d is: the unique n in [block] with digitalRoot(n)===d
+  // Since digitalRoot(n) = ((n-1) mod 9) + 1 for n>0:
+  //   n with DR=d in block k: n = (k-1)*9 + d
+
+  const tbody = document.createElement('tbody');
+
+  for (let k = 1; k <= maxBlock; k++) {
+    const tr = document.createElement('tr');
+
+    const firstN = (k - 1) * 9 + 1;
+    const lastN  = k * 9;
+
+    const labelTd = document.createElement('td');
+    labelTd.className = 'row-label';
+    labelTd.textContent = firstN + ' – ' + lastN;
+    tr.appendChild(labelTd);
+
+    for (const col of colDef) {
+      const td = document.createElement('td');
+
+      if (col.gap) {
+        td.className = 'gap-col';
+        tr.appendChild(td);
+        continue;
+      }
+
+      const num = (k - 1) * 9 + col.ds;
+
+      if (num > actualLimit) {
+        td.className = 'cell-empty';
+        tr.appendChild(td);
+        continue;
+      }
+
+      td.classList.add('ds-' + col.ds);
+      td.dataset.num = num;
+
+      if (isPrime[num]) {
+        td.classList.add('cell-prime');
+        td.textContent = num;
+        td.dataset.type = 'prime';
+      } else {
+        td.dataset.type = 'comp';
+        if (showComposites) {
+          td.classList.add('cell-comp', 'comp-visible');
+          td.textContent = num;
+        } else {
+          td.classList.add('cell-empty');
+        }
+      }
+
+      tr.appendChild(td);
+    }
+
+    tbody.appendChild(tr);
+  }
+
+  table.appendChild(tbody);
+}
+
+// ── Tooltip ───────────────────────────────────────────────────────────────────
+
+const tooltip = document.getElementById('tooltip');
+let isPrimeCached = null;
+let limitCached = 0;
+
+document.getElementById('sieve-table').addEventListener('mousemove', e => {
+  const td = e.target.closest('td[data-num]');
+  if (!td) { tooltip.style.display = 'none'; return; }
+
+  const num = parseInt(td.dataset.num);
+  const type = td.dataset.type;
+  const limit = parseInt(document.getElementById('rangeSlider').value);
+
+  if (limit !== limitCached) {
+    isPrimeCached = sievePrimes(limit);
+    limitCached = limit;
+  }
+
+  const chain = digitSumChain(num);
+  let html = `<div class="tt-num">${num}</div>`;
+  html += `<div><span class="tt-lbl">Quersumme:</span> ${chain[chain.length - 1]}</div>`;
+  if (chain.length > 1)
+    html += `<div><span class="tt-lbl">Kette:</span> ${chain.join(' → ')}</div>`;
+
+  if (type === 'prime') {
+    html += `<div style="color:#c9a84c;margin-top:4px;">✓ Primzahl</div>`;
+  } else {
+    const sf = smallestFactor(num, isPrimeCached);
+    if (sf) html += `<div style="color:#555;margin-top:4px;">÷ ${sf}</div>`;
+  }
+
+  tooltip.innerHTML = html;
+  tooltip.style.display = 'block';
+  tooltip.style.left = (e.clientX + 14) + 'px';
+  tooltip.style.top  = (e.clientY - 10) + 'px';
+});
+
+document.getElementById('sieve-table').addEventListener('mouseleave', () => {
+  tooltip.style.display = 'none';
+});
+
+// ── Controls ──────────────────────────────────────────────────────────────────
+
+document.getElementById('rangeSlider').addEventListener('input', e => {
+  document.getElementById('rangeDisplay').textContent = e.target.value;
+  isPrimeCached = null;
+  render();
+});
+
+document.getElementById('toggleComposites').addEventListener('click', function() {
+  showComposites = !showComposites;
+  this.textContent = showComposites ? 'Vielfache anzeigen' : 'Vielfache ausblenden';
+  this.classList.toggle('active', showComposites);
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
