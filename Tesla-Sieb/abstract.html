@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abstract – The Barbelo Prime Sieve</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #fff;
+      color: #111;
+      font-family: 'Georgia', 'Times New Roman', serif;
+      max-width: 720px;
+      margin: 60px auto;
+      padding: 0 40px 60px;
+      font-size: 13pt;
+      line-height: 1.7;
+    }
+
+    .header-logo {
+      text-align: center;
+      margin-bottom: 36px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .logo-name {
+      font-family: 'Georgia', serif;
+      font-size: 1.1em;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #b8922a;
+      margin-bottom: 2px;
+    }
+
+    .logo-sub {
+      font-size: 0.78em;
+      color: #888;
+      letter-spacing: 0.1em;
+    }
+
+    h1 {
+      font-size: 1.45em;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 6px;
+      line-height: 1.35;
+      color: #111;
+    }
+
+    .paper-type {
+      text-align: center;
+      font-size: 0.82em;
+      color: #888;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .meta-block {
+      background: #f9f7f2;
+      border-left: 3px solid #b8922a;
+      padding: 14px 18px;
+      margin-bottom: 28px;
+      font-size: 0.88em;
+      line-height: 1.9;
+    }
+
+    .meta-block p { margin: 0; }
+    .meta-label { color: #888; }
+    .meta-value { color: #111; }
+
+    h2 {
+      font-size: 1em;
+      font-weight: bold;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #b8922a;
+      margin: 28px 0 10px;
+      border-bottom: 1px solid #e8e0d0;
+      padding-bottom: 4px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      text-align: justify;
+    }
+
+    .pattern-box {
+      background: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 12px 18px;
+      margin: 16px 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.88em;
+      text-align: center;
+      color: #333;
+    }
+
+    .pattern-box strong { color: #b8922a; }
+
+    ul {
+      margin: 10px 0 14px 22px;
+    }
+    li { margin-bottom: 5px; }
+
+    .footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid #ccc;
+      font-size: 0.8em;
+      color: #888;
+      text-align: center;
+      line-height: 1.8;
+    }
+
+    .footer a { color: #b8922a; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<div class="header-logo">
+  <div class="logo-name">Nancy Jasmina Barbelo</div>
+  <div class="logo-sub">insleben.com</div>
+</div>
+
+<h1>The Barbelo Prime Sieve:<br>A Visual Framework for Prime Distribution<br>via Iterative Digit-Sum Reduction</h1>
+<div class="paper-type">Interactive Visualization · June 2026</div>
+
+<div class="meta-block">
+  <p><span class="meta-label">Author: </span><span class="meta-value">Nancy Jasmina Barbelo</span></p>
+  <p><span class="meta-label">Concept &amp; original table: </span><span class="meta-value">Nancy Jasmina Barbelo</span></p>
+  <p><span class="meta-label">Implementation: </span><span class="meta-value">Claude (Anthropic)</span></p>
+  <p><span class="meta-label">License: </span><span class="meta-value">CC BY 4.0</span></p>
+  <p><span class="meta-label">Published at: </span><span class="meta-value">insleben.com/Tesla-Sieb/tesla-sieb.html</span></p>
+</div>
+
+<h2>Abstract</h2>
+
+<p>
+This paper presents the <strong>Barbelo Prime Sieve</strong>, a tabular visualization of prime
+number distribution based on iterative digit-sum reduction. All natural numbers are
+classified by their digital root (iterative digit sum) into nine classes (1–9).
+Classes 3, 6, and 9 are structurally excluded: every member of these classes is divisible
+by 3 and therefore cannot be prime (with the single exception of 3 itself).
+</p>
+
+<p>
+This leaves six active classes — digital roots 1, 2, 4, 5, 7, and 8 — in which all
+primes greater than 3 must appear. When prime numbers are entered into a table organized
+by these six classes, a recurring structural pattern becomes visible:
+</p>
+
+<div class="pattern-box">
+  <strong>6</strong> candidate positions &nbsp;·&nbsp;
+  <strong>1</strong> certain gap (DS 9) &nbsp;·&nbsp;
+  <strong>2</strong> candidate positions &nbsp;·&nbsp;
+  <strong>1</strong> certain gap (DS 3) &nbsp;·&nbsp; repeating
+</div>
+
+<p>
+The three structurally empty classes (DS 3, DS 6, DS 9) act as fixed dividers within
+this repeating 10-position cycle. Beyond these structural gaps, additional empty positions
+arise from multiples of primes themselves — the classical sieving process — which are
+displayed as a secondary overlay.
+</p>
+
+<h2>Method</h2>
+
+<p>
+The sieve is constructed as follows:
+</p>
+<ul>
+  <li>Compute the iterative digit sum (digital root) of each natural number.</li>
+  <li>Arrange numbers in a table where each column corresponds to one digital-root class.</li>
+  <li>Columns DS 3, DS 6, DS 9 remain structurally empty (except the prime 3 in column DS 3).</li>
+  <li>Mark primes in the remaining six columns; mark composite members of those columns as sieved.</li>
+</ul>
+
+<p>
+The result is a visual sieve that separates structural impossibility (digit-sum constraint)
+from empirical sparsity (composite numbers). The 6+1+2+1 rhythm of candidate and gap
+positions repeats indefinitely and is invariant across all number ranges.
+</p>
+
+<h2>Implementation</h2>
+
+<p>
+The visualization is implemented as a pure HTML5 interactive table with no external
+dependencies. An adjustable range slider controls how many numbers are displayed
+(up to 1,000). A toggle allows composites to be shown or hidden. Hovering over any
+cell reveals the full digit-sum chain for that number.
+</p>
+
+<h2>Relation to Prior Work</h2>
+
+<p>
+This visualization is part of a series of prime number representations by the same author.
+The <em>Barbelo Prime Tree I</em> (DOI: 10.5281/zenodo.20475174) and
+<em>Barbelo Prime Tree II</em> (DOI: 10.5281/zenodo.20497826) organize primes as
+branching tree structures based on prime gaps and the OEIS sequence A333489 respectively.
+The Barbelo Prime Sieve approaches distribution from a digit-theoretic perspective,
+complementing the geometric tree representations.
+</p>
+
+<div class="footer">
+  <p>© 2026 Nancy Jasmina Barbelo – insleben.com</p>
+  <p>License: <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
+  <p>Related: <a href="https://doi.org/10.5281/zenodo.20475174">Barbelo Prime Tree I</a>
+  &nbsp;·&nbsp;
+  <a href="https://doi.org/10.5281/zenodo.20497826">Barbelo Prime Tree II</a></p>
+</div>
+
+</body>
+</html>
