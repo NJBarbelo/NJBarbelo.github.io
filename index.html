@@ -713,6 +713,18 @@
       }, 1600);
     }
 
+    // =============================================
+    // ZURÜCK-NAVIGATION: Startseite beim Wiederanzeigen
+    // (z.B. Browser-"Zurück" / bfcache) wieder sichtbar machen,
+    // sonst bleibt sie nach "Komm weiter" ausgeblendet (schwarz).
+    // =============================================
+    window.addEventListener('pageshow', () => {
+      const stage = document.getElementById('stage');
+      stage.style.transition = 'none';
+      stage.style.opacity = '1';
+      flashlight.style.opacity = '';
+    });
+
   </script>
 </body>
 </html>
