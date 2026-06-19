@@ -76,7 +76,7 @@ cd ..
 python3 -m http.server 8000
 
 # Dann im Browser:
-# http://localhost:8000/pages/index.html
+# http://localhost:8000/index.html
 ```
 
 ## ✅ Checkliste für Änderungen
