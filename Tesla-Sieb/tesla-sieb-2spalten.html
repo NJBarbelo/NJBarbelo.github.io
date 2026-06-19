@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbelo-Tesla Prime Sieve – 2-Spalten-Überblick</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      color: #f0ece4;
+      font-family: 'Courier New', monospace;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 16px 20px 12px;
+      text-align: center;
+      border-bottom: 1px solid #1a1a1a;
+    }
+
+    h1 {
+      color: #c9a84c;
+      font-size: 1.4em;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      color: #3fd6c8;
+      font-size: 0.76em;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .ctrl-group { display: flex; align-items: center; gap: 8px; }
+    .controls label { color: #3fd6c8; font-size: 0.82em; white-space: nowrap; }
+
+    input[type=range] {
+      accent-color: #c9a84c;
+      width: 180px;
+      cursor: pointer;
+    }
+
+    .count-display { color: #c9a84c; font-weight: bold; min-width: 48px; }
+
+    #main-area {
+      flex: 1;
+      overflow: auto;
+      padding: 18px 12px 24px;
+    }
+
+    /* ── Two-column overview ── */
+    .cols {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 28px;
+      flex-wrap: wrap;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .col {
+      flex: 1 1 240px;
+      max-width: 320px;
+      border: 1px solid #1a1a1a;
+      border-radius: 4px;
+      padding: 14px 10px 18px;
+      background: #050505;
+    }
+
+    .col-head {
+      text-align: center;
+      letter-spacing: 0.12em;
+      font-size: 0.92em;
+      padding-bottom: 8px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .col-1 .col-head { color: #c9a84c; }
+    .col-2 .col-head { color: #3fd6c8; }
+
+    .col-count {
+      display: block;
+      font-size: 0.72em;
+      color: #555;
+      letter-spacing: 0.06em;
+      margin-top: 3px;
+    }
+
+    .prime-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px 8px;
+      font-size: 0.86em;
+    }
+    .prime-list span {
+      min-width: 44px;
+      text-align: center;
+      padding: 2px 4px;
+      border-radius: 2px;
+    }
+    .col-1 .prime-list span { color: #c9a84c; }
+    .col-2 .prime-list span { color: #3fd6c8; }
+    .col-1 .prime-list span:hover { background: #c9a84c1a; }
+    .col-2 .prime-list span:hover { background: #3fd6c81a; }
+
+    .note {
+      max-width: 640px;
+      margin: 18px auto 0;
+      text-align: center;
+      font-size: 0.72em;
+      color: #555;
+      line-height: 1.7;
+    }
+    .note b { color: #c9a84c; }
+
+    footer {
+      padding: 10px 20px;
+      text-align: center;
+      border-top: 1px solid #1a1a1a;
+      font-size: 0.72em;
+      color: #444;
+    }
+    footer a { color: #c9a84c55; text-decoration: none; }
+    footer a:hover { color: #c9a84c; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Barbelo-Tesla Prime Sieve</h1>
+  <div class="subtitle">2-Spalten-Überblick · Quersumme 1·5·7 &nbsp;|&nbsp; Quersumme 2·4·8</div>
+  <div class="controls">
+    <div class="ctrl-group">
+      <label for="rangeSlider">Bis:</label>
+      <input type="range" id="rangeSlider" min="90" max="1000" step="9" value="270">
+      <span class="count-display" id="rangeDisplay">270</span>
+    </div>
+  </div>
+</header>
+
+<div id="main-area">
+
+  <div class="cols">
+    <div class="col col-1">
+      <div class="col-head">
+        QS 1 · 5 · 7
+        <span class="col-count" id="count1"></span>
+      </div>
+      <div class="prime-list" id="list1"></div>
+    </div>
+    <div class="col col-2">
+      <div class="col-head">
+        QS 2 · 4 · 8
+        <span class="col-count" id="count2"></span>
+      </div>
+      <div class="prime-list" id="list2"></div>
+    </div>
+  </div>
+
+  <div class="note">
+    Jede Primzahl wird über ihre iterierte Quersumme (digitale Wurzel) einer der beiden
+    Dreiergruppen zugeordnet. Quersummen 3 · 6 · 9 sind durch 3 teilbar und bleiben leer –
+    einzige Ausnahme ist die Primzahl <b>3</b> selbst (Quersumme 3), die in keine der beiden
+    Spalten fällt.
+  </div>
+</div>
+
+<footer>
+  © 2026 Nancy Jasmina Barbelo – insleben.com &nbsp;·&nbsp;
+  <a href="https://doi.org/10.5281/zenodo.20583792" target="_blank">DOI: 10.5281/zenodo.20583792</a> &nbsp;·&nbsp;
+  <a href="tesla-sieb.html">8-Spalten-Sieb</a> &nbsp;·&nbsp;
+  <a href="../Prime-Tree/primzahlenbaum.html">Prime Tree I</a> &nbsp;·&nbsp;
+  <a href="../Prime-Tree/Baum-II/primzahlenbaum2.html">Prime Tree II</a>
+</footer>
+
+<script>
+// ── Math helpers (aus tesla-sieb.html übernommen) ─────────────────────────────
+
+function digitalRoot(n) {
+  if (n === 0) return 0;
+  while (n >= 10) {
+    let s = 0, t = n;
+    while (t > 0) { s += t % 10; t = Math.floor(t / 10); }
+    n = s;
+  }
+  return n;
+}
+
+function sievePrimes(limit) {
+  const s = new Uint8Array(limit + 1).fill(1);
+  s[0] = s[1] = 0;
+  for (let i = 2; i * i <= limit; i++)
+    if (s[i]) for (let j = i * i; j <= limit; j += i) s[j] = 0;
+  return s;
+}
+
+// ── Group definition ──────────────────────────────────────────────────────────
+const GROUP_1 = new Set([1, 5, 7]);   // → Spalte 1
+const GROUP_2 = new Set([2, 4, 8]);   // → Spalte 2
+
+// ── Render ────────────────────────────────────────────────────────────────────
+
+function render() {
+  const limit = parseInt(document.getElementById('rangeSlider').value);
+  const isPrime = sievePrimes(limit);
+
+  const col1 = [], col2 = [];
+  for (let n = 2; n <= limit; n++) {
+    if (!isPrime[n]) continue;
+    const dr = digitalRoot(n);
+    if (GROUP_1.has(dr))      col1.push(n);
+    else if (GROUP_2.has(dr)) col2.push(n);
+  }
+
+  const fill = (id, arr) =>
+    document.getElementById(id).innerHTML =
+      arr.map(n => '<span>' + n + '</span>').join('');
+
+  fill('list1', col1);
+  fill('list2', col2);
+  document.getElementById('count1').textContent = col1.length + ' Primzahlen';
+  document.getElementById('count2').textContent = col2.length + ' Primzahlen';
+}
+
+// ── Controls ──────────────────────────────────────────────────────────────────
+
+document.getElementById('rangeSlider').addEventListener('input', e => {
+  document.getElementById('rangeDisplay').textContent = e.target.value;
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
