@@ -62,62 +62,50 @@
       padding: 18px 12px 24px;
     }
 
-    /* ── Two-column overview ── */
-    .cols {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      gap: 28px;
-      flex-wrap: wrap;
-      max-width: 720px;
+    /* ── Sorted two-column table ── */
+    table {
+      border-collapse: collapse;
       margin: 0 auto;
-    }
-
-    .col {
-      flex: 1 1 240px;
-      max-width: 320px;
-      border: 1px solid #1a1a1a;
-      border-radius: 4px;
-      padding: 14px 10px 18px;
-      background: #050505;
-    }
-
-    .col-head {
-      text-align: center;
-      letter-spacing: 0.12em;
-      font-size: 0.92em;
-      padding-bottom: 8px;
-      margin-bottom: 10px;
-      border-bottom: 1px solid #1a1a1a;
-    }
-    .col-1 .col-head { color: #c9a84c; }
-    .col-2 .col-head { color: #3fd6c8; }
-
-    .col-count {
-      display: block;
-      font-size: 0.72em;
-      color: #555;
-      letter-spacing: 0.06em;
-      margin-top: 3px;
-    }
-
-    .prime-list {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 4px 8px;
       font-size: 0.86em;
     }
-    .prime-list span {
-      min-width: 44px;
+
+    thead th {
+      padding: 6px 10px;
       text-align: center;
-      padding: 2px 4px;
-      border-radius: 2px;
+      letter-spacing: 0.1em;
+      font-weight: bold;
+      border: 1px solid #1a1a1a;
+      background: #000;
+      position: sticky;
+      top: 0;
+      z-index: 1;
     }
-    .col-1 .prime-list span { color: #c9a84c; }
-    .col-2 .prime-list span { color: #3fd6c8; }
-    .col-1 .prime-list span:hover { background: #c9a84c1a; }
-    .col-2 .prime-list span:hover { background: #3fd6c81a; }
+    th.head-1 { color: #c9a84c; }
+    th.head-2 { color: #3fd6c8; }
+
+    .head-count {
+      display: block;
+      font-size: 0.7em;
+      color: #555;
+      letter-spacing: 0.05em;
+      font-weight: normal;
+      margin-top: 2px;
+    }
+
+    tbody td {
+      width: 96px;
+      min-width: 96px;
+      height: 20px;
+      text-align: center;
+      padding: 2px 8px;
+      border: 1px solid #141414;
+    }
+    td.c1 { color: #c9a84c; font-weight: bold; }
+    td.c2 { color: #3fd6c8; font-weight: bold; }
+    td.empty { background: #050505; }
+    tbody tr:hover td { background: #0c0c0c; }
+    tbody tr:hover td.c1 { background: #c9a84c1a; }
+    tbody tr:hover td.c2 { background: #3fd6c81a; }
 
     .note {
       max-width: 640px;
@@ -156,22 +144,15 @@
 
 <div id="main-area">
 
-  <div class="cols">
-    <div class="col col-1">
-      <div class="col-head">
-        QS 1 · 5 · 7
-        <span class="col-count" id="count1"></span>
-      </div>
-      <div class="prime-list" id="list1"></div>
-    </div>
-    <div class="col col-2">
-      <div class="col-head">
-        QS 2 · 4 · 8
-        <span class="col-count" id="count2"></span>
-      </div>
-      <div class="prime-list" id="list2"></div>
-    </div>
-  </div>
+  <table id="sieve-table">
+    <thead>
+      <tr>
+        <th class="head-1">1 / 5 / 7<span class="head-count" id="count1"></span></th>
+        <th class="head-2">2 / 4 / 8<span class="head-count" id="count2"></span></th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
 
   <div class="note">
     Jede Primzahl wird über ihre iterierte Quersumme (digitale Wurzel) einer der beiden
@@ -220,22 +201,23 @@ function render() {
   const limit = parseInt(document.getElementById('rangeSlider').value);
   const isPrime = sievePrimes(limit);
 
-  const col1 = [], col2 = [];
+  // Eine aufsteigende Liste, pro Eintrag die Gruppe gemerkt
+  let rows = '', n1 = 0, n2 = 0;
   for (let n = 2; n <= limit; n++) {
     if (!isPrime[n]) continue;
     const dr = digitalRoot(n);
-    if (GROUP_1.has(dr))      col1.push(n);
-    else if (GROUP_2.has(dr)) col2.push(n);
+    if (GROUP_1.has(dr)) {
+      n1++;
+      rows += '<tr><td class="c1">' + n + '</td><td class="empty"></td></tr>';
+    } else if (GROUP_2.has(dr)) {
+      n2++;
+      rows += '<tr><td class="empty"></td><td class="c2">' + n + '</td></tr>';
+    }
   }
 
-  const fill = (id, arr) =>
-    document.getElementById(id).innerHTML =
-      arr.map(n => '<span>' + n + '</span>').join('');
-
-  fill('list1', col1);
-  fill('list2', col2);
-  document.getElementById('count1').textContent = col1.length + ' Primzahlen';
-  document.getElementById('count2').textContent = col2.length + ' Primzahlen';
+  document.getElementById('tbody').innerHTML = rows;
+  document.getElementById('count1').textContent = n1 + ' Primzahlen';
+  document.getElementById('count2').textContent = n2 + ' Primzahlen';
 }
 
 // ── Controls ──────────────────────────────────────────────────────────────────
