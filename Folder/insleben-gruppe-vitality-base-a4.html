@@ -52,6 +52,8 @@
       width: 210mm;
       height: 297mm;
       background:
+        linear-gradient(180deg, transparent, rgba(201,168,76,0.8), transparent) left / 4px 100% no-repeat,
+        linear-gradient(180deg, transparent, rgba(201,168,76,0.8), transparent) right / 4px 100% no-repeat,
         radial-gradient(120% 80% at 50% -10%, #14130f 0%, var(--bg) 55%),
         var(--bg);
       color: var(--text);
@@ -64,6 +66,12 @@
     .page::before {
       content: "";
       position: absolute; top: 0; left: 0; right: 0; height: 4px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0.8;
+    }
+    .page::after {
+      content: "";
+      position: absolute; bottom: 0; left: 0; right: 0; height: 4px;
       background: linear-gradient(90deg, transparent, var(--gold), transparent);
       opacity: 0.8;
     }
