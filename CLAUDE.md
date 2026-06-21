@@ -14,9 +14,14 @@ Status: ✅ Aktiv
 **Wichtig:** Immer auf diesem Branch arbeiten, um mit den neuesten Änderungen aktuell zu bleiben.
 
 ### Branch-Strategie
-- `main` = Produktiver Branch (nur fertige Features)
-- `claude/add-skills-page-GlmJR` = Aktueller Development Branch
-- Alle Änderungen zuerst hier testen, dann auf main mergen
+- `main` = Produktiver Branch (Live-Stand, GitHub Pages baut hieraus)
+- Experimente auf themen-spezifischen Branches, fertige Features nach `main` mergen
+
+### Branch-Übersicht (Stand 21. Juni 2026)
+- `main` — Live-Stand der Webseite (GitHub Pages)
+- `claude/lucid-dijkstra-2gm20l` — nur noch das **Tesla-Sieb** (für weitere Experimente daran)
+- `claude/neural-consciousness-clean` — Webseite mit dem schönen **„Vernetzung"-Hintergrund-Design**
+- `barbelo-2026` — **Feuer-Wasser-Hintergrund**
 
 ## 📁 Projektstruktur
 
