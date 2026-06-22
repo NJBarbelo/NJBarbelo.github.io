@@ -297,11 +297,10 @@
     // Inject the flash overlay + keyframes once.
     const style = document.createElement('style');
     style.textContent =
-      '#lightning-flash{position:fixed;inset:0;background:rgba(255,255,255,0.9);' +
+      '#lightning-flash{position:fixed;inset:0;background:rgba(255,255,255,0.45);' +
       'pointer-events:none;z-index:9999;opacity:0;}' +
-      '@keyframes lightning-flash{0%{opacity:0}5%{opacity:1}10%{opacity:0}' +
-      '15%{opacity:0.9}20%{opacity:0}25%{opacity:0.7}35%{opacity:0}100%{opacity:0}}' +
-      '#lightning-flash.active{animation:lightning-flash 0.6s ease-out 1;}' +
+      '@keyframes lightning-flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}' +
+      '#lightning-flash.active{animation:lightning-flash 1.6s ease-in-out 1;}' +
       '#egg-message{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);' +
       'z-index:10000;background:rgba(0,0,0,0.88);color:#f0ece4;border:1px solid rgba(201,168,76,0.5);' +
       'border-radius:12px;padding:1.4rem 2rem;font-family:"Cinzel",serif;font-size:1rem;' +
@@ -315,23 +314,6 @@
     document.body.appendChild(flashEl);
 
     logo.style.cursor = 'pointer';
-
-    function thunder() {
-      try {
-        const ac = new (window.AudioContext || window.webkitAudioContext)();
-        const now = ac.currentTime;
-        const osc = ac.createOscillator();
-        const gain = ac.createGain();
-        osc.connect(gain);
-        gain.connect(ac.destination);
-        osc.frequency.setValueAtTime(80, now);
-        osc.frequency.exponentialRampToValueAtTime(20, now + 0.2);
-        gain.gain.setValueAtTime(0.3, now);
-        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
-        osc.start(now);
-        osc.stop(now + 0.3);
-      } catch (e) {}
-    }
 
     function showMessage(text) {
       let m = document.getElementById('egg-message');
@@ -351,13 +333,11 @@
       flashEl.classList.remove('active');
       void flashEl.offsetWidth; // restart animation
       flashEl.classList.add('active');
-      setTimeout(() => flashEl.classList.remove('active'), 600);
+      setTimeout(() => flashEl.classList.remove('active'), 1600);
 
-      thunder();
-
-      document.body.style.transition = 'filter 0.2s ease';
+      document.body.style.transition = 'filter 0.6s ease';
       document.body.style.filter = `hue-rotate(${Math.round(Math.random() * 360)}deg)`;
-      setTimeout(() => { document.body.style.filter = ''; }, 500);
+      setTimeout(() => { document.body.style.filter = ''; }, 1400);
 
       clickCount++;
       if (clickCount === 3) {
