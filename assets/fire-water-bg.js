@@ -640,13 +640,23 @@
       const arc = Math.sin(p * Math.PI);      // 0 at edges, 1 at zenith
       const y = H * 0.30 - arc * H * 0.16;    // rises toward the top at midday
 
+      // Warmth: reddish near the horizon (arc≈0), golden at midday (arc≈1).
+      const warm = 1 - Math.min(1, arc / 0.55);   // 1 at rise/set, 0 at zenith
+      const lerp = (a, b) => Math.round(a + (b - a) * warm);
+      // colour stops: [zenith → horizon]
+      const cCore  = `${lerp(255,255)},${lerp(250,238)},${lerp(225,205)}`;
+      const cMid   = `${lerp(255,255)},${lerp(215,150)},${lerp(130,80)}`;
+      const cEdge  = `${lerp(250,235)},${lerp(180,90)},${lerp(80,55)}`;
+      const cGlow0 = `${lerp(255,255)},${lerp(225,160)},${lerp(150,95)}`;
+      const cGlow1 = `${lerp(255,250)},${lerp(190,110)},${lerp(90,70)}`;
+
       // Soft outer glow — wider and brighter, gently pulsing.
       const pulse = 1 + 0.04 * Math.sin(t * 1.2);
       const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 7 * pulse);
-      glow.addColorStop(0, 'rgba(255,225,150,0.55)');
-      glow.addColorStop(0.25, 'rgba(255,205,110,0.30)');
-      glow.addColorStop(0.6, 'rgba(255,190,90,0.12)');
-      glow.addColorStop(1, 'rgba(255,190,90,0)');
+      glow.addColorStop(0, `rgba(${cGlow0},0.55)`);
+      glow.addColorStop(0.25, `rgba(${cGlow1},0.30)`);
+      glow.addColorStop(0.6, `rgba(${cGlow1},0.12)`);
+      glow.addColorStop(1, `rgba(${cGlow1},0)`);
       ctx.beginPath();
       ctx.arc(x, y, r * 7 * pulse, 0, Math.PI * 2);
       ctx.fillStyle = glow;
@@ -654,8 +664,8 @@
 
       // Bright inner halo.
       const halo = ctx.createRadialGradient(x, y, 0, x, y, r * 2.2);
-      halo.addColorStop(0, 'rgba(255,245,210,0.7)');
-      halo.addColorStop(1, 'rgba(255,210,120,0)');
+      halo.addColorStop(0, `rgba(${cCore},0.7)`);
+      halo.addColorStop(1, `rgba(${cMid},0)`);
       ctx.beginPath();
       ctx.arc(x, y, r * 2.2, 0, Math.PI * 2);
       ctx.fillStyle = halo;
@@ -663,9 +673,9 @@
 
       // Sun disc.
       const disc = ctx.createRadialGradient(x, y, 0, x, y, r);
-      disc.addColorStop(0, 'rgba(255,250,225,1)');
-      disc.addColorStop(0.7, 'rgba(255,215,130,0.98)');
-      disc.addColorStop(1, 'rgba(250,180,80,0.95)');
+      disc.addColorStop(0, `rgba(${cCore},1)`);
+      disc.addColorStop(0.7, `rgba(${cMid},0.98)`);
+      disc.addColorStop(1, `rgba(${cEdge},0.95)`);
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fillStyle = disc;
