@@ -260,6 +260,105 @@
         { freq: 0.003,  speed: 0.6, amp: 0.14, base: 0.24, alpha: 0.050, r: 35, g: 180, b: 190 },
       ];
 
+      // Click the footer to release a fish + a burst of bubbles.
+      const fish = [];
+      const bubbles = [];
+
+      function spawnFish(x, y) {
+        const dir = Math.random() < 0.5 ? 1 : -1;
+        const col = Math.random() < 0.5
+          ? [120, 224, 214]   // turquoise
+          : [230, 198, 99];   // gold
+        fish.push({
+          x: x, y: y, dir: dir,
+          speed: (28 + Math.random() * 26),   // px/s
+          size: 9 + Math.random() * 7,
+          bob: Math.random() * Math.PI * 2,
+          tail: Math.random() * Math.PI * 2,
+          col: col,
+        });
+      }
+      function spawnBubbles(x, y) {
+        const n = 6 + Math.floor(Math.random() * 6);
+        for (let i = 0; i < n; i++) {
+          bubbles.push({
+            x: x + (Math.random() - 0.5) * 18,
+            y: y + (Math.random() - 0.5) * 8,
+            r: 1.5 + Math.random() * 3,
+            vy: 12 + Math.random() * 22,
+            wob: Math.random() * Math.PI * 2,
+            life: 1,
+          });
+        }
+      }
+
+      const footer = canvas.parentElement;
+      if (footer) {
+        footer.style.cursor = 'pointer';
+        footer.addEventListener('click', e => {
+          // Ignore clicks on links so navigation still works.
+          if (e.target.closest && e.target.closest('a')) return;
+          const rect = canvas.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          spawnFish(x, y);
+          spawnBubbles(x, y);
+        });
+      }
+
+      function drawFish() {
+        for (let i = fish.length - 1; i >= 0; i--) {
+          const f = fish[i];
+          f.x += f.dir * f.speed * 0.016;
+          f.bob += 0.05;
+          f.tail += 0.3;
+          const yy = f.y + Math.sin(f.bob) * 3;
+          const [r, g, b] = f.col;
+
+          ctx.save();
+          ctx.translate(f.x, yy);
+          ctx.scale(f.dir, 1);
+          // Body.
+          ctx.beginPath();
+          ctx.ellipse(0, 0, f.size, f.size * 0.55, 0, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r},${g},${b},0.85)`;
+          ctx.fill();
+          // Tail (wiggling).
+          const tw = Math.sin(f.tail) * f.size * 0.3;
+          ctx.beginPath();
+          ctx.moveTo(-f.size * 0.8, 0);
+          ctx.lineTo(-f.size * 1.5, -f.size * 0.5 + tw);
+          ctx.lineTo(-f.size * 1.5, f.size * 0.5 + tw);
+          ctx.closePath();
+          ctx.fillStyle = `rgba(${r},${g},${b},0.7)`;
+          ctx.fill();
+          // Eye.
+          ctx.beginPath();
+          ctx.arc(f.size * 0.45, -f.size * 0.12, f.size * 0.12, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(10,20,30,0.9)';
+          ctx.fill();
+          ctx.restore();
+
+          if (f.x < -40 || f.x > W + 40) fish.splice(i, 1);
+        }
+      }
+
+      function drawBubbles() {
+        for (let i = bubbles.length - 1; i >= 0; i--) {
+          const b = bubbles[i];
+          b.y -= b.vy * 0.016;
+          b.wob += 0.1;
+          b.x += Math.sin(b.wob) * 0.4;
+          b.life -= 0.006;
+          if (b.life <= 0 || b.y < -10) { bubbles.splice(i, 1); continue; }
+          ctx.beginPath();
+          ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(180,235,235,${(b.life * 0.6).toFixed(3)})`;
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+      }
+
       function draw() {
         t += 0.016;
         ctx.fillStyle = 'rgba(0,0,0,0.1)';
@@ -281,6 +380,9 @@
           ctx.fillStyle = `rgba(${l.r},${l.g},${l.b},${l.alpha})`;
           ctx.fill();
         });
+
+        drawFish();
+        drawBubbles();
 
         requestAnimationFrame(draw);
       }
