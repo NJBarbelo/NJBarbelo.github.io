@@ -113,10 +113,112 @@
         }
       }
 
+      // ── Moon in the top-right corner, slowly cycling its phase ──────────
+      function drawMoon() {
+        const r = Math.max(10, H * 0.16);
+        const cx = W - r * 1.8;
+        const cy = r * 1.5;
+
+        // Soft halo.
+        const halo = ctx.createRadialGradient(cx, cy, r * 0.6, cx, cy, r * 2.4);
+        halo.addColorStop(0, 'rgba(230,235,255,0.16)');
+        halo.addColorStop(1, 'rgba(230,235,255,0)');
+        ctx.beginPath();
+        ctx.arc(cx, cy, r * 2.4, 0, Math.PI * 2);
+        ctx.fillStyle = halo;
+        ctx.fill();
+
+        // Moon disc.
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(238,240,228,0.92)';
+        ctx.fill();
+
+        // Phase: a shadow disc drifts across very slowly (~90 s cycle).
+        const phase = (t / 90) % 1;                 // 0..1
+        const offset = Math.cos(phase * Math.PI * 2) * r * 2.1;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(cx, cy, r, 0, Math.PI * 2);
+        ctx.clip();
+        ctx.beginPath();
+        ctx.arc(cx + offset, cy, r * 1.02, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(8,10,20,0.94)';
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // ── UFO: flies in, hovers briefly, then zips away. Rare. ────────────
+      const ufo = { phase: 'idle', next: 12 + Math.random() * 18 };
+      function launchUFO() {
+        ufo.dir = Math.random() < 0.5 ? 1 : -1;
+        ufo.x = ufo.dir === 1 ? -40 : W + 40;
+        ufo.targetX = W * (0.3 + Math.random() * 0.4);
+        ufo.y = H * (0.25 + Math.random() * 0.35);
+        ufo.phase = 'in';
+        ufo.hover = 0;
+        ufo.blink = 0;
+        ufo.scale = Math.max(0.6, H / 120);
+      }
+      function drawUFOShape(x, y, s) {
+        ufo.blink += 0.18;
+        // Glow underneath.
+        const beam = ctx.createRadialGradient(x, y + 4 * s, 0, x, y + 4 * s, 16 * s);
+        beam.addColorStop(0, 'rgba(120,224,214,0.18)');
+        beam.addColorStop(1, 'rgba(120,224,214,0)');
+        ctx.beginPath();
+        ctx.arc(x, y + 4 * s, 16 * s, 0, Math.PI * 2);
+        ctx.fillStyle = beam;
+        ctx.fill();
+        // Saucer body.
+        ctx.beginPath();
+        ctx.ellipse(x, y, 11 * s, 4 * s, 0, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(190,200,215,0.95)';
+        ctx.fill();
+        // Dome.
+        ctx.beginPath();
+        ctx.ellipse(x, y - 2.5 * s, 5 * s, 4 * s, 0, Math.PI, 0);
+        ctx.fillStyle = 'rgba(150,235,225,0.85)';
+        ctx.fill();
+        // Blinking lights.
+        for (let k = -1; k <= 1; k++) {
+          const a = 0.4 + 0.6 * Math.abs(Math.sin(ufo.blink + k));
+          ctx.beginPath();
+          ctx.arc(x + k * 6 * s, y + 1.5 * s, 1.1 * s, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255,235,150,${a.toFixed(2)})`;
+          ctx.fill();
+        }
+      }
+      function drawUFO() {
+        if (ufo.phase === 'idle') {
+          ufo.next -= 0.016;
+          if (ufo.next <= 0) launchUFO();
+          return;
+        }
+        const s = ufo.scale;
+        if (ufo.phase === 'in') {
+          ufo.x += (ufo.targetX - ufo.x) * 0.04;
+          if (Math.abs(ufo.targetX - ufo.x) < 2) ufo.phase = 'hover';
+        } else if (ufo.phase === 'hover') {
+          ufo.hover += 0.016;
+          ufo.y += Math.sin(ufo.hover * 2) * 0.15; // gentle bob
+          if (ufo.hover > 1.8) ufo.phase = 'out';
+        } else if (ufo.phase === 'out') {
+          ufo.x += ufo.dir * (W / 60) * 3.2 * 0.4; // zip away fast
+          if (ufo.x < -60 || ufo.x > W + 60) {
+            ufo.phase = 'idle';
+            ufo.next = 15 + Math.random() * 25;
+          }
+        }
+        drawUFOShape(ufo.x, ufo.y, s);
+      }
+
       function draw() {
         t += 0.016;
         // Clean redraw each frame so the header background stays calm.
         ctx.clearRect(0, 0, W, H);
+
+        drawMoon();
 
         for (let i = 0; i < stars.length; i++) {
           const s = stars[i];
@@ -142,6 +244,7 @@
         }
 
         drawSatellite();
+        drawUFO();
 
         requestAnimationFrame(draw);
       }
@@ -185,4 +288,82 @@
       draw();
     }
   }
+
+  // ── EASTER EGG: click the logo for lightning + colour shift + thunder ─────
+  (function easterEgg() {
+    const logo = document.querySelector('#header-logo') || document.querySelector('.logo');
+    if (!logo) return;
+
+    // Inject the flash overlay + keyframes once.
+    const style = document.createElement('style');
+    style.textContent =
+      '#lightning-flash{position:fixed;inset:0;background:rgba(255,255,255,0.9);' +
+      'pointer-events:none;z-index:9999;opacity:0;}' +
+      '@keyframes lightning-flash{0%{opacity:0}5%{opacity:1}10%{opacity:0}' +
+      '15%{opacity:0.9}20%{opacity:0}25%{opacity:0.7}35%{opacity:0}100%{opacity:0}}' +
+      '#lightning-flash.active{animation:lightning-flash 0.6s ease-out 1;}' +
+      '#egg-message{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);' +
+      'z-index:10000;background:rgba(0,0,0,0.88);color:#f0ece4;border:1px solid rgba(201,168,76,0.5);' +
+      'border-radius:12px;padding:1.4rem 2rem;font-family:"Cinzel",serif;font-size:1rem;' +
+      'text-align:center;max-width:80vw;box-shadow:0 0 30px rgba(63,214,200,0.25);' +
+      'opacity:0;transition:opacity 0.4s ease;pointer-events:none;}' +
+      '#egg-message.show{opacity:1;}';
+    document.head.appendChild(style);
+
+    const flashEl = document.createElement('div');
+    flashEl.id = 'lightning-flash';
+    document.body.appendChild(flashEl);
+
+    logo.style.cursor = 'pointer';
+
+    function thunder() {
+      try {
+        const ac = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ac.currentTime;
+        const osc = ac.createOscillator();
+        const gain = ac.createGain();
+        osc.connect(gain);
+        gain.connect(ac.destination);
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(20, now + 0.2);
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      } catch (e) {}
+    }
+
+    function showMessage(text) {
+      let m = document.getElementById('egg-message');
+      if (!m) {
+        m = document.createElement('div');
+        m.id = 'egg-message';
+        document.body.appendChild(m);
+      }
+      m.textContent = text;
+      m.classList.add('show');
+      setTimeout(() => m.classList.remove('show'), 3500);
+    }
+
+    let clickCount = 0;
+    logo.addEventListener('click', e => {
+      e.preventDefault();
+      flashEl.classList.remove('active');
+      void flashEl.offsetWidth; // restart animation
+      flashEl.classList.add('active');
+      setTimeout(() => flashEl.classList.remove('active'), 600);
+
+      thunder();
+
+      document.body.style.transition = 'filter 0.2s ease';
+      document.body.style.filter = `hue-rotate(${Math.round(Math.random() * 360)}deg)`;
+      setTimeout(() => { document.body.style.filter = ''; }, 500);
+
+      clickCount++;
+      if (clickCount === 3) {
+        showMessage('🎆 Du hast das geheime Ritual aktiviert! Die Website wird noch magischer… 🌙');
+        clickCount = 0;
+      }
+    });
+  })();
 })();
