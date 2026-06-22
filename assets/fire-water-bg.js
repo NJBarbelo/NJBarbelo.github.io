@@ -73,6 +73,60 @@
         });
       }
 
+      // Shooting stars: rare, swift streaks with a glowing tail — make a wish!
+      const shooters = [];
+      let shooterNext = 4 + Math.random() * 8;
+      function launchShooter() {
+        const fromLeft = Math.random() < 0.6;
+        const speed = (W / 60) * (3.5 + Math.random() * 2.5);
+        const ang = (Math.PI / 7) + Math.random() * (Math.PI / 9); // shallow downward
+        shooters.push({
+          x: fromLeft ? Math.random() * W * 0.4 : W - Math.random() * W * 0.4,
+          y: Math.random() * H * 0.35,
+          vx: (fromLeft ? 1 : -1) * speed * Math.cos(ang),
+          vy: speed * Math.sin(ang),
+          life: 1,
+          trail: [],
+        });
+      }
+      function drawShooters() {
+        shooterNext -= 0.016;
+        if (shooterNext <= 0) {
+          launchShooter();
+          shooterNext = 5 + Math.random() * 10; // rare
+        }
+        for (let i = shooters.length - 1; i >= 0; i--) {
+          const sh = shooters[i];
+          sh.x += sh.vx * 0.016;
+          sh.y += sh.vy * 0.016;
+          sh.life -= 0.012;
+          sh.trail.push({ x: sh.x, y: sh.y });
+          if (sh.trail.length > 18) sh.trail.shift();
+
+          // Tail.
+          for (let k = 0; k < sh.trail.length; k++) {
+            const tp = sh.trail[k];
+            const a = (k / sh.trail.length) * sh.life * 0.8;
+            ctx.beginPath();
+            ctx.arc(tp.x, tp.y, (k / sh.trail.length) * 1.6 + 0.3, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255,250,230,${a.toFixed(3)})`;
+            ctx.fill();
+          }
+          // Head with glow.
+          const gr = ctx.createRadialGradient(sh.x, sh.y, 0, sh.x, sh.y, 6);
+          gr.addColorStop(0, `rgba(255,255,250,${sh.life.toFixed(3)})`);
+          gr.addColorStop(1, 'rgba(255,255,250,0)');
+          ctx.beginPath();
+          ctx.arc(sh.x, sh.y, 6, 0, Math.PI * 2);
+          ctx.fillStyle = gr;
+          ctx.fill();
+
+          if (sh.life <= 0 || sh.x < -40 || sh.x > W + 40 || sh.y > H + 40) {
+            shooters.splice(i, 1);
+          }
+        }
+      }
+
       // A lone satellite drifts across the sky now and then.
       const sat = { active: false, next: 2 + Math.random() * 4 };
       function launchSatellite() {
@@ -271,6 +325,7 @@
           ctx.fill();
         }
 
+        drawShooters();
         drawSatellite();
         drawUFO();
 
