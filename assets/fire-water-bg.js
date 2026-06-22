@@ -58,6 +58,21 @@
 
       for (let i = 0; i < COUNT; i++) stars.push(newStar());
 
+      // Click the header sky to add your own twinkling star.
+      const header = canvas.parentElement;
+      if (header) {
+        header.addEventListener('click', e => {
+          // Don't steal the logo's easter-egg click or link clicks.
+          if (e.target.closest && e.target.closest('#header-logo, a')) return;
+          const rect = canvas.getBoundingClientRect();
+          const s = newStar();
+          s.x = e.clientX - rect.left;
+          s.y = e.clientY - rect.top;
+          s.born = 0;            // little birth sparkle
+          stars.push(s);
+        });
+      }
+
       // A lone satellite drifts across the sky now and then.
       const sat = { active: false, next: 2 + Math.random() * 4 };
       function launchSatellite() {
@@ -225,6 +240,19 @@
           const tw = s.base + s.amp * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
           const a = Math.max(0, Math.min(1, tw));
           const [r, g, b] = s.tint;
+
+          // Birth sparkle for freshly clicked stars.
+          if (s.born !== undefined && s.born < 1) {
+            s.born += 0.04;
+            const burst = (1 - s.born) * 7;
+            const bg = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, burst + 1);
+            bg.addColorStop(0, `rgba(${r},${g},${b},${(1 - s.born).toFixed(3)})`);
+            bg.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, burst + 1, 0, Math.PI * 2);
+            ctx.fillStyle = bg;
+            ctx.fill();
+          }
 
           if (s.bright) {
             const glow = s.r * 6;
