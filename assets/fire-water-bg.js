@@ -553,6 +553,83 @@
     let t = 0;
     const PERIOD = 80;          // seconds for one full pass across the sky
 
+    // Click anywhere in the body to grow a cloud that then rains down.
+    const clouds = [];
+    function spawnCloud(x, y) {
+      const puffs = [];
+      const n = 5 + Math.floor(Math.random() * 3);
+      for (let i = 0; i < n; i++) {
+        puffs.push({
+          dx: (i - (n - 1) / 2) * 24 + (Math.random() - 0.5) * 10,
+          dy: (Math.random() - 0.5) * 14,
+          r: 22 + Math.random() * 16,
+        });
+      }
+      clouds.push({ x: x, y: y, scale: 0, age: 0, phase: 'grow', puffs: puffs, drops: [] });
+    }
+
+    document.addEventListener('click', e => {
+      if (e.target.closest && e.target.closest('#page-header, #page-footer, a')) return;
+      spawnCloud(e.clientX, e.clientY);
+    });
+
+    function drawClouds() {
+      for (let ci = clouds.length - 1; ci >= 0; ci--) {
+        const c = clouds[ci];
+        c.age += 0.016;
+        if (c.phase === 'grow') {
+          c.scale = Math.min(1, c.scale + 0.02);
+          if (c.scale >= 1 && c.age > 1.5) c.phase = 'rain';
+        } else if (c.phase === 'rain') {
+          // Emit raindrops from the underside.
+          if (Math.random() < 0.7) {
+            const w = 60 * c.scale;
+            c.drops.push({
+              x: c.x + (Math.random() - 0.5) * w * 2,
+              y: c.y + 14 * c.scale,
+              vy: 90 + Math.random() * 90,
+              len: 6 + Math.random() * 8,
+              life: 1,
+            });
+          }
+          if (c.age > 5) c.phase = 'fade';
+        } else if (c.phase === 'fade') {
+          c.scale = Math.max(0, c.scale - 0.01);
+          if (c.scale <= 0 && c.drops.length === 0) { clouds.splice(ci, 1); continue; }
+        }
+
+        // Raindrops.
+        for (let di = c.drops.length - 1; di >= 0; di--) {
+          const d = c.drops[di];
+          d.y += d.vy * 0.016;
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x, d.y + d.len);
+          ctx.strokeStyle = 'rgba(140,200,230,0.55)';
+          ctx.lineWidth = 1.4;
+          ctx.stroke();
+          if (d.y > H + 20) c.drops.splice(di, 1);
+        }
+
+        // Cloud puffs.
+        if (c.scale > 0.01) {
+          ctx.save();
+          ctx.translate(c.x, c.y);
+          ctx.scale(c.scale, c.scale);
+          c.puffs.forEach(pf => {
+            const gr = ctx.createRadialGradient(pf.dx, pf.dy, 0, pf.dx, pf.dy, pf.r);
+            gr.addColorStop(0, 'rgba(235,238,245,0.95)');
+            gr.addColorStop(1, 'rgba(200,210,225,0.65)');
+            ctx.beginPath();
+            ctx.arc(pf.dx, pf.dy, pf.r, 0, Math.PI * 2);
+            ctx.fillStyle = gr;
+            ctx.fill();
+          });
+          ctx.restore();
+        }
+      }
+    }
+
     function draw() {
       t += 0.016;
       ctx.clearRect(0, 0, W, H);
@@ -593,6 +670,8 @@
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fillStyle = disc;
       ctx.fill();
+
+      drawClouds();
 
       requestAnimationFrame(draw);
     }
