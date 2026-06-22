@@ -563,38 +563,32 @@
       const arc = Math.sin(p * Math.PI);      // 0 at edges, 1 at zenith
       const y = H * 0.30 - arc * H * 0.16;    // rises toward the top at midday
 
-      // Soft outer glow.
-      const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 5);
-      glow.addColorStop(0, 'rgba(255,210,120,0.22)');
-      glow.addColorStop(0.4, 'rgba(255,190,90,0.10)');
+      // Soft outer glow — wider and brighter, gently pulsing.
+      const pulse = 1 + 0.04 * Math.sin(t * 1.2);
+      const glow = ctx.createRadialGradient(x, y, 0, x, y, r * 7 * pulse);
+      glow.addColorStop(0, 'rgba(255,225,150,0.55)');
+      glow.addColorStop(0.25, 'rgba(255,205,110,0.30)');
+      glow.addColorStop(0.6, 'rgba(255,190,90,0.12)');
       glow.addColorStop(1, 'rgba(255,190,90,0)');
       ctx.beginPath();
-      ctx.arc(x, y, r * 5, 0, Math.PI * 2);
+      ctx.arc(x, y, r * 7 * pulse, 0, Math.PI * 2);
       ctx.fillStyle = glow;
       ctx.fill();
 
-      // Gentle rays.
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(t * 0.05);
-      for (let i = 0; i < 12; i++) {
-        const a = (i / 12) * Math.PI * 2;
-        const inner = r * 1.5;
-        const outer = r * (2.2 + 0.25 * Math.sin(t * 1.5 + i));
-        ctx.beginPath();
-        ctx.moveTo(Math.cos(a) * inner, Math.sin(a) * inner);
-        ctx.lineTo(Math.cos(a) * outer, Math.sin(a) * outer);
-        ctx.strokeStyle = 'rgba(255,205,110,0.12)';
-        ctx.lineWidth = 2;
-        ctx.stroke();
-      }
-      ctx.restore();
+      // Bright inner halo.
+      const halo = ctx.createRadialGradient(x, y, 0, x, y, r * 2.2);
+      halo.addColorStop(0, 'rgba(255,245,210,0.7)');
+      halo.addColorStop(1, 'rgba(255,210,120,0)');
+      ctx.beginPath();
+      ctx.arc(x, y, r * 2.2, 0, Math.PI * 2);
+      ctx.fillStyle = halo;
+      ctx.fill();
 
       // Sun disc.
       const disc = ctx.createRadialGradient(x, y, 0, x, y, r);
-      disc.addColorStop(0, 'rgba(255,244,210,0.95)');
-      disc.addColorStop(0.7, 'rgba(255,205,110,0.9)');
-      disc.addColorStop(1, 'rgba(245,170,70,0.85)');
+      disc.addColorStop(0, 'rgba(255,250,225,1)');
+      disc.addColorStop(0.7, 'rgba(255,215,130,0.98)');
+      disc.addColorStop(1, 'rgba(250,180,80,0.95)');
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fillStyle = disc;
