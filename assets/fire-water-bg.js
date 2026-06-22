@@ -687,4 +687,102 @@
     }
     draw();
   })();
+
+  // ── NEURAL EDGES: a subtle network along the left & right page borders ─────
+  // Our whole universe quietly emerges out of this gentle web of connections.
+  (function neuralEdges() {
+    const cv = document.createElement('canvas');
+    cv.id = 'neural-edges';
+    cv.style.cssText =
+      'position:fixed;inset:0;width:100%;height:100%;' +
+      'z-index:0;pointer-events:none;opacity:0.55;';
+    document.body.appendChild(cv);
+    const ctx = cv.getContext('2d');
+
+    let W, H, band;
+    const neurons = [];
+    const MAXDIST = 120;
+
+    function makeNeuron(side) {
+      // side: -1 = left band, +1 = right band
+      const x = side < 0
+        ? Math.random() * band
+        : W - Math.random() * band;
+      return {
+        side: side,
+        x: x,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        r: Math.random() * 1.5 + 0.5,
+        pulse: Math.random() * Math.PI * 2,
+        type: Math.random() > 0.5 ? 'brain' : 'star',
+      };
+    }
+
+    function build() {
+      neurons.length = 0;
+      const per = Math.max(10, Math.round(H / 55));
+      for (let i = 0; i < per; i++) { neurons.push(makeNeuron(-1)); neurons.push(makeNeuron(1)); }
+    }
+
+    function resize() {
+      W = cv.width = window.innerWidth;
+      H = cv.height = window.innerHeight;
+      band = Math.max(70, Math.min(140, W * 0.12));
+      build();
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function animate() {
+      ctx.clearRect(0, 0, W, H);
+
+      for (const n of neurons) {
+        n.x += n.vx; n.y += n.vy; n.pulse += 0.02;
+        // Keep each neuron inside its own edge band.
+        const lo = n.side < 0 ? 0 : W - band;
+        const hi = n.side < 0 ? band : W;
+        if (n.x < lo || n.x > hi) n.vx *= -1;
+        if (n.y < 0 || n.y > H) n.vy *= -1;
+        n.x = Math.max(lo, Math.min(hi, n.x));
+        n.y = Math.max(0, Math.min(H, n.y));
+      }
+
+      // Connections (bands are far apart, so no lines cross the middle).
+      for (let i = 0; i < neurons.length; i++) {
+        for (let j = i + 1; j < neurons.length; j++) {
+          const a = neurons[i], b = neurons[j];
+          if (a.side !== b.side) continue;
+          const dx = a.x - b.x, dy = a.y - b.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < MAXDIST) {
+            const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+            grad.addColorStop(0, a.type === 'brain' ? '#ff00ff' : '#00ffff');
+            grad.addColorStop(1, b.type === 'brain' ? '#ff00ff' : '#00ffff');
+            ctx.strokeStyle = grad;
+            ctx.globalAlpha = (1 - dist / MAXDIST) * 0.28;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Nodes.
+      for (const n of neurons) {
+        ctx.globalAlpha = (0.5 + 0.5 * Math.sin(n.pulse)) * 0.8;
+        ctx.fillStyle = n.type === 'brain' ? '#ff00ff' : '#00ffff';
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
 })();
