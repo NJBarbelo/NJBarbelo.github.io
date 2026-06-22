@@ -204,7 +204,7 @@
           ufo.y += Math.sin(ufo.hover * 2) * 0.15; // gentle bob
           if (ufo.hover > 1.8) ufo.phase = 'out';
         } else if (ufo.phase === 'out') {
-          ufo.x += ufo.dir * (W / 60) * 3.2 * 0.4; // zip away fast
+          ufo.x += ufo.dir * (W / 60) * 11 * 0.4; // ZIP away super fast
           if (ufo.x < -60 || ufo.x > W + 60) {
             ufo.phase = 'idle';
             ufo.next = 15 + Math.random() * 25;
@@ -365,5 +365,119 @@
         clickCount = 0;
       }
     });
+  })();
+
+  // ── PLANT: a vine grows up the left edge, out of the footer water ─────────
+  (function growPlant() {
+    const cv = document.createElement('canvas');
+    cv.id = 'plant-canvas';
+    cv.style.cssText =
+      'position:fixed;left:0;top:0;bottom:0;width:150px;height:100%;' +
+      'z-index:1;pointer-events:none;';
+    document.body.appendChild(cv);
+    const ctx = cv.getContext('2d');
+
+    let W, H;
+    function resize() {
+      W = cv.width = 150;
+      H = cv.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    // Leaves sprout at fractions along the stem, alternating sides.
+    const leaves = [];
+    for (let i = 0; i < 9; i++) {
+      leaves.push({
+        at: 0.12 + i * 0.092 + (Math.random() - 0.5) * 0.03, // 0=base .. 1=tip
+        side: i % 2 === 0 ? 1 : -1,
+        size: 14 + Math.random() * 10,
+      });
+    }
+
+    let t = 0;
+    let grow = 0;                       // 0..1 growth progress
+    const TARGET = 0.72;                // fraction of viewport height
+    const baseX = 26;                   // distance from left edge
+
+    function stemX(y, topY) {
+      // Gentle sway, stronger toward the tip.
+      const along = (H - y) / Math.max(1, H - topY); // 0 base .. 1 tip
+      const sway = Math.sin(t * 0.6 + along * 2.2) * (6 + along * 14);
+      return baseX + sway * along;
+    }
+
+    function draw() {
+      t += 0.016;
+      if (grow < 1) grow += 0.0035;     // slow, calm growth
+      ctx.clearRect(0, 0, W, H);
+
+      const fullH = H * TARGET;
+      const topY = H - fullH * grow;    // current tip height
+
+      // Stem.
+      ctx.beginPath();
+      for (let y = H; y >= topY; y -= 4) {
+        const x = stemX(y, topY);
+        if (y === H) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = 'rgba(90,165,95,0.85)';
+      ctx.lineWidth = 3.2;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Leaves that have been reached by the growth.
+      leaves.forEach(lf => {
+        const grownTo = (H - topY) / fullH;       // 0..1 currently visible
+        if (lf.at > grownTo) return;
+        const ly = H - fullH * lf.at;
+        const lx = stemX(ly, topY);
+        const open = Math.min(1, (grownTo - lf.at) * 6); // unfurl
+        const sway = Math.sin(t * 0.6 + lf.at * 5) * 0.18;
+        ctx.save();
+        ctx.translate(lx, ly);
+        ctx.rotate(lf.side * (0.7 + sway));
+        ctx.scale(open * lf.side, open);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.quadraticCurveTo(lf.size * 0.6, -lf.size * 0.5, lf.size, 0);
+        ctx.quadraticCurveTo(lf.size * 0.6, lf.size * 0.5, 0, 0);
+        ctx.fillStyle = 'rgba(80,170,100,0.8)';
+        ctx.fill();
+        // Leaf vein.
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(lf.size * 0.9, 0);
+        ctx.strokeStyle = 'rgba(60,130,75,0.6)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.restore();
+      });
+
+      // A little flower blooms at the tip once fully grown.
+      if (grow > 0.96) {
+        const fx = stemX(topY, topY);
+        const bloom = Math.min(1, (grow - 0.96) / 0.04);
+        const petals = 6;
+        for (let p = 0; p < petals; p++) {
+          const ang = (p / petals) * Math.PI * 2 + t * 0.3;
+          const pr = 7 * bloom;
+          const px = fx + Math.cos(ang) * pr;
+          const py = topY + Math.sin(ang) * pr;
+          ctx.beginPath();
+          ctx.arc(px, py, 4 * bloom, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(230,198,99,0.85)';
+          ctx.fill();
+        }
+        ctx.beginPath();
+        ctx.arc(fx, topY, 3.5 * bloom, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(120,224,214,0.95)';
+        ctx.fill();
+      }
+
+      requestAnimationFrame(draw);
+    }
+    draw();
   })();
 })();
