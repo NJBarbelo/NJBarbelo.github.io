@@ -25,57 +25,65 @@
 
     let t = 0;
 
-    // ── FIRE ───────────────────────────────────────────────────────────────
-    if (mode === 'fire') {
-      // Density scales with width; kept sparse for a calm, subtle header glow.
-      const COUNT = Math.max(12, Math.round(W / 45));
-      const particles = [];
+    // ── STARS (night sky) ────────────────────────────────────────────────
+    if (mode === 'stars' || mode === 'fire') {
+      // Calm starfield: stars hold their place and gently twinkle.
+      const COUNT = Math.max(40, Math.round(W / 12));
+      const stars = [];
 
-      function newParticle(randomY) {
+      // Soft warm/cool tints that fit the gold + turquoise theme.
+      const tints = [
+        [255, 255, 245], // warm white
+        [255, 255, 245],
+        [255, 255, 245],
+        [230, 198, 99],  // gold
+        [120, 224, 214], // turquoise
+      ];
+
+      function newStar() {
+        const tint = tints[Math.floor(Math.random() * tints.length)];
         return {
           x: Math.random() * W,
-          y: randomY ? Math.random() * H : H + 20,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: -(Math.random() * 0.9 + 0.4),
-          size: Math.random() * 16 + 7,
-          life: randomY ? Math.random() : 1,
-          decay: Math.random() * 0.004 + 0.002,
-          wobble: Math.random() * Math.PI * 2,
+          y: Math.random() * H,
+          r: Math.random() * 1.1 + 0.4,
+          base: Math.random() * 0.4 + 0.25,   // base brightness
+          amp: Math.random() * 0.45 + 0.25,   // twinkle depth
+          speed: Math.random() * 0.9 + 0.3,   // slow twinkle
+          phase: Math.random() * Math.PI * 2,
+          tint: tint,
+          // A few stars sparkle a little brighter with a soft halo.
+          bright: Math.random() < 0.22,
         };
       }
 
-      for (let i = 0; i < COUNT; i++) particles.push(newParticle(true));
-
-      function color(life) {
-        if (life > 0.7) return `rgba(255,${Math.round(180 + 75 * ((life - 0.7) / 0.3))},0,${(life * 0.35).toFixed(2)})`;
-        if (life > 0.4) return `rgba(255,${Math.round(80 + 100 * ((life - 0.4) / 0.3))},0,${(life * 0.28).toFixed(2)})`;
-        return `rgba(200,30,0,${(life * 0.18).toFixed(2)})`;
-      }
+      for (let i = 0; i < COUNT; i++) stars.push(newStar());
 
       function draw() {
         t += 0.016;
-        ctx.fillStyle = 'rgba(0,0,0,0.12)';
-        ctx.fillRect(0, 0, W, H);
+        // Clean redraw each frame so the header background stays calm.
+        ctx.clearRect(0, 0, W, H);
 
-        for (let i = 0; i < particles.length; i++) {
-          const p = particles[i];
-          p.wobble += 0.02;
-          p.x += p.vx + Math.sin(p.wobble) * 0.25;
-          p.y += p.vy;
-          p.life -= p.decay;
-          p.size *= 0.998;
+        for (let i = 0; i < stars.length; i++) {
+          const s = stars[i];
+          const tw = s.base + s.amp * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+          const a = Math.max(0, Math.min(1, tw));
+          const [r, g, b] = s.tint;
 
-          if (p.life > 0.02 && p.size > 1) {
-            const gr = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
-            gr.addColorStop(0, color(p.life));
-            gr.addColorStop(1, 'rgba(0,0,0,0)');
+          if (s.bright) {
+            const glow = s.r * 6;
+            const gr = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, glow);
+            gr.addColorStop(0, `rgba(${r},${g},${b},${(a * 0.5).toFixed(3)})`);
+            gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
             ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.arc(s.x, s.y, glow, 0, Math.PI * 2);
             ctx.fillStyle = gr;
             ctx.fill();
           }
 
-          if (p.life <= 0 || p.y < -60) particles[i] = newParticle(false);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
+          ctx.fill();
         }
 
         requestAnimationFrame(draw);
