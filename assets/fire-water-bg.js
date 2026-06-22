@@ -27,19 +27,19 @@
 
     // ── FIRE ───────────────────────────────────────────────────────────────
     if (mode === 'fire') {
-      // Density scales with width so a wide-but-short header stays lively.
-      const COUNT = Math.max(24, Math.round(W / 22));
+      // Density scales with width; kept sparse for a calm, subtle header glow.
+      const COUNT = Math.max(12, Math.round(W / 45));
       const particles = [];
 
       function newParticle(randomY) {
         return {
           x: Math.random() * W,
           y: randomY ? Math.random() * H : H + 20,
-          vx: (Math.random() - 0.5) * 0.5,
-          vy: -(Math.random() * 1.8 + 0.8),
+          vx: (Math.random() - 0.5) * 0.3,
+          vy: -(Math.random() * 0.9 + 0.4),
           size: Math.random() * 16 + 7,
           life: randomY ? Math.random() : 1,
-          decay: Math.random() * 0.006 + 0.003,
+          decay: Math.random() * 0.004 + 0.002,
           wobble: Math.random() * Math.PI * 2,
         };
       }
@@ -59,8 +59,8 @@
 
         for (let i = 0; i < particles.length; i++) {
           const p = particles[i];
-          p.wobble += 0.035;
-          p.x += p.vx + Math.sin(p.wobble) * 0.35;
+          p.wobble += 0.02;
+          p.x += p.vx + Math.sin(p.wobble) * 0.25;
           p.y += p.vy;
           p.life -= p.decay;
           p.size *= 0.998;
@@ -87,9 +87,9 @@
     // ── WATER ──────────────────────────────────────────────────────────────
     if (mode === 'water') {
       const waveLayers = [
-        { freq: 0.005,  speed: 1.8, amp: 0.05,  alpha: 0.055, r: 10, g: 80,  b: 100 },
-        { freq: 0.007,  speed: 1.2, amp: 0.04,  alpha: 0.045, r: 20, g: 130, b: 150 },
-        { freq: 0.0035, speed: 0.8, amp: 0.06,  alpha: 0.035, r: 35, g: 180, b: 190 },
+        { freq: 0.006,  speed: 1.6, amp: 0.11, base: 0.30, alpha: 0.075, r: 10, g: 80,  b: 100 },
+        { freq: 0.009,  speed: 1.0, amp: 0.08, base: 0.20, alpha: 0.065, r: 20, g: 130, b: 150 },
+        { freq: 0.003,  speed: 0.6, amp: 0.14, base: 0.24, alpha: 0.050, r: 35, g: 180, b: 190 },
       ];
 
       function draw() {
@@ -101,9 +101,9 @@
         waveLayers.forEach(l => {
           ctx.beginPath();
           for (let x = 0; x <= W + 4; x += 4) {
-            const y = H * 0.32
+            const y = H * l.base
               + Math.sin(x * l.freq + t * l.speed) * H * l.amp
-              + Math.sin(x * l.freq * 1.7 + t * l.speed * 0.65) * H * l.amp * 0.4;
+              + Math.sin(x * l.freq * 1.7 + t * l.speed * 0.65) * H * l.amp * 0.5;
             if (x === 0) ctx.moveTo(x, y);
             else ctx.lineTo(x, y);
           }
