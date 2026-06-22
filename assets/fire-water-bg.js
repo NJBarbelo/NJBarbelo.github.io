@@ -58,6 +58,61 @@
 
       for (let i = 0; i < COUNT; i++) stars.push(newStar());
 
+      // A lone satellite drifts across the sky now and then.
+      const sat = { active: false, next: 2 + Math.random() * 4 };
+      function launchSatellite() {
+        const leftToRight = Math.random() < 0.5;
+        sat.active = true;
+        sat.x = leftToRight ? -10 : W + 10;
+        sat.y = H * (0.15 + Math.random() * 0.5);
+        sat.vx = (leftToRight ? 1 : -1) * (W / 60) * (0.6 + Math.random() * 0.4); // px per second-ish
+        sat.vy = (Math.random() - 0.5) * 0.25 * (W / 60);
+        sat.blink = Math.random() * Math.PI * 2;
+        sat.trail = [];
+      }
+
+      function drawSatellite() {
+        if (!sat.active) {
+          sat.next -= 0.016;
+          if (sat.next <= 0) launchSatellite();
+          return;
+        }
+        sat.x += sat.vx * 0.016;
+        sat.y += sat.vy * 0.016;
+        sat.blink += 0.12;
+
+        // Fading trail.
+        sat.trail.push({ x: sat.x, y: sat.y });
+        if (sat.trail.length > 22) sat.trail.shift();
+        for (let i = 0; i < sat.trail.length; i++) {
+          const tp = sat.trail[i];
+          const a = (i / sat.trail.length) * 0.18;
+          ctx.beginPath();
+          ctx.arc(tp.x, tp.y, 0.8, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(200,230,255,${a.toFixed(3)})`;
+          ctx.fill();
+        }
+
+        // Body with a soft glow + gentle blink.
+        const blink = 0.7 + 0.3 * Math.sin(sat.blink);
+        const glow = ctx.createRadialGradient(sat.x, sat.y, 0, sat.x, sat.y, 5);
+        glow.addColorStop(0, `rgba(180,220,255,${(0.6 * blink).toFixed(3)})`);
+        glow.addColorStop(1, 'rgba(180,220,255,0)');
+        ctx.beginPath();
+        ctx.arc(sat.x, sat.y, 5, 0, Math.PI * 2);
+        ctx.fillStyle = glow;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(sat.x, sat.y, 1.3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(235,245,255,${blink.toFixed(3)})`;
+        ctx.fill();
+
+        if (sat.x < -20 || sat.x > W + 20 || sat.y < -20 || sat.y > H + 20) {
+          sat.active = false;
+          sat.next = 6 + Math.random() * 10; // pause before the next pass
+        }
+      }
+
       function draw() {
         t += 0.016;
         // Clean redraw each frame so the header background stays calm.
@@ -85,6 +140,8 @@
           ctx.fillStyle = `rgba(${r},${g},${b},${a.toFixed(3)})`;
           ctx.fill();
         }
+
+        drawSatellite();
 
         requestAnimationFrame(draw);
       }
